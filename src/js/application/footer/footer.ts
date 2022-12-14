@@ -2,6 +2,6 @@ import Control from '../../common/control';
 
 export class Footer extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode);
+    super(parentNode, 'footer', 'footer', 'footer');
   }
 }
