@@ -46,7 +46,8 @@ const plugins = () => {
       template: './index.html',
       minify: {
         collapseWhitespace: isProd
-      }
+      },
+      favicon: path.resolve(__dirname, 'src/assets', 'favicon.ico'),
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
