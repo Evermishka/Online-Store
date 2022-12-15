@@ -46,7 +46,8 @@ const plugins = () => {
       template: './index.html',
       minify: {
         collapseWhitespace: isProd
-      }
+      },
+      favicon: path.resolve(__dirname, 'src/assets', 'favicon.ico'),
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
@@ -75,6 +76,7 @@ module.exports = {
   optimization: optimization(),
   devServer: {
     port: 8800,
+    open: true,
     hot: isDev
   },
   devtool: isDev ? 'source-map' : false,
