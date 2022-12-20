@@ -1,4 +1,4 @@
-interface IProduct {
+interface Product {
   id: number;
   title: string;
   description: string;
@@ -12,7 +12,7 @@ interface IProduct {
   images: string[];
 }
 
-export const products: IProduct[] = [
+export const products: Product[] = [
   {
     id: 1,
     title: 'iPhone 9',
