@@ -1,9 +1,17 @@
-import Control from '../../../common/control';
-import { Product } from '../../../data/data';
+import Control from '../../../../common/control';
+import { Product } from '../../../../data/data';
+import { Main } from '../../main';
+import { ProductPage } from '../../product-page/product-page';
 
 export class GoodsItem extends Control {
+  id: number;
+  public onProductPage(id: number) {
+    //console.log(id);
+  }
+
   constructor(parendNode: HTMLElement, product: Product) {
     super(parendNode, 'li', 'product', '');
+    this.id = product.id;
     new Control(this.node, 'p', 'product__title', product.title);
     const imageWrapper = new Control(this.node, 'div', 'product__image-wrapper', '');
     const image: { node: HTMLImageElement } = new Control(imageWrapper.node, 'img', 'product__image', '');
@@ -16,16 +24,11 @@ export class GoodsItem extends Control {
       this.toggleCart(product.id);
     };
     const detailsButton: { node: HTMLButtonElement } = new Control(this.node, 'button', 'product__button', 'Details');
-    detailsButton.node.onclick = (): void => {
-      this.openProductPage(product.id);
-    };
-  }
+    detailsButton.node.onclick = (): void => this.onProductPage(this.id);
+  }  
 
-  public openProductPage(id: number): void {
-    throw new Error('Method not implemented.');
-  }
-  
-  public toggleCart(id: number): void {
+
+  toggleCart(id: number): void {
     throw new Error('Method not implemented.');
   }
 }

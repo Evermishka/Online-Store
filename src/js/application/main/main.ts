@@ -1,12 +1,15 @@
 import Control from '../../common/control';
+import { MainPage } from './main-page/main-page';
 import { products } from '../../data/data';
-import { Category } from './category/category';
-import { Goods } from './goods/goods';
+import { ProductPage } from './product-page/product-page';
 
 export class Main extends Control {
   constructor(parendNode: HTMLElement) {
     super(parendNode, 'main', 'main');
-    const category = new Category(this.node);
-    const goods = new Goods(this.node, products);
-  }
+    const mainPage = new MainPage(this.node, products);
+    mainPage.onProductPage =() => {
+      mainPage.destroy();
+      const productPage = new ProductPage(this.node);
+    }
+  }  
 }
