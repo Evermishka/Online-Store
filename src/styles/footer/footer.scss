@@ -1,6 +1,57 @@
 .footer {
   display: flex;
   flex: 0 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
   border: 1px solid blue;
-  height: 10rem;
+}
+
+.github {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.github__text {
+  margin: 0;
+}
+
+.github__links-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.github__link {
+  color: white;
+
+  &:hover {
+    color: blue;
+  }
+}
+
+.github__text-dop {
+  margin: 0;
+}
+
+.year {
+  margin: 0;
+}
+
+.rss-link {
+  display: inline-block;
+  margin-left: 90px;
+  width: 140px;
+  height: 100%; 
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url('../assets/icons/rss_logo.svg');
+
+  &:hover {
+    background-image: url('../assets/icons/rss_logo_hover.svg');
+    cursor: pointer;
+  }
 }
