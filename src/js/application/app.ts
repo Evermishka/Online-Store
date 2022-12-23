@@ -7,7 +7,13 @@ export class App extends Control {
   constructor(parendNode: HTMLElement) {
     super(parendNode, 'div', 'wrapper');
     const header = new Header(this.node);
-    const main = new Main(this.node);
+    const main = new Control(this.node, 'main', 'main');
     const footer = new Footer(this.node);
+
+    this.createApp(main, 'main-page');
+  }
+
+  createApp(main: { node: HTMLElement }, screen: string) {
+    const mainInner = new Main(main.node);
   }
 }
