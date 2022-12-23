@@ -2,4 +2,43 @@
   height: 10rem;
   width: 100%;
   border: 1px solid yellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  &_inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  &_logo {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.5s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  &_cart {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.5s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  &_sum_text {
+    font-size: 2.5rem;
+    line-height: 3rem;
+    margin-right: 1rem;
+  }
+  &_sum {
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
 }
