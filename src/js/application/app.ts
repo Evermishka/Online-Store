@@ -14,11 +14,10 @@ export class App extends Control {
   }
 
   createApp(header: Header, main: { node: HTMLElement }, screen: string, id?: number) {
-    const mainInner = new Main(main.node, screen);
-    mainInner.onProductPage = (id) => {
-      console.log(id);
+    const mainInner = new Main(main.node, screen, id);
+    mainInner.onProductPage = (id: number) => {
       mainInner.destroy();
-      this.createApp(header, main, 'good-page', id);
+      this.createApp(header, main, 'product-page', id);
     };
     header.onMainPage = () => {
       mainInner.destroy();

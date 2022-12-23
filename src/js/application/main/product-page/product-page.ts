@@ -1,8 +1,10 @@
 import Control from '../../../common/control';
 
 export class ProductPage extends Control {
-  constructor(parendNode: HTMLElement) {
+  constructor(parendNode: HTMLElement, id: number | undefined) {
     super(parendNode, 'div', 'product_page', '');
-    this.node.textContent = 'ProductPage'
+    console.log(id);
+
+    this.node.textContent = `ID product is ${id}`;
   }
 }
