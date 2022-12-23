@@ -1,0 +1,31 @@
+.goods {
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  border: 1px solid orange;
+  list-style: none;
+  &_product {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: center;
+    max-width: 200px;
+    background-color: #393b39;
+  }
+  &_product_title {
+    text-align: center;
+  }
+  &_product_image-wrapper {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 150px;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+}
