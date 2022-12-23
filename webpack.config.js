@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
@@ -11,63 +11,61 @@ const isProd = !isDev;
 const optimization = () => {
   const config = {
     splitChunks: {
-      chunks: 'all'
-    }
-  }
+      chunks: 'all',
+    },
+  };
 
   if (isProd) {
-    config.minimizer = [
-      new CssMinimizerPlugin()
-    ]
+    config.minimizer = [new CssMinimizerPlugin()];
   }
 
-  return config
-}
+  return config;
+};
 
-const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
+const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`);
 
-const cssLoaders = extra => {
+const cssLoaders = (extra) => {
   const loaders = [
     {
-      loader: MiniCssExtractPlugin.loader
+      loader: MiniCssExtractPlugin.loader,
     },
-    'css-loader'
+    'css-loader',
   ];
 
   if (extra) {
-    loaders.push(extra)
+    loaders.push(extra);
   }
 
   return loaders;
-}
+};
 
 const plugins = () => {
   const base = [
     new HtmlWebpackPlugin({
       template: './index.html',
       minify: {
-        collapseWhitespace: isProd
+        collapseWhitespace: isProd,
       },
       favicon: path.resolve(__dirname, 'src/assets', 'favicon.ico'),
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: filename('css')
-    })
-  ]
+      filename: filename('css'),
+    }),
+  ];
 
   if (isProd) {
     base.push(new ESLintPlugin({ extensions: 'ts' }));
   }
 
   return base;
-}
+};
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
   entry: {
-    main: './index.ts'
+    main: './index.ts',
   },
   output: {
     filename: filename('js'),
@@ -82,7 +80,7 @@ module.exports = {
   devServer: {
     port: 8800,
     open: true,
-    hot: isDev
+    hot: isDev,
   },
   devtool: isDev ? 'source-map' : false,
   plugins: plugins(),
@@ -90,11 +88,11 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: cssLoaders()
+        use: cssLoaders(),
       },
       {
         test: /\.s[ac]ss$/,
-        use: cssLoaders('sass-loader')
+        use: cssLoaders('sass-loader'),
       },
       {
         test: /\.(png|jpg|gif|wav)$/,
@@ -108,7 +106,7 @@ module.exports = {
         test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      }
-    ]
-  }
-}
+      },
+    ],
+  },
+};
