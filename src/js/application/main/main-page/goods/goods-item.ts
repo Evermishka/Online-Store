@@ -3,12 +3,16 @@ import Control from '../../../../common/control';
 import { Product } from '../../../../data/data';
 
 export class GoodsItem extends Control {
-  id: number;
   onProductPage!: (id: number) => void;
+  product: CartData;
 
   constructor(parendNode: HTMLElement, product: Product, state: CartState) {
     super(parendNode, 'li', 'goods_product', '');
-    this.id = product.id;
+    this.product = {
+      id: product.id,
+      price: product.price,
+      amount: 1
+    }
     new Control(this.node, 'p', 'goods_product_title', product.title);
     const imageWrapper = new Control(this.node, 'div', 'goods_product_image-wrapper', '');
     const image: { node: HTMLImageElement } = new Control(imageWrapper.node, 'img', 'goods_product_image', '');
@@ -26,18 +30,10 @@ export class GoodsItem extends Control {
     cartButton.node.onclick = (): void => {
       if (cartButton.node.innerText === 'Add to cart') {
         cartButton.node.innerText = 'Remove from cart';
-        this.addToCart({
-          id: product.id,
-          price: product.price,
-          amount: 1
-        }, state);
+        this.addToCart(this.product, state);
       } else {
         cartButton.node.innerText = 'Add to cart';
-        this.removeFromCart({
-          id: product.id,
-          price: product.price,
-          amount: 1
-        }, state);
+        this.removeFromCart(this.product, state);
       }
     };
     const detailsButton: { node: HTMLButtonElement } = new Control(
@@ -46,7 +42,7 @@ export class GoodsItem extends Control {
       'goods_product_button',
       'Details'
     );
-    detailsButton.node.onclick = () => this.onProductPage(this.id);
+    detailsButton.node.onclick = () => this.onProductPage(this.product.id);
   }
 
   addToCart(productInfo: CartData, state: CartState): void {
