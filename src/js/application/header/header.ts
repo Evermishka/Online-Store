@@ -1,12 +1,12 @@
 import Control from '../../common/control';
 import logo from '../../../assets/svg/logo.svg';
 import cartMenu from '../../../assets/images/cart.png';
-import CartState from '../../common/state';
+import { State } from '../../common/state';
 
 export class Header extends Control {
   onMainPage!: () => void;
   onCartPage!: () => void;
-  constructor(parentNode: HTMLElement, state: CartState) {
+  constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'header', 'header', '');
 
     const headerInner = new Control(this.node, 'div', 'header_inner', '');

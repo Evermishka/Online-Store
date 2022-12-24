@@ -4,11 +4,11 @@ import { products } from '../../data/data';
 import { Goods } from './main-page/goods/goods';
 import { ProductPage } from './product-page/product-page';
 import { CartPage } from './cart-page/cart-page';
-import CartState from '../../common/state';
+import { State } from '../../common/state';
 
 export class Main extends Control {
   onProductPage!: (id: number) => void;
-  constructor(parendNode: HTMLElement, screen: string, state: CartState, id?: number) {
+  constructor(parendNode: HTMLElement, screen: string, state: State, id?: number) {
     super(parendNode, 'div', 'main_inner');
     switch (screen) {
       case 'main-page':

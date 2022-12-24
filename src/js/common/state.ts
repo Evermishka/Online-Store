@@ -6,7 +6,7 @@ export interface CartData {
   amount: number;
 }
 
-export default class state {
+export class State {
   private _data: CartData[];
   public onUpdate: Signal<CartData[]> = new Signal();
   constructor(initialState: CartData[]) {
