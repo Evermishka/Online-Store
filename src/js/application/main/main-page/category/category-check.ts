@@ -13,8 +13,7 @@ export class CategoryCheckbox extends Control {
     }
     const categoryCheckboxList = new Control(this.node, 'ul', 'category_checkbox_list', '');
 
-    // TODO Type this object
-    const productsValue: any = {};
+    const productsValue: { [key: string]: number } = {};
 
     const categories = products.forEach((it: Product, i: number) => {
       if (type === 'category') {
@@ -36,7 +35,7 @@ export class CategoryCheckbox extends Control {
       const categoryItem = new Control(categoryCheckboxList.node, 'li', 'category_item', ``);
       const categoryItemBlock = new Control(categoryItem.node, 'div', 'category_item_block', '');
       const categoryLabel = new Control(categoryItemBlock.node, 'label', 'category_item_label', '');
-      const categoryRadio: any = new Control(categoryLabel.node, 'input', 'category_item_radio');
+      const categoryRadio = new Control<HTMLInputElement>(categoryLabel.node, 'input', 'category_item_radio');
       categoryRadio.node.type = 'checkbox';
       const customCheckbox = new Control(categoryLabel.node, 'span', 'category_custom_check');
       const categoryItemName = new Control(categoryLabel.node, 'p', 'category_item_text', `${key}`);
