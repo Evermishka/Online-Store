@@ -18,10 +18,10 @@ export class Header extends Control {
     const headerSumBlock = new Control(headerInner.node, 'div', 'header_inner_sum', '');
     const headerSumText = new Control(headerSumBlock.node, 'span', 'header_sum_text', 'Cart total');
     let headerSumNumber = state.getData().reduce((accum, current) => accum + current.price, 0);
-    const headerSum = new Control(headerSumBlock.node, 'span', 'header_sum', headerSumNumber.toString());
+    const headerSum = new Control(headerSumBlock.node, 'span', 'header_sum', `€${headerSumNumber.toString()}.00`);
     state.onUpdate.add(() => {
       headerSumNumber = state.getData().reduce((accum, current) => accum + current.price, 0);
-      headerSum.node.innerText = headerSumNumber.toString();
+      headerSum.node.innerText = `€${headerSumNumber.toString()}.00`;
     });
 
     const headerCart: { node: HTMLImageElement } = new Control(headerInner.node, 'img', 'header_cart', '');
