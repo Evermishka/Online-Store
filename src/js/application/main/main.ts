@@ -12,7 +12,7 @@ export class Main extends Control {
     super(parendNode, 'div', 'main_inner');
     switch (screen) {
       case 'main-page':
-        const category = new Category(this.node, products);
+        const category = new Category(this.node, products, state);
         const goods = new Goods(this.node, products, state);
 
         goods.onProductPage = (id: number) => this.onProductPage(id);

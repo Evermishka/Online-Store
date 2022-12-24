@@ -1,8 +1,9 @@
 import Control from '../../../../common/control';
+import { State } from '../../../../common/state';
 import { Product, products } from '../../../../data/data';
 
 export class CategoryInput extends Control {
-  constructor(parentNode: HTMLElement, type: string) {
+  constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_range_inner');
 
     const inputBlockTitle = new Control(this.node, 'h3', 'category_input_title');

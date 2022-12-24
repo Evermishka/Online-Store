@@ -1,8 +1,9 @@
 import Control from '../../../../common/control';
+import { State } from '../../../../common/state';
 import { products, Product } from '../../../../data/data';
 
 export class CategoryCheckbox extends Control {
-  constructor(parentNode: HTMLElement, type: string) {
+  constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_checkbox', '');
 
     const categoryCheckboxTitle = new Control(this.node, 'h3', 'category_checkbox_title', '');
