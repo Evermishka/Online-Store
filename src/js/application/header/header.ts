@@ -1,11 +1,12 @@
 import Control from '../../common/control';
 import logo from '../../../assets/svg/logo.svg';
 import cartMenu from '../../../assets/images/cart.png';
+import CartState from '../../common/cart-state';
 
 export class Header extends Control {
   onMainPage!: () => void;
   onCartPage!: () => void;
-  constructor(parentNode: HTMLElement) {
+  constructor(parentNode: HTMLElement, state: CartState) {
     super(parentNode, 'header', 'header', '');
 
     const headerInner = new Control(this.node, 'div', 'header_inner', '');
@@ -16,7 +17,12 @@ export class Header extends Control {
 
     const headerSumBlock = new Control(headerInner.node, 'div', 'header_inner_sum', '');
     const headerSumText = new Control(headerSumBlock.node, 'span', 'header_sum_text', 'Cart total');
-    const headerSum = new Control(headerSumBlock.node, 'span', 'header_sum', '€0.00');
+    let headerSumNumber = state.getData().reduce((accum, current) => accum + current.price, 0);
+    const headerSum = new Control(headerSumBlock.node, 'span', 'header_sum', `€${headerSumNumber.toString()}.00`);
+    state.onUpdate.add(() => {
+      headerSumNumber = state.getData().reduce((accum, current) => accum + current.price, 0);
+      headerSum.node.innerText = `€${headerSumNumber.toString()}.00`;
+    });
 
     const headerCart: { node: HTMLImageElement } = new Control(headerInner.node, 'img', 'header_cart', '');
     headerCart.node.src = cartMenu;
