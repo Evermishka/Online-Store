@@ -1,7 +1,7 @@
 import Control from '../../common/control';
 import logo from '../../../assets/svg/logo.svg';
 import cartMenu from '../../../assets/images/cart.png';
-import CartState from '../../common/cart-state';
+import CartState from '../../common/state';
 
 export class Header extends Control {
   onMainPage!: () => void;

@@ -1,4 +1,4 @@
-import CartState from '../common/cart-state';
+import CartState from '../common/state';
 import Control from '../common/control';
 import { Footer } from './footer/footer';
 import { Header } from './header/header';

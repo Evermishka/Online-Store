@@ -1,4 +1,4 @@
-import CartState, { CartData } from '../../../../common/cart-state';
+import CartState, { CartData } from '../../../../common/state';
 import Control from '../../../../common/control';
 import { Product } from '../../../../data/data';
 
