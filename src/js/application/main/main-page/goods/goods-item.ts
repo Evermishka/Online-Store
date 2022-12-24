@@ -39,7 +39,6 @@ export class GoodsItem extends Control {
           amount: 1
         }, state);
       }
-
     };
     const detailsButton: { node: HTMLButtonElement } = new Control(
       this.node,

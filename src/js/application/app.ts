@@ -7,7 +7,7 @@ import { Main } from './main/main';
 export class App extends Control {
   constructor(parendNode: HTMLElement, state: CartState) {
     super(parendNode, 'div', 'wrapper');
-    const header = new Header(this.node);
+    const header = new Header(this.node, state);
     const main = new Control(this.node, 'main', 'main');
     const footer = new Footer(this.node);
 
