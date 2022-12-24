@@ -43,7 +43,7 @@ export class CategoryInput extends Control {
 
     const maxInputValue = new Control(inputValueBlock.node, 'p', 'category_price_man', `€${maxPrice}`);
 
-    const priceInput: any = new Control<HTMLInputElement>(this.node, 'input', 'category_input');
+    const priceInput = new Control<HTMLInputElement>(this.node, 'input', 'category_input');
     priceInput.node.type = 'range';
   }
 }

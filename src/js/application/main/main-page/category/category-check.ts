@@ -15,7 +15,7 @@ export class CategoryCheckbox extends Control {
 
     const productsValue: { [key: string]: number } = {};
 
-    const categories = products.forEach((it: Product, i: number) => {
+    const categories = products.forEach((it: Product) => {
       if (type === 'category') {
         if (productsValue[it.category] === undefined) {
           productsValue[it.category] = 1;
