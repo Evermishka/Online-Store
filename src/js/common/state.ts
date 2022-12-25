@@ -7,8 +7,8 @@ export type CartData = {
 };
 
 export type FilterData = {
-  category: { [key: string]: number };
-  brand: { [key: string]: number };
+  category: Array<string>;
+  brand: Array<string>;
   price: { min: number; max: number };
   stock: { min: number; max: number };
 };
@@ -57,10 +57,6 @@ export class State {
   }
 
   deleteData(value: any, key: string) {
-    // const index = this._data[key].findIndex((el: any) => el.id === value.id);
-    // this._data[key].splice(index, 1);
-    // this.onUpdate.emit(this._data[key]);
-
     switch (key) {
       case 'cartData':
         const indexCart = this._data[key].findIndex((el: any) => el.id === value.id);
@@ -68,12 +64,12 @@ export class State {
         this.onUpdate.emit(this._data[key]);
         break;
       case 'category':
-        const indexCategory = this._data.filters[key].findIndex((el: any) => el.id === value.id);
+        const indexCategory = this._data.filters[key].findIndex((el: any) => el.id === value);
         this._data.filters[key].splice(indexCategory, 1);
         this.onUpdate.emit(this._data.filters[key]);
         break;
       case 'brand':
-        const indexBrand = this._data.filters[key].findIndex((el: any) => el.id === value.id);
+        const indexBrand = this._data.filters[key].findIndex((el: any) => el.id === value);
         this._data.filters[key].splice(indexBrand, 1);
         this.onUpdate.emit(this._data.filters[key]);
         break;

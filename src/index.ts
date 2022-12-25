@@ -5,8 +5,8 @@ import { State } from './js/common/state';
 const state = new State({
   cartData: [],
   filters: {
-    category: {},
-    brand: {},
+    category: [],
+    brand: [],
     price: { min: 0, max: 0 },
     stock: { min: 0, max: 0 },
   },

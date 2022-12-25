@@ -98,4 +98,12 @@ export class CategoryInput extends Control {
       inputTrack.node.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #ff2253 ${percent1}% , #ff2253 ${percent2}%, #dadae5 ${percent2}%)`;
     }
   }
+
+  setValue(value: any, state: State, type: string) {
+    state.setData(value, type === 'price' ? 'price' : 'stock');
+  }
+
+  deleteValue(value: any, state: State, type: string) {
+    state.deleteData(value, type === 'category' ? 'price' : 'stock');
+  }
 }
