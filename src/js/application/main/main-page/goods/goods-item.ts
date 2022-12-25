@@ -1,10 +1,10 @@
-import { CartData, State } from '../../../../common/state';
+import { CartDataItem, State } from '../../../../common/state';
 import Control from '../../../../common/control';
 import { Product } from '../../../../data/data';
 
 export class GoodsItem extends Control {
   onProductPage!: (id: number) => void;
-  product: CartData;
+  product: CartDataItem;
 
   constructor(parendNode: HTMLElement, product: Product, state: State) {
     super(parendNode, 'li', 'goods_product', '');
@@ -47,12 +47,21 @@ export class GoodsItem extends Control {
     detailsButton.node.onclick = () => this.onProductPage(this.product.id);
   }
 
+<<<<<<< HEAD
   addToCart(productInfo: CartData, state: State): void {
     state.setData(productInfo, 'cartData');
     console.log(state);
   }
   removeFromCart(productInfo: CartData, state: State): void {
     state.deleteData(productInfo, 'cartData');
+=======
+  addToCart(productInfo: CartDataItem, state: State): void {
+    state.setData(productInfo);
+    console.log(state);
+  }
+  removeFromCart(productInfo: CartDataItem, state: State): void {
+    state.deleteData(productInfo);
+>>>>>>> 8d93e1f (feat: add cart state saving)
     console.log(state);
   }
 }
