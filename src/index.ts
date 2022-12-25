@@ -16,5 +16,5 @@ const state = new State({
 const app = new App(document.body, state);
 
 window.onbeforeunload = () => {
-  new CartData(state.getData()).save();
+  new CartData(state.getData('cartData')).save();
 };

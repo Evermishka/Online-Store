@@ -1,6 +1,6 @@
 import Signal from './signal';
 
-export type CartData = {
+export type CartDataItem = {
   id: number;
   price: number;
   amount: number;
@@ -14,7 +14,7 @@ export type FilterData = {
 };
 
 export interface StateData {
-  cartData: CartData[];
+  cartData: CartDataItem[];
   filters: FilterData;
 }
 
