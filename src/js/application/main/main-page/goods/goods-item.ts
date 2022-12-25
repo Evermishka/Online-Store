@@ -20,7 +20,9 @@ export class GoodsItem extends Control {
     image.node.width = 200;
     new Control(this.node, 'p', 'goods_product_rate', `Rating: ${product.rating.toString()}`);
     new Control(this.node, 'p', 'goods_product_price', `Price: €${product.price.toString()}.00`);
-    const cartButtonText = state.getData().find((el) => el.id === product.id) ? 'Remove from cart' : 'Add to cart';
+    const cartButtonText = state.getData('cartData').find((el: CartData) => el.id === product.id)
+      ? 'Remove from cart'
+      : 'Add to cart';
     const cartButton: { node: HTMLButtonElement } = new Control(
       this.node,
       'button',
@@ -46,11 +48,11 @@ export class GoodsItem extends Control {
   }
 
   addToCart(productInfo: CartData, state: State): void {
-    state.setData(productInfo);
+    state.setData(productInfo, 'cartData');
     console.log(state);
   }
   removeFromCart(productInfo: CartData, state: State): void {
-    state.deleteData(productInfo);
+    state.deleteData(productInfo, 'cartData');
     console.log(state);
   }
 }
