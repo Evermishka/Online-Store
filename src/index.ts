@@ -1,9 +1,11 @@
 import './styles/style.scss';
 import { App } from './js/application/app';
 import { State } from './js/common/state';
+import { CartData } from './js/common/cart-data';
+
 
 const state = new State({
-  cartData: [],
+  cartData: CartData.getData(),
   filters: {
     category: [],
     brand: [],
@@ -12,3 +14,7 @@ const state = new State({
   },
 });
 const app = new App(document.body, state);
+
+window.onbeforeunload = () => {
+  new CartData(state.getData('cartData')).save();
+};
