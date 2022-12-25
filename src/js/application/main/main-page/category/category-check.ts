@@ -1,8 +1,9 @@
 import Control from '../../../../common/control';
+import { State } from '../../../../common/state';
 import { products, Product } from '../../../../data/data';
 
 export class CategoryCheckbox extends Control {
-  constructor(parentNode: HTMLElement, type: string) {
+  constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_checkbox', '');
 
     const categoryCheckboxTitle = new Control(this.node, 'h3', 'category_checkbox_title', '');
@@ -13,10 +14,9 @@ export class CategoryCheckbox extends Control {
     }
     const categoryCheckboxList = new Control(this.node, 'ul', 'category_checkbox_list', '');
 
-    // TODO Type this object
-    const productsValue: any = {};
+    const productsValue: { [key: string]: number } = {};
 
-    const categories = products.forEach((it: Product, i: number) => {
+    const categories = products.forEach((it: Product) => {
       if (type === 'category') {
         if (productsValue[it.category] === undefined) {
           productsValue[it.category] = 1;
@@ -36,7 +36,7 @@ export class CategoryCheckbox extends Control {
       const categoryItem = new Control(categoryCheckboxList.node, 'li', 'category_item', ``);
       const categoryItemBlock = new Control(categoryItem.node, 'div', 'category_item_block', '');
       const categoryLabel = new Control(categoryItemBlock.node, 'label', 'category_item_label', '');
-      const categoryRadio: any = new Control(categoryLabel.node, 'input', 'category_item_radio');
+      const categoryRadio = new Control<HTMLInputElement>(categoryLabel.node, 'input', 'category_item_radio');
       categoryRadio.node.type = 'checkbox';
       const customCheckbox = new Control(categoryLabel.node, 'span', 'category_custom_check');
       const categoryItemName = new Control(categoryLabel.node, 'p', 'category_item_text', `${key}`);

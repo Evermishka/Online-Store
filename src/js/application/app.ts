@@ -1,11 +1,11 @@
-import CartState from '../common/cart-state';
+import { State } from '../common/state';
 import Control from '../common/control';
 import { Footer } from './footer/footer';
 import { Header } from './header/header';
 import { Main } from './main/main';
 
 export class App extends Control {
-  constructor(parendNode: HTMLElement, state: CartState) {
+  constructor(parendNode: HTMLElement, state: State) {
     super(parendNode, 'div', 'wrapper');
     const header = new Header(this.node, state);
     const main = new Control(this.node, 'main', 'main');
@@ -14,7 +14,7 @@ export class App extends Control {
     this.createApp(header, main, 'main-page', state);
   }
 
-  createApp(header: Header, main: { node: HTMLElement }, screen: string, state: CartState, id?: number) {
+  createApp(header: Header, main: { node: HTMLElement }, screen: string, state: State, id?: number) {
     const mainInner = new Main(main.node, screen, state, id);
     mainInner.onProductPage = (id: number) => {
       mainInner.destroy();

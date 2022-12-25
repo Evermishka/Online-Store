@@ -1,12 +1,12 @@
 import Signal from './signal';
 
 export interface CartData {
-  id: number,
-  price: number,
-  amount: number
+  id: number;
+  price: number;
+  amount: number;
 }
 
-export default class CartState {
+export class State {
   private _data: CartData[];
   public onUpdate: Signal<CartData[]> = new Signal();
   constructor(initialState: CartData[]) {
@@ -19,7 +19,7 @@ export default class CartState {
   }
 
   deleteData(value: CartData) {
-    const index = this._data.findIndex(el => el.id === value.id);
+    const index = this._data.findIndex((el) => el.id === value.id);
     this._data.splice(index, 1);
     this.onUpdate.emit(this._data);
   }
