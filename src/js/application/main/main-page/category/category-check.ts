@@ -57,12 +57,12 @@ export class CategoryCheckbox extends Control {
   }
 
   addGoods(product: string, state: State, type: string) {
-    state.setData(product, type === 'category' ? 'category' : 'brand');
+    state.setData(product, type);
     console.log(state);
   }
 
   removeGoods(product: string, state: State, type: string) {
-    state.deleteData(product, type === 'category' ? 'category' : 'brand');
+    state.deleteData(product, type);
     console.log(state);
   }
 }

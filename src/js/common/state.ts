@@ -64,12 +64,12 @@ export class State {
         this.onUpdate.emit(this._data[key]);
         break;
       case 'category':
-        const indexCategory = this._data.filters[key].findIndex((el: any) => el.id === value);
+        const indexCategory = this._data.filters[key].findIndex((el: any) => el === value);
         this._data.filters[key].splice(indexCategory, 1);
         this.onUpdate.emit(this._data.filters[key]);
         break;
       case 'brand':
-        const indexBrand = this._data.filters[key].findIndex((el: any) => el.id === value);
+        const indexBrand = this._data.filters[key].findIndex((el: any) => el === value);
         this._data.filters[key].splice(indexBrand, 1);
         this.onUpdate.emit(this._data.filters[key]);
         break;
