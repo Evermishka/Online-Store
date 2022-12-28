@@ -11,6 +11,7 @@ const state = new State({
     brand: [],
     price: { min: 0, max: 0 },
     stock: { min: 0, max: 0 },
+    sortData: [],
   },
 });
 const app = new App(document.body, state);

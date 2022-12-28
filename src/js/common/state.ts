@@ -1,3 +1,4 @@
+import { Product } from '../data/data';
 import Signal from './signal';
 
 export type CartDataItem = {
@@ -11,6 +12,7 @@ export type FilterData = {
   brand: Array<string>;
   price: { min: number; max: number };
   stock: { min: number; max: number };
+  sortData: Array<Product>;
 };
 
 export interface StateData {

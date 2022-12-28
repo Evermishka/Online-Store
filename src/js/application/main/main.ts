@@ -1,6 +1,6 @@
 import Control from '../../common/control';
 import { Category } from './main-page/category/category';
-import { products } from '../../data/data';
+import { Product, products } from '../../data/data';
 import { Goods } from './main-page/goods/goods';
 import { ProductPage } from './product-page/product-page';
 import { CartPage } from './cart-page/cart-page';
@@ -13,9 +13,7 @@ export class Main extends Control {
     switch (screen) {
       case 'main-page':
         const category = new Category(this.node, products, state);
-        const goods = new Goods(this.node, products, state);
-
-        goods.onProductPage = (id: number) => this.onProductPage(id);
+        this.createNewGoods(products, state);
         break;
       case 'product-page':
         const productPage = new ProductPage(this.node, id);
@@ -27,5 +25,14 @@ export class Main extends Control {
       default:
         return;
     }
+  }
+
+  private createNewGoods(products: Array<Product>, state: State, sortArr?: Array<Product>) {
+    const goods = new Goods(this.node, sortArr || products, state);
+    goods.onProductPage = (id: number) => this.onProductPage(id);
+    goods.newFilters = (sortArr: Array<Product>) => {
+      goods.destroy();
+      this.createNewGoods(products, state, sortArr);
+    };
   }
 }
