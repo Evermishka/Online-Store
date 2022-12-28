@@ -7,7 +7,6 @@ class Signal<ListenerType> {
 
   add(listener: (params: ListenerType) => void) {
     this.listeners.push(listener);
-    console.log(this.listeners);
   }
 
   remove(listener: (params: ListenerType) => void) {

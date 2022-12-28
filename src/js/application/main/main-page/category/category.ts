@@ -36,7 +36,28 @@ export class Category extends Control {
       }
     }
 
-    state.setData(sortArr, 'sortGoods');
+    const filterPriceAndStock = this.filterPrice(this.filterStock(sortArr, state), state);
+
+    console.log(filterPriceAndStock);
+    state.setData(filterPriceAndStock, 'sortGoods');
+  }
+
+  private filterPrice(arr: Array<Product>, state: State) {
+    const value = {
+      min: state.getData('price').min,
+      max: state.getData('price').max,
+    };
+
+    return arr.filter((el) => el.price >= value.min && el.price <= value.max);
+  }
+
+  private filterStock(arr: Array<Product>, state: State) {
+    const value = {
+      min: state.getData('stock').min,
+      max: state.getData('stock').max,
+    };
+
+    return arr.filter((el) => el.stock >= value.min && el.stock <= value.max);
   }
 
   private filterCategory(arr: Array<Product>, categories: Array<string>) {

@@ -68,29 +68,61 @@ export class CategoryInput extends Control {
     inputSecond.node.oninput = () => inputTwo();
 
     const minGap = 0;
-    function inputOne() {
+    const inputOne = () => {
       if (parseInt(inputSecond.node.value) - parseInt(inputFirst.node.value) <= minGap) {
         inputFirst.node.value = String(parseInt(inputSecond.node.value) - minGap);
       }
       if (type === 'price') {
         minInputValue.node.textContent = `from €${inputFirst.node.value}`;
+        this.setValue(
+          {
+            min: inputFirst.node.value,
+            max: inputSecond.node.value,
+          },
+          state,
+          type
+        );
       } else if (type === 'stock') {
+        this.setValue(
+          {
+            min: inputFirst.node.value,
+            max: inputSecond.node.value,
+          },
+          state,
+          type
+        );
         minInputValue.node.textContent = inputFirst.node.value;
       }
 
       fillColor();
-    }
-    function inputTwo() {
+    };
+    const inputTwo = () => {
       if (parseInt(inputSecond.node.value) - parseInt(inputFirst.node.value) <= minGap) {
         inputSecond.node.value = String(parseInt(inputFirst.node.value) + minGap);
       }
       if (type === 'price') {
         maxInputValue.node.textContent = `to €${inputSecond.node.value}`;
+        this.setValue(
+          {
+            min: inputFirst.node.value,
+            max: inputSecond.node.value,
+          },
+          state,
+          type
+        );
       } else if (type === 'stock') {
+        this.setValue(
+          {
+            min: inputFirst.node.value,
+            max: inputSecond.node.value,
+          },
+          state,
+          type
+        );
         maxInputValue.node.textContent = inputSecond.node.value;
       }
       fillColor();
-    }
+    };
     function fillColor() {
       let percent1 = (+inputFirst.node.value / +inputFirst.node.max) * 100;
       let percent2 = (+inputSecond.node.value / +inputSecond.node.max) * 100;
@@ -99,11 +131,23 @@ export class CategoryInput extends Control {
     }
   }
 
-  setValue(value: any, state: State, type: string) {
-    state.setData(value, type === 'price' ? 'price' : 'stock');
+  private setValue(value: any, state: State, type: string) {
+    state.setData(
+      {
+        min: value.min,
+        max: value.max,
+      },
+      type
+    );
   }
 
-  deleteValue(value: any, state: State, type: string) {
-    state.deleteData(value, type === 'category' ? 'price' : 'stock');
+  private deleteValue(value: any, state: State, type: string) {
+    state.deleteData(
+      {
+        min: 0,
+        max: 0,
+      },
+      type
+    );
   }
 }

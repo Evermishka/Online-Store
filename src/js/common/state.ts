@@ -13,6 +13,7 @@ export type FilterData = {
   price: { min: number; max: number };
   stock: { min: number; max: number };
   sortGoods: Array<Product>;
+  sortCount: { [key: string]: number };
 };
 
 export interface StateData {
@@ -39,9 +40,27 @@ export class State {
       case 'brand':
         this._data.filters[key].push(value);
         break;
+      case 'price':
+        this._data.filters.price.min = value.min;
+        this._data.filters.price.max = value.max;
+        this.onUpdate.emit('sortGoods');
+        break;
+      case 'stock':
+        this._data.filters.stock.min = value.min;
+        this._data.filters.stock.max = value.max;
+        this.onUpdate.emit('sortGoods');
+        break;
       case 'sortGoods':
         this._data.filters[key] = value;
         this.onUpdate.emit('sortGoods');
+        break;
+      case 'sortCount':
+        if (this._data.filters[key][value] === undefined) {
+          this._data.filters[key][value] = 1;
+        } else {
+          this._data.filters[key][value] += 1;
+        }
+        this.onUpdate.emit('sortCount');
         break;
       default:
         break;
@@ -63,6 +82,14 @@ export class State {
         const indexBrand = this._data.filters[key].findIndex((el: any) => el === value);
         this._data.filters[key].splice(indexBrand, 1);
         break;
+      case 'price':
+        this._data.filters.price.min = 0;
+        this._data.filters.price.max = 0;
+        break;
+      case 'stock':
+        this._data.filters.stock.min = 0;
+        this._data.filters.stock.max = 0;
+        break;
       case 'sortGoods':
         this._data.filters[key] = value;
         break;
@@ -79,7 +106,13 @@ export class State {
         return this._data.filters[key];
       case 'brand':
         return this._data.filters[key];
+      case 'price':
+        return this._data.filters.price;
+      case 'stock':
+        return this._data.filters.stock;
       case 'sortGoods':
+        return this._data.filters[key];
+      case 'sortCount':
         return this._data.filters[key];
       default:
         break;
