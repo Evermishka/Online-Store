@@ -3,6 +3,7 @@ import { State } from '../../../../common/state';
 import { products, Product } from '../../../../data/data';
 
 export class CategoryCheckbox extends Control {
+  filtration!: () => void;
   constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_checkbox', '');
 
@@ -58,11 +59,11 @@ export class CategoryCheckbox extends Control {
 
   addGoods(product: string, state: State, type: string) {
     state.setData(product, type);
-    console.log(state);
+    this.filtration();
   }
 
   removeGoods(product: string, state: State, type: string) {
     state.deleteData(product, type);
-    console.log(state);
+    this.filtration();
   }
 }

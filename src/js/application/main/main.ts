@@ -8,12 +8,19 @@ import { State } from '../../common/state';
 
 export class Main extends Control {
   onProductPage!: (id: number) => void;
+  goods!: Goods;
   constructor(parendNode: HTMLElement, screen: string, state: State, id?: number) {
     super(parendNode, 'div', 'main_inner');
     switch (screen) {
       case 'main-page':
-        const category = new Category(this.node, products, state);
-        this.createNewGoods(products, state);
+        const category = new Category(this.node, state, products);
+        this.createGoods(state, products);
+        state.onUpdate.add((type) => {
+          if (type === 'sortGoods') {
+            this.goods.destroy();
+            this.createGoods(state, state.getData('sortGoods'));
+          }
+        });
         break;
       case 'product-page':
         const productPage = new ProductPage(this.node, id);
@@ -27,12 +34,7 @@ export class Main extends Control {
     }
   }
 
-  private createNewGoods(products: Array<Product>, state: State, sortArr?: Array<Product>) {
-    const goods = new Goods(this.node, sortArr || products, state);
-    goods.onProductPage = (id: number) => this.onProductPage(id);
-    goods.newFilters = (sortArr: Array<Product>) => {
-      goods.destroy();
-      this.createNewGoods(products, state, sortArr);
-    };
+  createGoods(state: State, products: Array<Product>) {
+    this.goods = new Goods(this.node, products, state);
   }
 }
