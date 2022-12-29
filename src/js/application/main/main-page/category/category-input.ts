@@ -3,6 +3,7 @@ import { State } from '../../../../common/state';
 import { Product, products } from '../../../../data/data';
 
 export class CategoryInput extends Control {
+  filtration!: () => void;
   constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_range_inner');
 
@@ -76,8 +77,8 @@ export class CategoryInput extends Control {
         minInputValue.node.textContent = `from €${inputFirst.node.value}`;
         this.setValue(
           {
-            min: inputFirst.node.value,
-            max: inputSecond.node.value,
+            min: +inputFirst.node.value,
+            max: +inputSecond.node.value,
           },
           state,
           type
@@ -85,8 +86,8 @@ export class CategoryInput extends Control {
       } else if (type === 'stock') {
         this.setValue(
           {
-            min: inputFirst.node.value,
-            max: inputSecond.node.value,
+            min: +inputFirst.node.value,
+            max: +inputSecond.node.value,
           },
           state,
           type
@@ -104,8 +105,8 @@ export class CategoryInput extends Control {
         maxInputValue.node.textContent = `to €${inputSecond.node.value}`;
         this.setValue(
           {
-            min: inputFirst.node.value,
-            max: inputSecond.node.value,
+            min: +inputFirst.node.value,
+            max: +inputSecond.node.value,
           },
           state,
           type
@@ -113,8 +114,8 @@ export class CategoryInput extends Control {
       } else if (type === 'stock') {
         this.setValue(
           {
-            min: inputFirst.node.value,
-            max: inputSecond.node.value,
+            min: +inputFirst.node.value,
+            max: +inputSecond.node.value,
           },
           state,
           type
@@ -131,7 +132,7 @@ export class CategoryInput extends Control {
     }
   }
 
-  private setValue(value: any, state: State, type: string) {
+  private setValue(value: { min: number; max: number }, state: State, type: string) {
     state.setData(
       {
         min: value.min,
@@ -139,6 +140,7 @@ export class CategoryInput extends Control {
       },
       type
     );
+    this.filtration();
   }
 
   private deleteValue(value: any, state: State, type: string) {

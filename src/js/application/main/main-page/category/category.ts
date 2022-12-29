@@ -17,7 +17,9 @@ export class Category extends Control {
     categoryPrice.filtration = () => this.filtration(state, products);
 
     const categoryInputPrice = new CategoryInput(categoryBlock.node, 'price', state);
+    categoryInputPrice.filtration = () => this.filtration(state, products);
     const categoryInputStock = new CategoryInput(categoryBlock.node, 'stock', state);
+    categoryInputStock.filtration = () => this.filtration(state, products);
   }
 
   private filtration(state: State, products: Array<Product>) {
@@ -38,7 +40,6 @@ export class Category extends Control {
 
     const filterPriceAndStock = this.filterPrice(this.filterStock(sortArr, state), state);
 
-    console.log(filterPriceAndStock);
     state.setData(filterPriceAndStock, 'sortGoods');
   }
 

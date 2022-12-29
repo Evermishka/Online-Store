@@ -8,8 +8,8 @@ const state = new State({
   filters: {
     category: [],
     brand: [],
-    price: { min: 0, max: 0 },
-    stock: { min: 0, max: 0 },
+    price: { min: 10, max: 1749 },
+    stock: { min: 2, max: 150 },
     sortGoods: [],
   },
 });
