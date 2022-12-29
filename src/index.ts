@@ -12,6 +12,11 @@ const state = new State({
     stock: { min: 2, max: 150 },
     sortGoods: [],
     sortCount: { category: {}, brand: {} },
+    sortOptions: {
+      isSort: false,
+      sortType: null,
+      sortValue: null,
+    },
   },
 });
 const app = new App(document.body, state);
