@@ -11,6 +11,7 @@ const state = new State({
     price: { min: 10, max: 1749 },
     stock: { min: 2, max: 150 },
     sortGoods: [],
+    sortCount: { category: {}, brand: {} },
   },
 });
 const app = new App(document.body, state);

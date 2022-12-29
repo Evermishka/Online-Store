@@ -13,7 +13,7 @@ export type FilterData = {
   price: { min: number; max: number };
   stock: { min: number; max: number };
   sortGoods: Array<Product>;
-  sortCount: { [key: string]: number };
+  sortCount: { category: { [key: string]: number }; brand: { [key: string]: number } };
 };
 
 export interface StateData {
@@ -55,11 +55,7 @@ export class State {
         this.onUpdate.emit('sortGoods');
         break;
       case 'sortCount':
-        if (this._data.filters[key][value] === undefined) {
-          this._data.filters[key][value] = 1;
-        } else {
-          this._data.filters[key][value] += 1;
-        }
+        this._data.filters[key] = value;
         this.onUpdate.emit('sortCount');
         break;
       default:
@@ -81,14 +77,6 @@ export class State {
       case 'brand':
         const indexBrand = this._data.filters[key].findIndex((el: any) => el === value);
         this._data.filters[key].splice(indexBrand, 1);
-        break;
-      case 'price':
-        this._data.filters.price.min = 0;
-        this._data.filters.price.max = 0;
-        break;
-      case 'stock':
-        this._data.filters.stock.min = 0;
-        this._data.filters.stock.max = 0;
         break;
       case 'sortGoods':
         this._data.filters[key] = value;

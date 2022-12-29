@@ -142,14 +142,4 @@ export class CategoryInput extends Control {
     );
     this.filtration();
   }
-
-  private deleteValue(value: any, state: State, type: string) {
-    state.deleteData(
-      {
-        min: 0,
-        max: 0,
-      },
-      type
-    );
-  }
 }

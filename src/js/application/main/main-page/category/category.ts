@@ -38,9 +38,38 @@ export class Category extends Control {
       }
     }
 
-    const filterPriceAndStock = this.filterPrice(this.filterStock(sortArr, state), state);
+    const filterPriceAndStock: Array<Product> = this.filterPrice(this.filterStock(sortArr, state), state);
+
+    const filterCounts: { category: { [key: string]: number }; brand: { [key: string]: number } } = this.filterCount(
+      products,
+      filterPriceAndStock,
+      state
+    );
 
     state.setData(filterPriceAndStock, 'sortGoods');
+    state.setData(filterCounts, 'sortCount');
+  }
+
+  private filterCount(productList: Array<Product>, sortProductList: Array<Product>, state: State) {
+    const result: { category: { [key: string]: number }; brand: { [key: string]: number } } = {
+      category: {},
+      brand: {},
+    };
+
+    productList.forEach((el: Product) => {
+      result.category[el.category] = 0;
+      result.brand[el.brand] = 0;
+      sortProductList.forEach((it: Product, i: number) => {
+        if (el.category === it.category) {
+          result.category[el.category] += 1;
+        }
+        if (el.brand === it.brand) {
+          result.brand[el.brand] += 1;
+        }
+      });
+    });
+
+    return result;
   }
 
   private filterPrice(arr: Array<Product>, state: State) {
