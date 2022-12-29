@@ -32,18 +32,29 @@ export class GoodsFilters extends Control {
         `${this.sortOptions[i]}`
       );
       inputSortItem.node.value = this.sortOptions[i];
-      inputSort.node.onchange = (e: Event) => this.sortByParam(e, state, products);
+      inputSort.node.onchange = (e: Event) => this.sortByParam(e, state);
     }
+
+
     const foundSort: { node: HTMLElement } = new Control(this.node, 'p', 'goods_filter_count', 'Found: 100');
-    const searchSort: { node: HTMLInputElement } = new Control(this.node, 'input', 'goods_filter_search');
+    foundSort.node.textContent = `Found: ${state.getData('sortGoods').length || products.length}`;
+    // TODO delete any type;
+    const searchSort: any = new Control(this.node, 'input', 'goods_filter_search');
+    state.onUpdate.add((type: string) => {
+      if(type === 'sortSearch') {
+        searchSort.node.value = state.getData('sortSearch')
+      }
+    })
     searchSort.node.placeholder = 'Search product';
+    searchSort.node.oninput = () => state.setData(searchSort.node.value, 'sortSearch')
     const btnSize = new Control(this.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-1');
     const btnSize1 = new Control(this.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-2');
   }
 
-  private sortByParam(event: Event, state: State, products: Array<Product>) {
+  private sortByParam(event: Event, state: State) {
+    // TODO delete any type;
     let target: any = event.target;
-    let targetValue = target.value;
+    let targetValue: string = target.value;
     const result: { isSort: boolean; sortType: null | string; sortValue: null | string } = {
       isSort: false,
       sortType: null,

@@ -64,10 +64,26 @@ export class Category extends Control {
       }
     }
 
+    if (state.getData('sortSearch')) {
+      this.sortBySearch(filterPriceAndStock, state.getData('sortSearch'));
+    }
+
     state.setData(filterPriceAndStock, 'sortGoods');
     state.setData(filterCounts, 'sortCount');
   }
 
+  private sortBySearch(sortProducts: Array<Product>, value: string) {
+    return sortProducts.filter((el: any) => {
+      for (let key in el) {
+        if (key !== 'id' && key !== 'thumbnail' && key !== 'images') {
+          let currentItem = String(el[key].matchAll(value));
+          if (currentItem) {
+            return el;
+          }
+        }
+      }
+    });
+  }
   // TODO delete any type;
   private sortByASC(sortProducts: Array<Product>, sortValue: string) {
     return sortProducts.sort((a: any, b: any) => a[sortValue] - b[sortValue]);

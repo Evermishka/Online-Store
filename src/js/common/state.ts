@@ -19,6 +19,7 @@ export type FilterData = {
     sortType: null | string;
     sortValue: null | string;
   };
+  sortSearch: string;
 };
 
 export interface StateData {
@@ -66,6 +67,9 @@ export class State {
       case 'sortOptions':
         this._data.filters[key] = value;
         this.onUpdate.emit('sortOptions');
+      case 'sortSearch':
+        this._data.filters[key] = value;
+      // this.onUpdate.emit('sortSearch');
       default:
         break;
     }
@@ -108,6 +112,8 @@ export class State {
       case 'sortCount':
         return this._data.filters[key];
       case 'sortOptions':
+        return this._data.filters[key];
+      case 'sortSearch':
         return this._data.filters[key];
       default:
         break;

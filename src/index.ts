@@ -17,6 +17,7 @@ const state = new State({
       sortType: null,
       sortValue: null,
     },
+    sortSeatch: '',
   },
 });
 const app = new App(document.body, state);
