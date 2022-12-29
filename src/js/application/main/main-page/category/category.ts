@@ -72,6 +72,10 @@ export class Category extends Control {
     return result;
   }
 
+  private sortByASC(arr: Array<Product>, typeSort: string, state: State) {}
+
+  private sortByDESC(arr: Array<Product>, state: State) {}
+
   private filterPrice(arr: Array<Product>, state: State) {
     const value: { min: number; max: number } = {
       min: state.getData('price').min,

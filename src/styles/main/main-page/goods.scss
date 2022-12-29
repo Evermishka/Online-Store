@@ -1,12 +1,19 @@
 .goods {
-  margin: 0;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   width: 100%;
-  border: 1px solid orange;
-  list-style: none;
+  &_filter {
+    display: flex;
+    justify-content: space-between;
+  }
+  &_list {
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    border: 1px solid orange;
+    list-style: none;
+  }
   &_product {
     display: flex;
     flex-direction: column;

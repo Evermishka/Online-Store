@@ -65,7 +65,6 @@ export class CategoryCheckbox extends Control {
         const getCounts: { category: { [key: string]: number }; brand: { [key: string]: number } } =
           state.getData('sortCount');
         let counter = 0;
-        console.log(getCounts);
         for (let key in productsValue) {
           if (this.currentType === 'category') {
             this.listOfCounterEl[counter].textContent = `${getCounts.category[key]}/${productsValue[key]}`;
