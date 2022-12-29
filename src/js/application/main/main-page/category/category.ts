@@ -23,8 +23,8 @@ export class Category extends Control {
   }
 
   private filtration(state: State, products: Array<Product>) {
-    const getCategories = state.getData('category');
-    const getBrands = state.getData('brand');
+    const getCategories: Array<string> = state.getData('category');
+    const getBrands: Array<string> = state.getData('brand');
     let sortArr: Array<Product>;
     if (getCategories.length && !getBrands.length) {
       sortArr = this.filterCategory(products, getCategories);
@@ -44,28 +44,28 @@ export class Category extends Control {
   }
 
   private filterPrice(arr: Array<Product>, state: State) {
-    const value = {
+    const value: { min: number; max: number } = {
       min: state.getData('price').min,
       max: state.getData('price').max,
     };
 
-    return arr.filter((el) => el.price >= value.min && el.price <= value.max);
+    return arr.filter((el: Product) => el.price >= value.min && el.price <= value.max);
   }
 
   private filterStock(arr: Array<Product>, state: State) {
-    const value = {
+    const value: { min: number; max: number } = {
       min: state.getData('stock').min,
       max: state.getData('stock').max,
     };
 
-    return arr.filter((el) => el.stock >= value.min && el.stock <= value.max);
+    return arr.filter((el: Product) => el.stock >= value.min && el.stock <= value.max);
   }
 
   private filterCategory(arr: Array<Product>, categories: Array<string>) {
-    return arr.filter((el) => categories.includes(el.category));
+    return arr.filter((el: Product) => categories.includes(el.category));
   }
 
   private filterBrand(arr: Array<Product>, brand: Array<string>) {
-    return arr.filter((el) => brand.includes(el.brand));
+    return arr.filter((el: Product) => brand.includes(el.brand));
   }
 }

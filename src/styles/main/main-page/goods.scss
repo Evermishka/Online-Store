@@ -2,20 +2,21 @@
   margin: 0;
   padding: 20px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 20px;
+  flex-wrap: wrap;
   width: 100%;
   border: 1px solid orange;
   list-style: none;
   &_product {
-    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: stretch;
     align-items: center;
-    max-width: 200px;
-    background-color: #393b39;
+    background-color: rgb(115, 115, 115);
+    max-height: 35rem;
+    max-width: 25rem;
+    width: 100%;
+    min-width: 15rem;
+    margin-bottom: 1rem;
   }
   &_product_title {
     text-align: center;
