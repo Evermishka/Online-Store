@@ -4,7 +4,6 @@ const IMAGE_WIDTH: number = 400;
 const CONTROL_WIDTH: number = 50;
 
 export class ProductImages extends Control {
-  public onMainPage!: () => void;
   constructor(parendNode: HTMLElement, images: Array<string>) {
     super(parendNode, 'div', 'product_images', '');
     const productImage: { node: HTMLImageElement } = new Control(this.node, 'img', 'product_image');
