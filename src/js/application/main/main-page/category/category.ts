@@ -54,9 +54,9 @@ export class Category extends Control {
       filterPriceAndStock
     );
 
-    const getSortOptions = state.getData('sortOptions');
+    const getSortOptions: { isSort: boolean; sortType: null | string; sortValue: never } = state.getData('sortOptions');
     if (getSortOptions.isSort) {
-      const currentSortArr = filterPriceAndStock ? filterPriceAndStock : products;
+      const currentSortArr: Array<Product> = filterPriceAndStock ? filterPriceAndStock : products;
       if (getSortOptions.sortType === 'ASC') {
         filterPriceAndStock = this.sortByASC(currentSortArr, getSortOptions.sortValue);
       } else if (getSortOptions.sortType === 'DESC') {
@@ -84,13 +84,13 @@ export class Category extends Control {
       }
     });
   }
-  // TODO delete any type;
-  private sortByASC(sortProducts: Array<Product>, sortValue: string) {
-    return sortProducts.sort((a: any, b: any) => a[sortValue] - b[sortValue]);
+
+  private sortByASC(sortProducts: Array<Product>, sortValue: Extract<keyof Product, number>) {
+    return sortProducts.sort((a: Product, b: Product) => a[sortValue] - b[sortValue]);
   }
 
-  private sortByDESC(sortProducts: Array<Product>, sortValue: string) {
-    return sortProducts.sort((a: any, b: any) => b[sortValue] - a[sortValue]);
+  private sortByDESC(sortProducts: Array<Product>, sortValue: Extract<keyof Product, number>) {
+    return sortProducts.sort((a: Product, b: Product) => b[sortValue] - a[sortValue]);
   }
 
   private filterCount(productList: Array<Product>, sortProductList: Array<Product>) {
