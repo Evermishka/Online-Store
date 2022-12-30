@@ -7,9 +7,10 @@ import { CartPage } from './cart-page/cart-page';
 import { State } from '../../common/state';
 
 export class Main extends Control {
-  onProductPage!: (id: number) => void;
   goods!: Goods;
-  onMainPage!: () => void;
+  public onProductPage!: (id: number) => void;
+  public onCartPage!: () => void;
+  public onMainPage!: () => void;
   constructor(parendNode: HTMLElement, screen: string, state: State, id?: number) {
     super(parendNode, 'div', 'main_inner');
     switch (screen) {
@@ -24,7 +25,8 @@ export class Main extends Control {
         });
         break;
       case 'product-page':
-        const productPage = new ProductPage(this.node, id);
+        const productPage = new ProductPage(this.node, id, state);
+        productPage.onCartPage = () => this.onCartPage();
         productPage.onMainPage = () => this.onMainPage();
         break;
       case 'cart-page':
