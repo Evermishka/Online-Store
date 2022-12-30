@@ -22,19 +22,25 @@ export class Header extends Control {
       .getData('cartData')
       .reduce((accum: number, current: CartDataItem) => accum + current.price, 0);
     const headerSum = new Control(headerSumBlock.node, 'span', 'header_sum', `€${headerSumNumber}.00`);
+
+    let headerCartItemsNumber: number = state
+      .getData('cartData')
+      .reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
+    const headerCart = new Control(headerInner.node, 'div', 'header_cart', '');
+    const headerCartItems = new Control(headerCart.node, 'p', 'header_cart-items', headerCartItemsNumber.toString());
+    headerCart.node.onclick = () => this.onCartPage();
+
     state.onUpdate.add((type) => {
       if (type === 'cartData') {
-        let newAmount = state
+        let newPrice = state
           .getData('cartData')
           .reduce((accum: number, current: CartDataItem) => accum + current.price, 0);
-
-        headerSum.node.textContent = `€${newAmount}.00`;
+        let newAmount = state
+          .getData('cartData')
+          .reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
+        headerSum.node.textContent = `€${newPrice}.00`;
+        headerCartItems.node.textContent = newAmount.toString();
       }
     });
-
-    const headerCart: { node: HTMLImageElement } = new Control(headerInner.node, 'img', 'header_cart', '');
-    headerCart.node.src = cartMenu;
-    headerCart.node.alt = 'cart';
-    headerCart.node.onclick = () => this.onCartPage();
   }
 }
