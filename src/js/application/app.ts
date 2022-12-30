@@ -20,6 +20,14 @@ export class App extends Control {
       mainInner.destroy();
       this.createApp(header, main, 'product-page', state, id);
     };
+    mainInner.onCartPage = () => {
+      mainInner.destroy();
+      this.createApp(header, main, 'cart-page', state);
+    };
+    mainInner.onMainPage = () => {
+      mainInner.destroy();
+      this.createApp(header, main, 'main-page', state);
+    };
     header.onMainPage = () => {
       mainInner.destroy();
       this.createApp(header, main, 'main-page', state);
