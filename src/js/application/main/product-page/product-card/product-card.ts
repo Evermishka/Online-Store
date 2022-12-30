@@ -12,9 +12,10 @@ export class ProductCard extends Control {
     super(parendNode, 'div', 'product', '');
     new Control(this.node, 'h1', 'product_title', product.title);
     const productWrapper = new Control(this.node, 'div', 'product_wrapper');
-    new ProductImages(productWrapper.node, product.images);
-    new ProductDetails(productWrapper.node, product);
-    const productPurchase = new ProductPurchase(this.node, product, state);
+    const productCardWrapper = new Control(productWrapper.node, 'div', 'product_card-wrapper');
+    new ProductImages(productCardWrapper.node, product.images);
+    new ProductDetails(productCardWrapper.node, product);
+    const productPurchase = new ProductPurchase(productWrapper.node, product, state);
     productPurchase.onCartPage = () => this.onCartPage();
   }
 }
