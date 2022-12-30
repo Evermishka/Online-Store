@@ -18,8 +18,8 @@ export class GoodsItem extends Control {
     const image: { node: HTMLImageElement } = new Control(imageWrapper.node, 'img', 'goods_product_image', '');
     image.node.src = product.thumbnail;
     image.node.width = 200;
-    new Control(this.node, 'p', 'goods_product_rate', `Rating: ${product.rating.toString()}`);
-    new Control(this.node, 'p', 'goods_product_price', `Price: €${product.price.toString()}.00`);
+    new Control(this.node, 'p', 'goods_product_rate', `Rating: ${product.rating}`);
+    new Control(this.node, 'p', 'goods_product_price', `Price: €${product.price}.00`);
     const cartButtonText = state.getData('cartData').find((el: CartDataItem) => el.id === product.id)
       ? 'Remove from cart'
       : 'Add to cart';

@@ -3,9 +3,12 @@ import { State } from '../../../../common/state';
 import { products, Product } from '../../../../data/data';
 
 export class CategoryCheckbox extends Control {
+  filtration!: () => void;
+  listOfCounterEl: Array<HTMLElement> = [];
+  currentType!: string;
   constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_checkbox', '');
-
+    this.currentType = type;
     const categoryCheckboxTitle = new Control(this.node, 'h3', 'category_checkbox_title', '');
     if (type === 'category') {
       categoryCheckboxTitle.node.textContent = 'Category';
@@ -53,16 +56,34 @@ export class CategoryCheckbox extends Control {
         'category_item_count',
         `${productsValue[key]}/${productsValue[key]}`
       );
+
+      this.listOfCounterEl.push(categoryItemCount.node);
     }
+
+    state.onUpdate.add((type: string) => {
+      if (type === 'sortCount') {
+        const getCounts: { category: { [key: string]: number }; brand: { [key: string]: number } } =
+          state.getData('sortCount');
+        let counter = 0;
+        for (let key in productsValue) {
+          if (this.currentType === 'category') {
+            this.listOfCounterEl[counter].textContent = `${getCounts.category[key]}/${productsValue[key]}`;
+          } else if (this.currentType === 'brand') {
+            this.listOfCounterEl[counter].textContent = `${getCounts.brand[key]}/${productsValue[key]}`;
+          }
+          counter++;
+        }
+      }
+    });
   }
 
   addGoods(product: string, state: State, type: string) {
-    state.setData(product, type === 'category' ? 'category' : 'brand');
-    console.log(state);
+    state.setData(product, type);
+    this.filtration();
   }
 
   removeGoods(product: string, state: State, type: string) {
-    state.deleteData(product, type === 'category' ? 'category' : 'brand');
-    console.log(state);
+    state.deleteData(product, type);
+    this.filtration();
   }
 }
