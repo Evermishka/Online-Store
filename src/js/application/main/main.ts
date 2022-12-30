@@ -38,5 +38,6 @@ export class Main extends Control {
 
   createGoods(state: State, products: Array<Product>) {
     this.goods = new Goods(this.node, products, state);
+    this.goods.onProductPage = (id: number) => this.onProductPage(id);
   }
 }
