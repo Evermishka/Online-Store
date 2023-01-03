@@ -20,7 +20,7 @@ export class Header extends Control {
 
     let headerSumNumber: number = state
       .getData('cartData')
-      .reduce((accum: number, current: CartDataItem) => accum + current.price, 0);
+      .reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
     const headerSum = new Control(headerSumBlock.node, 'span', 'header_sum', `€${headerSumNumber}.00`);
 
     let headerCartItemsNumber: number = state
@@ -34,7 +34,7 @@ export class Header extends Control {
       if (type === 'cartData') {
         let newPrice = state
           .getData('cartData')
-          .reduce((accum: number, current: CartDataItem) => accum + current.price, 0);
+          .reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
         let newAmount = state
           .getData('cartData')
           .reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);

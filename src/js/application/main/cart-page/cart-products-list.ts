@@ -23,7 +23,8 @@ export class CartProductList extends Control {
         new Control(productDetails.node, 'p', 'products-list_description', productData.description);
         const productInfo = new Control(product.node, 'div', 'products-list_info');
         new Control(productInfo.node, 'p', 'products-list_stock', `Stock: ${productData.stock}`);
-        new CartProductListControls(productInfo.node, state, productData);
+        const cartProductListControls = new CartProductListControls(productInfo.node, state, productData);
+        cartProductListControls.deleteCartItem = () => product.destroy();
         new Control(productInfo.node, 'p', 'products-list_price', `€${productData.price}.00`);
       }
     });
