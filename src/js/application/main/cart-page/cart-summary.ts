@@ -4,59 +4,85 @@ import { promoCodes } from '../../../data/promo-codes';
 import { PromoCodes } from './cart-promo-codes';
 
 export class CartSummary extends Control {
-  private totalPrice: number;
+  summaryProductsAmount: Control<HTMLElement>;
+  summaryTotalPrice!: Control<HTMLElement>;
+  summaryTotalPriceNew!: Control<HTMLElement>;
+
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'div', 'summary');
     new Control(this.node, 'p', 'summary_title', 'Summary');
     let productsAmount = state
       .getData('cartData')
       .reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
-    const summaryProductsAmount = new Control(
+    this.summaryProductsAmount = new Control(
       this.node,
       'p',
       'summary_amount',
       `Products: ${productsAmount.toString()}`
     );
-    this.totalPrice = state
-      .getData('cartData')
-      .reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
-    const summaryTotalPrice = new Control(this.node, 'p', 'summary_price', `Total: €${this.totalPrice}.00`);
-    const summaryTotalPriceNew = new Control(this.node, 'p', 'summary_price-new', '');
-    summaryTotalPriceNew.node.style.display = 'none';
-    state.onUpdate.add((type) => {
-      if (type === 'cartData') {
-        let newPrice = state
-          .getData('cartData')
-          .reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
-        let newAmount = state
-          .getData('cartData')
-          .reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
-        summaryProductsAmount.node.textContent = `Products: ${newAmount.toString()}`;
-        summaryTotalPrice.node.textContent = `Total: €${newPrice}.00`;
-      }
-    });
+    this.renderTotalSum(state);
     const promo = new PromoCodes(this.node, state);
-    promo.changeTotalSum = () => this.changeTotalSum(summaryTotalPrice.node, summaryTotalPriceNew.node, state);
+    promo.changeTotalSum = () => this.renderTotalSum(state);
 
     const buyButton = new Control(this.node, 'button', 'cart_buy-button', 'Buy now');
     // TODO Add modal
+
+    state.onUpdate.add((type) => {
+      if (type === 'cartData' || type === 'promoData') {
+        let newAmount = this.calculateAmount(state);
+        let newPrice = this.calculatePrice(state);
+        const appliedCodesData: Array<string> = state.getData('promoData');
+        let newDiscountPrice = this.calculateDiscountPrice(appliedCodesData, newPrice);
+        this.summaryProductsAmount.node.textContent = `Products: ${newAmount.toString()}`;
+        this.summaryTotalPrice.node.textContent = `Total: €${newPrice}.00`;
+        if (newDiscountPrice > 0) {
+          this.summaryTotalPriceNew.node.textContent = `Total: €${newDiscountPrice}.00`
+        } else {
+          this.summaryTotalPriceNew.node.textContent = '';
+        };
+      }
+    });
   }
 
-  private changeTotalSum(total: HTMLElement, totalNew: HTMLElement, state: State): void {
+  private calculateAmount(state: State): number {
+    return state.getData('cartData').reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
+  }
+
+  private calculatePrice(state: State): number {
+    return state
+      .getData('cartData')
+      .reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
+  }
+
+  private calculateDiscountPrice(data: string[], price: number): number {
+    const totalDiscount = data.reduce((acum, el) => {
+      const promoCode = promoCodes.find((elem) => elem.name === el);
+      if (promoCode) return acum + promoCode.discount;
+      return 0;
+    }, 0);
+    return Math.round(price - (price / 100) * totalDiscount);
+  }
+
+  private renderTotalSum(state: State): void {
+    if (!this.summaryTotalPrice) {
+      const totalPrice = this.calculatePrice(state);
+      this.summaryTotalPrice = new Control(this.node, 'p', 'summary_price', `Total: €${totalPrice}.00`);
+      this.summaryTotalPriceNew = new Control(this.node, 'p', 'summary_price-new', '');
+    }
+    this.renderDiscountSum(state, this.calculatePrice(state));
+  }
+
+  private renderDiscountSum(state: State, price: number): void {
     const appliedCodesData: Array<string> = state.getData('promoData');
     if (appliedCodesData.length > 0) {
-      const totalDiscount = appliedCodesData.reduce((acum, el) => {
-        const promoCode = promoCodes.find((elem) => elem.name === el);
-        if (promoCode) return acum + promoCode.discount;
-        return 0;
-      }, 0);
-      const totalPriceNew = this.totalPrice - (this.totalPrice / 100) * totalDiscount;
-      total.style.textDecoration = 'line-through';
-      totalNew.style.display = 'block';
-      totalNew.textContent = `Total: €${totalPriceNew}`;
+      const totalPriceNew = this.calculateDiscountPrice(appliedCodesData, price);
+      this.summaryTotalPrice.node.style.textDecoration = 'line-through';
+      this.summaryTotalPriceNew.node.textContent = `Total: €${totalPriceNew}.00`;
+      this.summaryTotalPriceNew.node.style.display = 'block';
     } else {
-      total.style.textDecoration = 'none';
-      totalNew.style.display = 'none';
+      this.summaryTotalPrice.node.style.textDecoration = 'none';
+      this.summaryTotalPriceNew.node.style.display = 'none';
+      this.summaryTotalPriceNew.node.textContent = '';
     }
   }
 }

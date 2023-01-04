@@ -25,6 +25,7 @@ export type FilterData = {
 export interface StateData {
   cartData: CartDataItem[];
   filters: FilterData;
+  promoData: string[];
 }
 
 export class State {
