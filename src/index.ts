@@ -19,6 +19,7 @@ const state = new State({
     },
     sortSeatch: '',
   },
+  promoData: []
 });
 const app = new App(document.body, state);
 

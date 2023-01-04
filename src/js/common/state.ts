@@ -40,6 +40,10 @@ export class State {
         this._data[key].push(value);
         this.onUpdate.emit(key);
         break;
+      case 'promoData':
+        this._data[key].push(value);
+        this.onUpdate.emit(key);
+        break;
       case 'category':
         this._data.filters[key].push(value);
         break;
@@ -78,8 +82,13 @@ export class State {
   deleteData(value: any, key: string) {
     switch (key) {
       case 'cartData':
-        const indexCart = this._data[key].findIndex((el: any) => el.id === value.id);
+        const indexCart = this._data[key].findIndex((el: CartDataItem) => el.id === value.id);
         this._data[key].splice(indexCart, 1);
+        this.onUpdate.emit(key);
+        break;
+      case 'promoData':
+        const indexPromo = this._data[key].findIndex((el: string) => el === value);
+        this._data[key].splice(indexPromo, 1);
         this.onUpdate.emit(key);
         break;
       case 'category':
@@ -98,6 +107,8 @@ export class State {
   getData(key: string) {
     switch (key) {
       case 'cartData':
+        return this._data[key];
+      case 'promoData':
         return this._data[key];
       case 'category':
         return this._data.filters[key];
