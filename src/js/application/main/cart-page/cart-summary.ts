@@ -1,6 +1,7 @@
 import Control from '../../../common/control';
 import { CartDataItem, State } from '../../../common/state';
 import { promoCodes } from '../../../data/promo-codes';
+import { CartModal } from './purchase/cart-modal';
 import { PromoCodes } from './cart-promo-codes';
 
 export class CartSummary extends Control {
@@ -11,9 +12,7 @@ export class CartSummary extends Control {
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'div', 'summary');
     new Control(this.node, 'p', 'summary_title', 'Summary');
-    let productsAmount = state
-      .getData('cartData')
-      .reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
+    const productsAmount = this.calculateAmount(state);
     this.summaryProductsAmount = new Control(
       this.node,
       'p',
@@ -23,23 +22,22 @@ export class CartSummary extends Control {
     this.renderTotalSum(state);
     const promo = new PromoCodes(this.node, state);
     promo.changeTotalSum = () => this.renderTotalSum(state);
-
-    const buyButton = new Control(this.node, 'button', 'cart_buy-button', 'Buy now');
-    // TODO Add modal
-
+    const buyButton = new Control(this.node, 'button', 'cart_button', 'BUY NOW');
+    buyButton.node.onclick = () => {
+      new CartModal(this.node);
+    };
     state.onUpdate.add((type) => {
       if (type === 'cartData' || type === 'promoData') {
-        let newAmount = this.calculateAmount(state);
-        let newPrice = this.calculatePrice(state);
-        const appliedCodesData: Array<string> = state.getData('promoData');
-        let newDiscountPrice = this.calculateDiscountPrice(appliedCodesData, newPrice);
+        const newAmount = this.calculateAmount(state);
+        const newPrice = this.calculatePrice(state);
+        const newDiscountPrice = this.calculateDiscountPrice(state.getData('promoData'), newPrice);
         this.summaryProductsAmount.node.textContent = `Products: ${newAmount.toString()}`;
         this.summaryTotalPrice.node.textContent = `Total: €${newPrice}.00`;
         if (newDiscountPrice > 0) {
-          this.summaryTotalPriceNew.node.textContent = `Total: €${newDiscountPrice}.00`
+          this.summaryTotalPriceNew.node.textContent = `Total: €${newDiscountPrice}.00`;
         } else {
           this.summaryTotalPriceNew.node.textContent = '';
-        };
+        }
       }
     });
   }

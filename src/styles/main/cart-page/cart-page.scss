@@ -3,6 +3,7 @@
 }
 
 .cart {
+  position: relative;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -65,4 +66,13 @@
   align-items: center;
   padding: 10px;
   border: 1px solid #fff;
+}
+
+.purchase {
+  position: absolute;
+  top: calc(50% - 300px);
+  left: calc(50% - 300px);
+  width: 600px;
+  height: 600px;
+  background-color: rgb(37, 36, 35);
 }
