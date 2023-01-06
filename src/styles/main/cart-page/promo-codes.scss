@@ -1,0 +1,23 @@
+.promo-codes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+
+  &_applied-title {
+    text-align: center;
+  }
+  &_applied-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  &_wrapper{
+    display: flex;
+    gap: 10px;
+  }
+  &_button {
+    align-self: center;
+  }
+}

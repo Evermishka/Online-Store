@@ -2,6 +2,7 @@ import './styles/style.scss';
 import { App } from './js/application/app';
 import { State } from './js/common/state';
 import { CartData } from './js/common/cart-data';
+import { PromoData } from './js/common/promo-data';
 
 const state = new State({
   cartData: CartData.getData(),
@@ -19,9 +20,11 @@ const state = new State({
     },
     sortSeatch: '',
   },
+  promoData: PromoData.getData()
 });
 const app = new App(document.body, state);
 
 window.onbeforeunload = () => {
   new CartData(state.getData('cartData')).save();
+  new PromoData(state.getData('promoData')).save();
 };
