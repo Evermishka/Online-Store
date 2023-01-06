@@ -23,14 +23,23 @@
     }
   }
   &_cart {
+    position: relative;
     width: 5rem;
     height: 5rem;
     object-fit: cover;
     cursor: pointer;
     transition: 0.5s;
+    background-image: url('../assets/images/cart.png');
+    background-size: contain;
     &:hover {
       transform: scale(1.1);
     }
+  }
+  &_cart-items {
+    position: absolute;
+    top: 23%;
+    left: -25%;
+    margin: 0;
   }
   &_sum_text {
     font-size: 2.5rem;

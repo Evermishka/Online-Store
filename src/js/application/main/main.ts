@@ -30,7 +30,7 @@ export class Main extends Control {
         productPage.onMainPage = () => this.onMainPage();
         break;
       case 'cart-page':
-        const cartPage = new CartPage(this.node);
+        const cartPage = new CartPage(this.node, state);
         break;
 
       default:
