@@ -18,7 +18,7 @@ const state = new State({
       sortType: null,
       sortValue: null,
     },
-    sortSeatch: '',
+    sortSearch: '',
   },
   promoData: PromoData.getData()
 });

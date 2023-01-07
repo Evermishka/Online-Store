@@ -46,10 +46,10 @@ export class State {
         this.onUpdate.emit(key);
         break;
       case 'category':
-        this._data.filters[key].push(value);
+        this._data.filters[key].push(value.toLowerCase());
         break;
       case 'brand':
-        this._data.filters[key].push(value);
+        this._data.filters[key].push(value.toLowerCase());
         break;
       case 'price':
         this._data.filters.price.min = value.min;
@@ -72,9 +72,28 @@ export class State {
       case 'sortOptions':
         this._data.filters[key] = value;
         this.onUpdate.emit('sortOptions');
+        break;
       case 'sortSearch':
-        this._data.filters[key] = value;
-      // this.onUpdate.emit('sortSearch');
+        this._data.filters[key] = value.toLowerCase();
+        this.onUpdate.emit('sortSearch');
+        break;
+      case 'resetFilters':
+        this._data.filters = {
+          category: [],
+          brand: [],
+          price: { min: 10, max: 1749 },
+          stock: { min: 2, max: 150 },
+          sortGoods: [],
+          sortCount: { category: {}, brand: {} },
+          sortOptions: {
+            isSort: false,
+            sortType: null,
+            sortValue: null,
+          },
+          sortSearch: '',
+        };
+        this.onUpdate.emit('resetFilters');
+        break;
       default:
         break;
     }

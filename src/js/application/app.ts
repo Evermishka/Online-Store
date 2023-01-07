@@ -31,6 +31,7 @@ export class App extends Control {
     header.onMainPage = () => {
       mainInner.destroy();
       this.createApp(header, main, 'main-page', state);
+      state.setData(null, 'resetFilters');
     };
     header.onCartPage = () => {
       mainInner.destroy();

@@ -12,6 +12,7 @@ export class Category extends Control {
     this.listProducts = products;
     const categoryBlock = new Control(this.node, 'div', 'category_block');
     const btnResetFilters = new Control(categoryBlock.node, 'button', 'category_btn', 'Reset Filter');
+    btnResetFilters.node.onclick = () => this.resetFiltres(state);
     const btnCopyFilters = new Control(categoryBlock.node, 'button', 'category_btn', 'Copy Filter');
 
     const categoryCheck = new CategoryCheckbox(categoryBlock.node, 'category', state);
@@ -25,10 +26,17 @@ export class Category extends Control {
     categoryInputStock.filtration = () => this.filtration(state, products);
 
     state.onUpdate.add((type: string) => {
-      if (type === 'sortOptions') {
-        this.filtration(state, state.getData('sortGoods').length > 0 ? state.getData('sortGoods') : products);
+      if (type === 'sortOptions' || type === 'sortSearch') {
+        this.filtration(state, products);
+      }
+      if (type === 'resetFilters') {
+        this.filtration(state, products);
       }
     });
+  }
+
+  private resetFiltres(state: State) {
+    state.setData(null, 'resetFilters');
   }
 
   private filtration(state: State, products: Array<Product>) {
@@ -48,36 +56,40 @@ export class Category extends Control {
     }
 
     let filterPriceAndStock: Array<Product> = this.filterPrice(this.filterStock(sortArr, state), state);
+    let finishProductList: Array<Product> = filterPriceAndStock;
+
+    if (state.getData('sortSearch')) {
+      finishProductList = this.sortBySearch(filterPriceAndStock, state);
+    } else {
+      finishProductList = filterPriceAndStock;
+    }
 
     const filterCounts: { category: { [key: string]: number }; brand: { [key: string]: number } } = this.filterCount(
       this.listProducts,
-      filterPriceAndStock
+      finishProductList
     );
 
     const getSortOptions: { isSort: boolean; sortType: null | string; sortValue: never } = state.getData('sortOptions');
     if (getSortOptions.isSort) {
-      const currentSortArr: Array<Product> = filterPriceAndStock ? filterPriceAndStock : products;
+      const currentSortArr: Array<Product> = finishProductList ? finishProductList : products;
       if (getSortOptions.sortType === 'ASC') {
-        filterPriceAndStock = this.sortByASC(currentSortArr, getSortOptions.sortValue);
+        finishProductList = this.sortByASC(currentSortArr, getSortOptions.sortValue);
       } else if (getSortOptions.sortType === 'DESC') {
-        filterPriceAndStock = this.sortByDESC(currentSortArr, getSortOptions.sortValue);
+        finishProductList = this.sortByDESC(currentSortArr, getSortOptions.sortValue);
       }
     }
 
-    if (state.getData('sortSearch')) {
-      this.sortBySearch(filterPriceAndStock, state.getData('sortSearch'));
-    }
-
-    state.setData(filterPriceAndStock, 'sortGoods');
+    state.setData(finishProductList, 'sortGoods');
     state.setData(filterCounts, 'sortCount');
   }
 
-  private sortBySearch(sortProducts: Array<Product>, value: string) {
-    return sortProducts.filter((el: any) => {
+  private sortBySearch(products: Array<Product>, state: State) {
+    return products.filter((el: any) => {
+      let searchValue = state.getData('sortSearch');
       for (let key in el) {
         if (key !== 'id' && key !== 'thumbnail' && key !== 'images') {
-          let currentItem = String(el[key].matchAll(value));
-          if (currentItem) {
+          let currentValue = el[key].toString().toLowerCase();
+          if (currentValue.includes(searchValue.toLowerCase())) {
             return el;
           }
         }
@@ -134,10 +146,10 @@ export class Category extends Control {
   }
 
   private filterCategory(arr: Array<Product>, categories: Array<string>) {
-    return arr.filter((el: Product) => categories.includes(el.category));
+    return arr.filter((el: Product) => categories.includes(el.category.toLowerCase()));
   }
 
   private filterBrand(arr: Array<Product>, brand: Array<string>) {
-    return arr.filter((el: Product) => brand.includes(el.brand));
+    return arr.filter((el: Product) => brand.includes(el.brand.toLowerCase()));
   }
 }
