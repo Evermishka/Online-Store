@@ -49,8 +49,9 @@ export class PromoCodes extends Control {
   }
 
   private addPromo(value: string, state: State): void {
-    const promoCode = promoCodes.find((el) => el.name === value);    
-    if (promoCode) {
+    const promoCode = promoCodes.find((el) => el.name === value);
+    const appliedPromoCodes: string[] = state.getData('promoData');
+    if (promoCode && !appliedPromoCodes.find((elem) => elem === promoCode.name)) {
       this.promoCodesWrapper = new Control(this.node, 'div', 'promo-codes_wrapper');
       const promoCodeWrapper = new Control(this.promoCodesWrapper.node, 'div', 'promo-codes_inner-wrapper');
       new Control(promoCodeWrapper.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}% - `);
