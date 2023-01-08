@@ -4,12 +4,13 @@
 
 .product {
   &_title {
-    text-align:  start;
+    color: #000;
+    text-align: start;
   }
   &_wrapper {
     display: flex;
     gap: 40px;
-    justify-content: space-between;    
+    justify-content: space-between;
   }
 
   &_card-wrapper {
@@ -17,7 +18,13 @@
     display: flex;
     gap: 20px;
     padding: 10px;
-    border: 1px solid #fff;
+    background: rgba(#0077c0, 0.7);
+    border-radius: 2rem;
+  }
+  &_image {
+    object-fit: cover;
+    border-radius: 2rem;
+    max-width: 40rem;
   }
   &_image-controls {
     display: flex;
@@ -36,5 +43,16 @@
     align-items: center;
     padding: 10px;
     border: 1px solid #fff;
+    background: rgba(#0077c0, 0.7);
+    border-radius: 2rem;
+  }
+  &_rating {
+    color: #000;
+  }
+  &_info {
+    color: #000;
+  }
+  &_description {
+    color: #000;
   }
 }

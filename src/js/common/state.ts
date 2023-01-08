@@ -31,7 +31,7 @@ export interface StateData {
 export class State {
   private _data: any;
   public onUpdate: Signal<any> = new Signal();
-  constructor(initialState: any) {
+  constructor(initialState: StateData) {
     this._data = initialState;
   }
 
@@ -112,11 +112,11 @@ export class State {
         this.onUpdate.emit(key);
         break;
       case 'category':
-        const indexCategory = this._data.filters[key].findIndex((el: any) => el === value);
+        const indexCategory = this._data.filters[key].findIndex((el: string) => el === value);
         this._data.filters[key].splice(indexCategory, 1);
         break;
       case 'brand':
-        const indexBrand = this._data.filters[key].findIndex((el: any) => el === value);
+        const indexBrand = this._data.filters[key].findIndex((el: string) => el === value);
         this._data.filters[key].splice(indexBrand, 1);
         break;
       default:
@@ -154,7 +154,7 @@ export class State {
   resetData() {
     const cart: CartDataItem[] = this.getData('cartData');
     cart.forEach((elem) => this.deleteData(elem, 'cartData'));
-    const promo: string[] =  this.getData('promoData');
+    const promo: string[] = this.getData('promoData');
     promo.forEach((elem) => this.deleteData(elem, 'promoData'));
   }
 }

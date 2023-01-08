@@ -3,6 +3,7 @@ import { State } from '../../../../common/state';
 import { Product } from '../../../../data/data';
 
 export class GoodsFilters extends Control {
+  changeSize!: (size: number) => void;
   sortOptions: Array<string> = [
     'Sort by price ASC',
     'Sort by price DESC',
@@ -51,8 +52,12 @@ export class GoodsFilters extends Control {
     searchSort.node.placeholder = 'Search product';
     searchSort.node.oninput = () => this.sortBySearch(searchSort.node.value, state);
     searchSort.node.value = state.getData('sortSearch');
-    const btnSize = new Control(this.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-1');
-    const btnSize1 = new Control(this.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-2');
+
+    const goodsBlockBtn = new Control(this.node, 'div', 'goods_btns_block');
+    const btnSize = new Control(goodsBlockBtn.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-1');
+    btnSize.node.onclick = () => this.changeSize(1);
+    const btnSize1 = new Control(goodsBlockBtn.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-2');
+    btnSize1.node.onclick = () => this.changeSize(2);
   }
 
   private sortBySearch(value: string, state: State) {

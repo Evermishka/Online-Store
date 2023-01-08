@@ -12,18 +12,19 @@ export class CartSummary extends Control {
 
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'div', 'summary');
-    new Control(this.node, 'p', 'summary_title', 'Summary');
+    const summaryBlock = new Control(this.node, 'div', 'summary_inner');
+    new Control(summaryBlock.node, 'p', 'summary_title', 'Summary');
     const productsAmount = this.calculateAmount(state);
     this.summaryProductsAmount = new Control(
-      this.node,
+      summaryBlock.node,
       'p',
       'summary_amount',
       `Products: ${productsAmount.toString()}`
     );
-    this.renderTotalSum(state);
-    const promo = new PromoCodes(this.node, state);
-    promo.changeTotalSum = () => this.renderTotalSum(state);
-    const buyButton = new Control(this.node, 'button', 'cart_button', 'BUY NOW');
+    this.renderTotalSum(state, summaryBlock);
+    const promo = new PromoCodes(summaryBlock.node, state);
+    promo.changeTotalSum = () => this.renderTotalSum(state, summaryBlock);
+    const buyButton = new Control(summaryBlock.node, 'button', 'cart_button', 'BUY NOW');
     buyButton.node.onclick = () => {
       const cartModal = new CartModal(this.node);
       cartModal.closeModal = () => cartModal.destroy();
@@ -61,11 +62,11 @@ export class CartSummary extends Control {
     }, 0);
     return Math.round(price - (price / 100) * totalDiscount);
   }
-  private renderTotalSum(state: State): void {
+  private renderTotalSum(state: State, innerNode: { node: HTMLElement }): void {
     if (!this.summaryTotalPrice) {
       const totalPrice = this.calculatePrice(state);
-      this.summaryTotalPrice = new Control(this.node, 'p', 'summary_price', `Total: €${totalPrice}.00`);
-      this.summaryTotalPriceNew = new Control(this.node, 'p', 'summary_price-new', '');
+      this.summaryTotalPrice = new Control(innerNode.node, 'p', 'summary_price', `Total: €${totalPrice}.00`);
+      this.summaryTotalPriceNew = new Control(innerNode.node, 'p', 'summary_price-new', '');
     }
     this.renderDiscountSum(state, this.calculatePrice(state));
   }

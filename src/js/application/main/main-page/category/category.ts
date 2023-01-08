@@ -11,9 +11,10 @@ export class Category extends Control {
     super(parentNode, 'div', 'category', '');
     this.listProducts = products;
     const categoryBlock = new Control(this.node, 'div', 'category_block');
-    const btnResetFilters = new Control(categoryBlock.node, 'button', 'category_btn', 'Reset Filter');
+    const categoryBlockBtns = new Control(categoryBlock.node, 'div', 'category_block_btn');
+    const btnResetFilters = new Control(categoryBlockBtns.node, 'button', 'category_btn', 'reset filter');
     btnResetFilters.node.onclick = () => this.resetFiltres(state);
-    const btnCopyFilters = new Control(categoryBlock.node, 'button', 'category_btn', 'Copy Filter');
+    const btnCopyFilters = new Control(categoryBlockBtns.node, 'button', 'category_btn', 'copy filter');
 
     const categoryCheck = new CategoryCheckbox(categoryBlock.node, 'category', state);
     categoryCheck.filtration = () => this.filtration(state, products);

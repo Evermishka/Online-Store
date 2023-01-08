@@ -6,7 +6,12 @@
   justify-content: center;
   gap: 20px;
   width: 100%;
-
+  &_item {
+    color: #000;
+  }
+  &_link {
+    text-decoration: none;
+  }
   &_item:not(:first-of-type)::before {
     content: '>';
     margin-right: 20px;

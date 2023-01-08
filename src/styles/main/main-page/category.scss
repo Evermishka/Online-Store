@@ -1,28 +1,82 @@
 .category {
   max-width: 40rem;
   width: 100%;
+  border: 1px solid #005ead;
+  border-radius: 1rem;
+  margin-right: 1rem;
+  max-height: 88rem;
   &_block {
     padding: 1rem;
-    border: 1px solid salmon;
   }
   &_checkbox {
     padding: 0.5rem;
     margin-bottom: 1rem;
     height: 20rem;
     overflow-y: scroll;
-    border: 1px solid green;
+    border-radius: 1rem;
+    &::-webkit-scrollbar {
+      width: 10px;
+      border-radius: 2rem;
+    }
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 2rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 2rem;
+      background: #0063b1;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #888;
+    }
   }
   &_checkbox_title {
+    font-size: 2.2rem;
+    line-height: 2.7rem;
+    color: #000;
+    font-weight: 300;
     margin: 0;
+    text-align: center;
   }
   &_checkbox_list {
+    margin: 0;
+    margin-top: 0.5rem;
     padding: 0;
     list-style: none;
   }
+  &_block_btn {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  &_btn {
+    color: white;
+    background: linear-gradient(to bottom, #0077c0, #0063b1);
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 2rem;
+    outline: none;
+    border: none;
+    transition: 0.5s;
+    cursor: pointer;
+    &:hover {
+      background-color: #faa953;
+    }
+    &:nth-child(1) {
+      margin-right: 1rem;
+    }
+  }
   &_item {
+    color: #000;
+    border-bottom: 0.5px solid #000;
     margin-left: 1rem;
     margin-right: 1rem;
     height: 4rem;
+    &:nth-of-type(1) {
+      border-top: 1px solid #000;
+    }
   }
   &_item_block {
     display: flex;
@@ -36,10 +90,19 @@
     height: 4rem;
   }
   &_item_text {
-    font-size: 1.8rem;
-    line-height: 2.3rem;
+    font-size: 1.7rem;
+    line-height: 2.2rem;
     cursor: pointer;
     user-select: none;
+    transition: 0.5s;
+    &:hover {
+      color: $blue;
+    }
+  }
+  &_item_count {
+    font-weight: $fw-light;
+    font-size: 1.7rem;
+    line-height: 2.2rem;
   }
   &_item_radio {
     display: none;
@@ -47,23 +110,24 @@
   &_custom_check {
     width: 1rem;
     height: 1rem;
-    background-color: white;
+    border: 2px solid #0077c0;
     display: block;
     margin-right: 1rem;
     transition: 0.5s;
   }
   &_range_inner {
     padding: 0.5rem;
-    border: 1px solid green;
+    border: 1px solid #0077c0;
     margin-bottom: 1rem;
     padding-bottom: 3rem;
+    border-radius: 1rem;
   }
   &_input_value {
     display: flex;
     justify-content: center;
     margin-bottom: 3rem;
     margin-top: 2rem;
-    background-color: #ff2253;
+    background: linear-gradient(to bottom, #0077c0, #0063b1);
     border-radius: 1rem;
     position: relative;
     &::before {
@@ -71,7 +135,7 @@
       position: absolute;
       height: 0;
       width: 0;
-      border-top: 1.5rem solid #ff2253;
+      border-top: 1.5rem solid #0077c0;
       border-left: 1.5rem solid transparent;
       border-right: 1.5rem solid transparent;
       margin: auto;
@@ -118,7 +182,7 @@
       -webkit-appearance: none;
       height: 1.5rem;
       width: 1.5rem;
-      background-color: aqua;
+      background-color: #0063b1;
       cursor: pointer;
       border-radius: 1rem;
       pointer-events: auto;
@@ -128,7 +192,7 @@
       -webkit-appearance: none;
       height: 1.5rem;
       width: 1.5rem;
-      background-color: aqua;
+      background-color: #0063b1;
       cursor: pointer;
       border-radius: 50%;
     }
@@ -136,7 +200,7 @@
       appearance: none;
       height: 1.5rem;
       width: 1.5rem;
-      background-color: aqua;
+      background-color: #0063b1;
       cursor: pointer;
       border-radius: 50%;
       pointer-events: auto;
@@ -150,17 +214,24 @@
   &_input_track {
     width: 100%;
     height: 0.5rem;
-    background-color: #ff2253;
+    background-color: #0063b1;
     position: absolute;
     margin: auto;
     top: 0;
     bottom: 0;
     border-radius: 0.5rem;
   }
+  &_input_title {
+    font-size: 2.2rem;
+    line-height: 2.7rem;
+    color: #000;
+    font-weight: 300;
+    margin: 0;
+    text-align: center;
+  }
 }
 
 .category_item_block label input:checked ~ span {
-  background: #ff2253;
+  background: linear-gradient(to bottom, #0063b1, #005ead) #006cb7;
   background-color: transparent;
-  border: 0.1rem solid #ff2253;
 }
