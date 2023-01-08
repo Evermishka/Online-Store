@@ -11,6 +11,7 @@ export class Main extends Control {
   public onProductPage!: (id: number) => void;
   public onCartPage!: () => void;
   public onMainPage!: () => void;
+  public closeCart!: () => void;
   constructor(parendNode: HTMLElement, screen: string, state: State, id?: number) {
     super(parendNode, 'div', 'main_inner');
     switch (screen) {
@@ -26,6 +27,10 @@ export class Main extends Control {
         break;
       case 'cart-page':
         const cartPage = new CartPage(this.node, state);
+        cartPage.closeCart = () => {
+          cartPage.destroy();
+          this.closeCart();
+        };
         break;
       default:
         return;
