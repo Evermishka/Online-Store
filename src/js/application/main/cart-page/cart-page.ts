@@ -4,6 +4,8 @@ import { CartProductList } from './cart-products-list';
 import { CartSummary } from './cart-summary';
 
 export class CartPage extends Control {
+  public closeCart!: () => void;
+  
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'div', 'cart');
     const productsInCart = new Control(this.node, 'div', 'cart_products');
@@ -13,5 +15,6 @@ export class CartPage extends Control {
     //TODO Add pagination component
     const productsList = new CartProductList(productsInCart.node, state);
     const summary = new CartSummary(this.node, state);
+    summary.closeCart = () => this.closeCart();
   }
 }

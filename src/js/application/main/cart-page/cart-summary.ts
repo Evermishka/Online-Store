@@ -5,9 +5,10 @@ import { CartModal } from './purchase/cart-modal';
 import { PromoCodes } from './cart-promo-codes';
 
 export class CartSummary extends Control {
-  summaryProductsAmount: Control<HTMLElement>;
-  summaryTotalPrice!: Control<HTMLElement>;
-  summaryTotalPriceNew!: Control<HTMLElement>;
+  private summaryProductsAmount: Control<HTMLElement>;
+  private summaryTotalPrice!: Control<HTMLElement>;
+  private summaryTotalPriceNew!: Control<HTMLElement>;
+  public closeCart!: () => void;
 
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'div', 'summary');
@@ -26,6 +27,7 @@ export class CartSummary extends Control {
     buyButton.node.onclick = () => {
       const cartModal = new CartModal(this.node);
       cartModal.closeModal = () => cartModal.destroy();
+      cartModal.closeCart = () => this.closeCart();
     };
     state.onUpdate.add((type) => {
       if (type === 'cartData' || type === 'promoData') {
@@ -46,13 +48,11 @@ export class CartSummary extends Control {
   private calculateAmount(state: State): number {
     return state.getData('cartData').reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
   }
-
   private calculatePrice(state: State): number {
     return state
       .getData('cartData')
       .reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
   }
-
   private calculateDiscountPrice(data: string[], price: number): number {
     const totalDiscount = data.reduce((acum, el) => {
       const promoCode = promoCodes.find((elem) => elem.name === el);
@@ -61,7 +61,6 @@ export class CartSummary extends Control {
     }, 0);
     return Math.round(price - (price / 100) * totalDiscount);
   }
-
   private renderTotalSum(state: State): void {
     if (!this.summaryTotalPrice) {
       const totalPrice = this.calculatePrice(state);
@@ -70,7 +69,6 @@ export class CartSummary extends Control {
     }
     this.renderDiscountSum(state, this.calculatePrice(state));
   }
-
   private renderDiscountSum(state: State, price: number): void {
     const appliedCodesData: Array<string> = state.getData('promoData');
     if (appliedCodesData.length > 0) {

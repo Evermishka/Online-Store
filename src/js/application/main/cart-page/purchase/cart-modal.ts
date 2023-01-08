@@ -13,6 +13,7 @@ export class CartModal extends Control {
   private inputs: FormLine[];
   private errors: Errors;
   public closeModal!: () => void;
+  public closeCart!: () => void;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'purchase');
@@ -37,15 +38,11 @@ export class CartModal extends Control {
       'CONFIRM'
     );
     confirmButton.node.type = 'button';
-    confirmButton.node.onclick = () => this.sendForm();    
+    confirmButton.node.onclick = () => this.sendForm();
   }
 
   private sendForm(): void {
-    if (this.checkForm()) {
-      console.log(true);
-    } else {
-      console.log('Wrong inputs');
-    }
+    if (this.checkForm()) this.closeCart();
   }
   private checkForm(): boolean {
     const results: boolean[] = this.inputs.map((el: FormLine) => this.checkInput(el, el.name));
@@ -53,11 +50,11 @@ export class CartModal extends Control {
   }
   private checkInput(input: FormLine, inputName: string): boolean {
     if (this.isValidInput(input.value, formData[inputName].validation)) {
-      this.hideError(inputName);      
+      this.hideError(inputName);
       return true;
     } else {
       this.showError(inputName, input.node);
-      input.node.oninput = () => this.checkInput(input, inputName);      
+      input.node.oninput = () => this.checkInput(input, inputName);
       return false;
     }
   }
