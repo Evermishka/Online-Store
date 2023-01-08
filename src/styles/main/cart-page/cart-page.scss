@@ -75,4 +75,25 @@
   width: 600px;
   height: 600px;
   background-color: rgb(37, 36, 35);
+
+  &_card-input {
+    padding-left: 40px;    
+    background-position: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    &__default {
+      background-image: url('../assets/icons/creditcards.png');
+      background-position-x: 8px;
+    }
+    &__amex {
+      background-image: url('../assets/icons/amex.png');
+    }
+    &__visa {
+      background-image: url('../assets/icons/visa.png');
+    }
+    &__mastercard {
+      background-image: url('../assets/icons/mastercard.png');
+    }
+  }
 }

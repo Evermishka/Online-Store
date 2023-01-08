@@ -65,7 +65,7 @@ export const formData: formData = {
     placeholder: 'MM / YY',
     id: 'purchase_card-expire',
     error: "Month can't be less than 01 or more than 12",
-    validation: /^0[0-9]|1[0-2]+[0-9]{2}$/i,
+    validation: /^(0[0-9]|1[0-2])\/[0-9]{2}$/i,
   },
   cardCvv: {
     label: 'CVV',

@@ -1,6 +1,9 @@
 import Control from '../../../../common/control';
 import { formData } from '../../../../data/form';
 import { FormLine } from './form-line';
+import { FormCardNumberLine } from './form-card-number-line';
+import { FormCardExpireLine } from './form-card-expire-line';
+import { FormCardCvvLine } from './form-card-cvv-line';
 
 interface Errors {
   [key: string]: Control<HTMLElement>;
@@ -21,9 +24,9 @@ export class CartModal extends Control {
     this.inputs.push(new FormLine(purchaseForm.node, formData.address));
     this.inputs.push(new FormLine(purchaseForm.node, formData.email));
     new Control(purchaseForm.node, 'p', 'purchase_title', 'Credit card details');
-    this.inputs.push(new FormLine(purchaseForm.node, formData.cardNumber));
-    this.inputs.push(new FormLine(purchaseForm.node, formData.cardExpire));
-    this.inputs.push(new FormLine(purchaseForm.node, formData.cardCvv));
+    this.inputs.push(new FormCardNumberLine(purchaseForm.node, formData.cardNumber));
+    this.inputs.push(new FormCardExpireLine(purchaseForm.node, formData.cardExpire));
+    this.inputs.push(new FormCardCvvLine(purchaseForm.node, formData.cardCvv));
     const confirmButton: { node: HTMLButtonElement } = new Control(
       purchaseForm.node,
       'button',
