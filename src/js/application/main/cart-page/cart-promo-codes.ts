@@ -8,26 +8,32 @@ export class PromoCodes extends Control {
   private appliedCodesTitle!: Control<HTMLElement> | null;
   private promoCodeInput: Control<HTMLInputElement>;
   private promoCodesWrapper!: Control<HTMLElement>;
-  public changeTotalSum!: () => void;  
+  public changeTotalSum!: () => void;
 
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'div', 'promo-codes');
-    this.appliedCodesWrapper = new Control(this.node, 'div', 'promo-codes_applied');    
+    this.appliedCodesWrapper = new Control(this.node, 'div', 'promo-codes_applied');
     this.renderAppliedCodes(state);
     this.promoCodeInput = new Control(this.node, 'input', 'promo-codes_input');
     this.promoCodeInput.node.type = 'text';
     this.promoCodeInput.node.oninput = () => this.addPromo(this.promoCodeInput.node.value, state);
+    this.promoCodeInput.node.placeholder = 'Enter promo code';
     new Control(this.node, 'p', 'promo-codes_input-text', `Promo for test: 'RS', 'EPM'`);
   }
 
   private renderAppliedCodes(state: State) {
     const appliedCodesData: Array<string> = state.getData('promoData');
-    if (appliedCodesData.length > 0) {      
-      if (this.appliedCodesList) {        
+    if (appliedCodesData.length > 0) {
+      if (this.appliedCodesList) {
         this.appliedCodesList.destroy();
-      }      
+      }
       if (!this.appliedCodesTitle) {
-        this.appliedCodesTitle = new Control(this.appliedCodesWrapper.node, 'p', 'promo-codes_applied-title', 'Applied codes');
+        this.appliedCodesTitle = new Control(
+          this.appliedCodesWrapper.node,
+          'p',
+          'promo-codes_applied-title',
+          'Applied codes'
+        );
       }
       this.appliedCodesList = new Control(this.appliedCodesWrapper.node, 'ul', 'promo-codes_applied-list');
       appliedCodesData.forEach((el) => {
@@ -43,13 +49,13 @@ export class PromoCodes extends Control {
       if (this.appliedCodesTitle) {
         this.appliedCodesTitle.destroy();
         this.appliedCodesTitle = null;
-      };
+      }
       if (this.appliedCodesList) this.appliedCodesList.destroy();
     }
   }
 
   private addPromo(value: string, state: State): void {
-    const promoCode = promoCodes.find((el) => el.name === value);    
+    const promoCode = promoCodes.find((el) => el.name === value);
     if (promoCode) {
       this.promoCodesWrapper = new Control(this.node, 'div', 'promo-codes_wrapper');
       const promoCodeWrapper = new Control(this.promoCodesWrapper.node, 'div', 'promo-codes_inner-wrapper');
@@ -60,16 +66,16 @@ export class PromoCodes extends Control {
         this.promoCodeInput.node.value = '';
         promoCodeWrapper.destroy();
         this.renderAppliedCodes(state);
-        this.changeTotalSum();       
+        this.changeTotalSum();
       };
     } else {
-      if (this.promoCodesWrapper) this.promoCodesWrapper.destroy();      
+      if (this.promoCodesWrapper) this.promoCodesWrapper.destroy();
     }
   }
 
   private deletePromo(value: string, state: State): void {
     state.deleteData(value, 'promoData');
     this.renderAppliedCodes(state);
-    this.changeTotalSum();    
+    this.changeTotalSum();
   }
 }
