@@ -7,6 +7,7 @@ export class PromoCodes extends Control {
   private appliedCodesList!: Control<HTMLElement>;
   private appliedCodesTitle!: Control<HTMLElement> | null;
   private promoCodeInput: Control<HTMLInputElement>;
+  private promoCodesWrapper!: Control<HTMLElement>;
   public changeTotalSum!: () => void;  
 
   constructor(parentNode: HTMLElement, state: State) {
@@ -48,9 +49,10 @@ export class PromoCodes extends Control {
   }
 
   private addPromo(value: string, state: State): void {
-    const promoCode = promoCodes.find((el) => el.name === value);
+    const promoCode = promoCodes.find((el) => el.name === value);    
     if (promoCode) {
-      const promoCodeWrapper = new Control(this.node, 'div', 'promo-codes_wrapper');
+      this.promoCodesWrapper = new Control(this.node, 'div', 'promo-codes_wrapper');
+      const promoCodeWrapper = new Control(this.promoCodesWrapper.node, 'div', 'promo-codes_inner-wrapper');
       new Control(promoCodeWrapper.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}% - `);
       const addCodeButton = new Control(promoCodeWrapper.node, 'button', 'promo-codes_button', 'ADD');
       addCodeButton.node.onclick = () => {
@@ -60,6 +62,8 @@ export class PromoCodes extends Control {
         this.renderAppliedCodes(state);
         this.changeTotalSum();       
       };
+    } else {
+      if (this.promoCodesWrapper) this.promoCodesWrapper.destroy();      
     }
   }
 
