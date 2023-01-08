@@ -16,13 +16,8 @@ export class Main extends Control {
     switch (screen) {
       case 'main-page':
         const category = new Category(this.node, state, products);
-        this.createGoods(state, products);
-        state.onUpdate.add((type) => {
-          if (type === 'sortGoods') {
-            this.goods.destroy();
-            this.createGoods(state, state.getData('sortGoods'));
-          }
-        });
+        const goods = new Goods(this.node, products, state);
+        goods.onProductPage = (id: number) => this.onProductPage(id);
         break;
       case 'product-page':
         const productPage = new ProductPage(this.node, id, state);
@@ -32,14 +27,8 @@ export class Main extends Control {
       case 'cart-page':
         const cartPage = new CartPage(this.node, state);
         break;
-
       default:
         return;
     }
-  }
-
-  createGoods(state: State, products: Array<Product>) {
-    this.goods = new Goods(this.node, products, state);
-    this.goods.onProductPage = (id: number) => this.onProductPage(id);
   }
 }

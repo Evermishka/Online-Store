@@ -13,7 +13,6 @@ export class GoodsFilters extends Control {
   ];
   constructor(parentNode: HTMLElement, state: State, products: Array<Product>) {
     super(parentNode, 'div', 'goods_filter');
-
     const inputSort: { node: HTMLSelectElement } = new Control(this.node, 'select', 'goods_filter_select');
     for (let i = 0; i < this.sortOptions.length; i++) {
       if (i === 0) {
@@ -35,20 +34,29 @@ export class GoodsFilters extends Control {
       inputSort.node.onchange = (e: Event) => this.sortByParam(e, state);
     }
 
-
     const foundSort: { node: HTMLElement } = new Control(this.node, 'p', 'goods_filter_count', 'Found: 100');
     foundSort.node.textContent = `Found: ${state.getData('sortGoods').length || products.length}`;
+
+    state.onUpdate.add((type) => {
+      if (type === 'sortGoods') {
+        foundSort.node.textContent = `Found: ${state.getData('sortGoods').length}`;
+      }
+      if (type === 'resetFilters') {
+        searchSort.node.value = state.getData('sortSearch');
+      }
+    });
     // TODO delete any type;
     const searchSort: any = new Control(this.node, 'input', 'goods_filter_search');
-    state.onUpdate.add((type: string) => {
-      if(type === 'sortSearch') {
-        searchSort.node.value = state.getData('sortSearch')
-      }
-    })
+    searchSort.node.type = 'search';
     searchSort.node.placeholder = 'Search product';
-    searchSort.node.oninput = () => state.setData(searchSort.node.value, 'sortSearch')
+    searchSort.node.oninput = () => this.sortBySearch(searchSort.node.value, state);
+    searchSort.node.value = state.getData('sortSearch');
     const btnSize = new Control(this.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-1');
     const btnSize1 = new Control(this.node, 'button', 'goods_btn_size goods_btn_size_1', 'size-2');
+  }
+
+  private sortBySearch(value: string, state: State) {
+    state.setData(value, 'sortSearch');
   }
 
   private sortByParam(event: Event, state: State) {

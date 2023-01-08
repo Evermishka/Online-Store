@@ -6,6 +6,7 @@ export class CategoryCheckbox extends Control {
   filtration!: () => void;
   listOfCounterEl: Array<HTMLElement> = [];
   currentType!: string;
+  listOfCheckedEl: Array<HTMLElement> = [];
   constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_checkbox', '');
     this.currentType = type;
@@ -41,6 +42,7 @@ export class CategoryCheckbox extends Control {
       const categoryLabel = new Control(categoryItemBlock.node, 'label', 'category_item_label', '');
       const categoryRadio: { node: HTMLInputElement } = new Control(categoryLabel.node, 'input', 'category_item_radio');
       categoryRadio.node.type = 'checkbox';
+      this.listOfCheckedEl.push(categoryRadio.node);
       categoryRadio.node.onclick = () => {
         if (categoryRadio.node.checked) {
           this.addGoods(key, state, type);
@@ -59,6 +61,15 @@ export class CategoryCheckbox extends Control {
 
       this.listOfCounterEl.push(categoryItemCount.node);
     }
+
+    state.onUpdate.add((type: string) => {
+      // TODO delete any type;
+      if (type === 'resetFilters') {
+        this.listOfCheckedEl.forEach((el: any) => {
+          el.checked = false;
+        });
+      }
+    });
 
     state.onUpdate.add((type: string) => {
       if (type === 'sortCount') {
