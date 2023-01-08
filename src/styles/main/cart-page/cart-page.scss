@@ -85,6 +85,7 @@
     border: 1px solid #fff;
     border-radius: 2rem;
     height: 15rem;
+    justify-content: center;
   }
   &_description {
     margin: 0;
@@ -93,7 +94,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    width: 100%;
+  }
+  &_increase-button {
+    color: white;
+    background: linear-gradient(to bottom, #8ab9ce, #0063b1);
+    width: 100%;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: easy 1s;
+    width: 3rem;
+    height: 3rem;
+  }
+  &_product-amount{
+    font-size: 1.5rem;
+    width: 2.5rem;
+    text-align: center;
+  }
+  &_decrease-button {
+    color: white;
+    background: linear-gradient(to bottom, #8ab9ce, #0063b1);
+    width: 3rem;
+    height: 3rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: easy 1s;
+  }
+  &_description{
+    font-size: 1.7rem;
+    line-height: 2.5rem;
   }
 }
 
@@ -154,17 +185,67 @@
   }
   &_form {
     position: absolute;
-    top: calc(50% - 300px);
-    left: calc(50% - 300px);
-    width: 600px;
-    height: 600px;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    max-width: 60rem;
+    width: 100%;
     background-color: rgb(37, 36, 35);
+    border-radius: 2rem;
+    padding: 1rem;
+  }
+  &_title {
+    font-size: 2.2rem;
+    line-height: 3rem;
+    text-align: center;
+    margin-bottom: 0rem;
+  }
+  &_input {
+    width: 100%;
+    border-radius: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+  &_line-wrapper {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  &_button {
+    display: block;
+    color: white;
+    background: linear-gradient(to bottom, #8ab9ce, #0063b1);
+    width: 100%;
+    max-width: 56rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 1rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: easy 1s;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
   }
   &_card-input {
     padding-left: 40px;
     background-position: left;
     background-size: contain;
     background-repeat: no-repeat;
+    text-align: center;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
     &__default {
       background-image: url('../assets/icons/creditcards.png');
       background-position-x: 8px;
@@ -179,4 +260,17 @@
       background-image: url('../assets/icons/mastercard.png');
     }
   }
+  &_error {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    font-weight: 300;
+    text-align: center;
+    margin: 0;
+    color: red;
+  }
+}
+
+.cart_close-text {
+  color: #000;
 }

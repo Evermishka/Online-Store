@@ -49,7 +49,7 @@
     flex-direction: column;
     align-items: center;
     background: rgba(#0063b1, 0.7);
-    min-height: 45rem;
+    max-height: 45rem;
     max-width: 50rem;
     margin-bottom: 1rem;
     border-radius: 1rem;
@@ -65,7 +65,7 @@
     line-height: 2.7rem;
     width: 100%;
     margin: 0;
-    margin-left: 3rem;
+    padding-left: 1rem;
   }
   &_product_title {
     text-align: center;
