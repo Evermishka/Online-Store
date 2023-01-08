@@ -4,9 +4,10 @@ import { Product, products } from '../../../../data/data';
 
 export class CategoryInput extends Control {
   filtration!: () => void;
+  type!: string;
   constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_range_inner');
-
+    this.type = type;
     const inputBlockTitle = new Control(this.node, 'h3', 'category_input_title');
     if (type === 'price') {
       inputBlockTitle.node.textContent = 'Price';
@@ -62,11 +63,26 @@ export class CategoryInput extends Control {
     inputFirst.node.oninput = () => inputOne();
     const inputSecond = new Control<HTMLInputElement>(inputInner.node, 'input', 'category_input');
     inputSecond.node.type = 'range';
-    inputSecond.node.type = 'range';
     inputSecond.node.min = minValue.toString();
     inputSecond.node.max = maxValue.toString();
     inputSecond.node.value = maxValue.toString();
     inputSecond.node.oninput = () => inputTwo();
+
+    state.onUpdate.add((type: string) => {
+      if (type === 'resetFilters') {
+        inputFirst.node.value = minValue.toString();
+        inputSecond.node.value = maxValue.toString();
+        fillColor();
+
+        if (this.type === 'price') {
+          minInputValue.node.textContent = `from €${minValue}`;
+          maxInputValue.node.textContent = `to €${maxValue}`;
+        } else if (this.type === 'stock') {
+          minInputValue.node.textContent = `${minValue}`;
+          maxInputValue.node.textContent = `${maxValue}`;
+        }
+      }
+    });
 
     const minGap = 0;
     const inputOne = () => {
