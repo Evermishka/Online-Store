@@ -11,10 +11,13 @@ interface Errors {
 
 export class CartModal extends Control {
   private inputs: FormLine[];
-  private errors: Errors;  
+  private errors: Errors;
+  public closeModal!: () => void;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'purchase');
+    const purchaseBg = new Control(this.node, 'div', 'purchase_background');
+    purchaseBg.node.onclick = () => this.closeModal();
     this.inputs = [];
     this.errors = {};
     const purchaseForm = new Control(this.node, 'form', 'purchase_form');
@@ -41,7 +44,7 @@ export class CartModal extends Control {
     if (this.checkForm()) {
       console.log(true);
     } else {
-      console.log(false);
+      console.log('Wrong inputs');
     }
   }
   private checkForm(): boolean {

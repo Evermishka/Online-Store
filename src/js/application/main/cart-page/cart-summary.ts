@@ -24,7 +24,8 @@ export class CartSummary extends Control {
     promo.changeTotalSum = () => this.renderTotalSum(state);
     const buyButton = new Control(this.node, 'button', 'cart_button', 'BUY NOW');
     buyButton.node.onclick = () => {
-      new CartModal(this.node);
+      const cartModal = new CartModal(this.node);
+      cartModal.closeModal = () => cartModal.destroy();
     };
     state.onUpdate.add((type) => {
       if (type === 'cartData' || type === 'promoData') {
