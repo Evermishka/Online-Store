@@ -152,9 +152,8 @@ export class State {
   }
 
   resetData() {
-    const cart: CartDataItem[] = this.getData('cartData');
-    cart.forEach((elem) => this.deleteData(elem, 'cartData'));
-    const promo: string[] = this.getData('promoData');
-    promo.forEach((elem) => this.deleteData(elem, 'promoData'));
+    this._data.cartData = [];
+    this._data.promoData = [];
+    this.onUpdate.emit('cartData');
   }
 }
