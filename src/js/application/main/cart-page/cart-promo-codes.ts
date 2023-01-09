@@ -39,8 +39,8 @@ export class PromoCodes extends Control {
       appliedCodesData.forEach((el) => {
         const promoCode = promoCodes.find((elem) => elem.name === el);
         if (promoCode) {
-          const appliedCodesItem = new Control(this.appliedCodesList.node, 'li', 'promo-codes_wrapper');
-          new Control(appliedCodesItem.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}% - `);
+          const appliedCodesItem = new Control(this.appliedCodesList.node, 'li', 'promo-codes_inner-wrapper');
+          new Control(appliedCodesItem.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}%`);
           const removeCodeButton = new Control(appliedCodesItem.node, 'button', 'promo-codes_button', 'DROP');
           removeCodeButton.node.onclick = () => this.deletePromo(el, state);
         }
@@ -60,7 +60,7 @@ export class PromoCodes extends Control {
     if (promoCode && !appliedPromoCodes.find((elem) => elem === promoCode.name)) {
       this.promoCodesWrapper = new Control(this.node, 'div', 'promo-codes_wrapper');
       const promoCodeWrapper = new Control(this.promoCodesWrapper.node, 'div', 'promo-codes_inner-wrapper');
-      new Control(promoCodeWrapper.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}% - `);
+      new Control(promoCodeWrapper.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}%`);
       const addCodeButton = new Control(promoCodeWrapper.node, 'button', 'promo-codes_button', 'ADD');
       addCodeButton.node.onclick = () => {
         state.setData(promoCode.name, 'promoData');

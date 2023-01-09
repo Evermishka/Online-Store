@@ -4,12 +4,16 @@
   align-items: center;
   gap: 10px;
   padding-bottom: 10px;
+  &_applied {
+    width: 100%;
+  }
   &_applied-title {
     text-align: center;
   }
   &_applied-list {
     margin: 0;
     padding: 0;
+    width: 100%;
     list-style: none;
   }
   &_wrapper {

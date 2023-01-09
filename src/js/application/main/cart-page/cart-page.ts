@@ -11,7 +11,7 @@ export class CartPage extends Control {
     const productsInCart = new Control(this.node, 'div', 'cart_products');
     const productsInCartWrapper = new Control(productsInCart.node, 'div', 'cart_products-wrapper');
     new Control(productsInCartWrapper.node, 'div', 'cart_products-title', 'Products In Cart');
-    const pagination = new Control(productsInCartWrapper.node, 'div', 'cart_pagination', 'Pagination');
+    //const pagination = new Control(productsInCartWrapper.node, 'div', 'cart_pagination', 'Pagination');
     //TODO Add pagination component
     const productsList = new CartProductList(productsInCart.node, state);
     const summary = new CartSummary(this.node, state);
