@@ -18,7 +18,7 @@ export class CartModal extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'purchase');
     const purchaseBg = new Control(this.node, 'div', 'purchase_background');
-    purchaseBg.node.onclick = () => this.closeModal();
+    purchaseBg.node.onclick = (): void => this.closeModal();
     this.inputs = [];
     this.errors = {};
     const purchaseForm = new Control(this.node, 'form', 'purchase_form');
@@ -38,7 +38,7 @@ export class CartModal extends Control {
       'CONFIRM'
     );
     confirmButton.node.type = 'button';
-    confirmButton.node.onclick = () => this.sendForm();
+    confirmButton.node.onclick = (): void => this.sendForm();
   }
 
   private sendForm(): void {
@@ -54,7 +54,7 @@ export class CartModal extends Control {
       return true;
     } else {
       this.showError(inputName, input.node);
-      input.node.oninput = () => this.checkInput(input, inputName);
+      input.node.oninput = (): boolean => this.checkInput(input, inputName);
       return false;
     }
   }

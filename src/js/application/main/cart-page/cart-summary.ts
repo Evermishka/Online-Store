@@ -23,18 +23,18 @@ export class CartSummary extends Control {
     );
     this.renderTotalSum(state, summaryBlock);
     const promo = new PromoCodes(summaryBlock.node, state);
-    promo.changeTotalSum = () => this.renderTotalSum(state, summaryBlock);
+    promo.changeTotalSum = (): void => this.renderTotalSum(state, summaryBlock);
     const buyButton = new Control(summaryBlock.node, 'button', 'cart_button', 'BUY NOW');
-    buyButton.node.onclick = () => {
+    buyButton.node.onclick = (): void => {
       const cartModal = new CartModal(this.node);
-      cartModal.closeModal = () => cartModal.destroy();
-      cartModal.closeCart = () => this.closeCart();
+      cartModal.closeModal = (): void => cartModal.destroy();
+      cartModal.closeCart = (): void => this.closeCart();
     };
     state.onUpdate.add((type) => {
       if (type === 'cartData' || type === 'promoData') {
         const newAmount = this.calculateAmount(state);
         const newPrice = this.calculatePrice(state);
-        const newDiscountPrice = this.calculateDiscountPrice(state.getData('promoData'), newPrice);
+        const newDiscountPrice = this.calculateDiscountPrice(state.getData('promoData') as Array<string>, newPrice);
         this.summaryProductsAmount.node.textContent = `Products: ${newAmount.toString()}`;
         this.summaryTotalPrice.node.textContent = `Total: €${newPrice}.00`;
         if (newDiscountPrice > 0) {

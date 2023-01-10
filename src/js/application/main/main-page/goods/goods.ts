@@ -5,16 +5,18 @@ import { GoodsItem } from './goods-item';
 import { GoodsFilters } from './goods-filters';
 
 export class Goods extends Control {
-  onProductPage!: (id: number) => void;
-  goodsList!: Control<HTMLElement>;
+  public onProductPage!: (id: number) => void;
+  private goodsList!: Control<HTMLElement>;
   constructor(parentNode: HTMLElement, products: Array<Product>, state: State) {
     super(parentNode, 'div', 'goods');
     const goodFilters = new GoodsFilters(this.node, state, products);
-    goodFilters.changeSize = (size: number) => {
+    goodFilters.changeSize = (size: number): void => {
       this.goodsList.destroy();
       this.createGoods(
         this.node,
-        state.getData('sortGoods').length > 0 ? state.getData('sortGoods') : products,
+        (state.getData('sortGoods') as Array<Product>).length > 0
+          ? (state.getData('sortGoods') as Array<Product>)
+          : products,
         state,
         size
       );
@@ -25,12 +27,12 @@ export class Goods extends Control {
     state.onUpdate.add((type) => {
       if (type === 'sortGoods') {
         this.goodsList.destroy();
-        this.createGoods(this.node, state.getData('sortGoods'), state);
+        this.createGoods(this.node, state.getData('sortGoods') as Array<Product>, state);
       }
     });
   }
 
-  createGoods(parentNode: HTMLElement, data: Array<Product>, state: State, size = 1) {
+  private createGoods(parentNode: HTMLElement, data: Array<Product>, state: State, size = 1): void {
     this.goodsList = new Control(parentNode, 'ul', 'goods_list');
     if (size === 1) {
       this.goodsList.node.style.gridTemplateColumns = 'repeat(3, 1fr)';
@@ -38,6 +40,6 @@ export class Goods extends Control {
       this.goodsList.node.style.gridTemplateColumns = 'repeat(5, 1fr)';
     }
     const products = data.map((el) => new GoodsItem(this.goodsList.node, el, state));
-    products.forEach((el) => (el.onProductPage = (id: number) => this.onProductPage(id)));
+    products.forEach((el) => (el.onProductPage = (id: number): void => this.onProductPage(id)));
   }
 }

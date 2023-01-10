@@ -3,10 +3,10 @@ import { State } from '../../../../common/state';
 import { products, Product } from '../../../../data/data';
 
 export class CategoryCheckbox extends Control {
-  filtration!: () => void;
-  listOfCounterEl: Array<HTMLElement> = [];
-  currentType!: string;
-  listOfCheckedEl: Array<HTMLElement> = [];
+  public filtration!: () => void;
+  private listOfCounterEl: Array<HTMLElement> = [];
+  private currentType!: string;
+  private listOfCheckedEl: Array<HTMLElement> = [];
   constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_checkbox', '');
     this.currentType = type;
@@ -20,7 +20,7 @@ export class CategoryCheckbox extends Control {
 
     const productsValue: { [key: string]: number } = {};
 
-    const categories = products.forEach((it: Product) => {
+    products.forEach((it: Product) => {
       if (type === 'category') {
         if (productsValue[it.category] === undefined) {
           productsValue[it.category] = 1;
@@ -43,15 +43,15 @@ export class CategoryCheckbox extends Control {
       const categoryRadio: { node: HTMLInputElement } = new Control(categoryLabel.node, 'input', 'category_item_radio');
       categoryRadio.node.type = 'checkbox';
       this.listOfCheckedEl.push(categoryRadio.node);
-      categoryRadio.node.onclick = () => {
+      categoryRadio.node.onclick = (): void => {
         if (categoryRadio.node.checked) {
           this.addGoods(key, state, type);
         } else {
           this.removeGoods(key, state, type);
         }
       };
-      const customCheckbox = new Control(categoryLabel.node, 'span', 'category_custom_check');
-      const categoryItemName = new Control(categoryLabel.node, 'p', 'category_item_text', `${key}`);
+      new Control(categoryLabel.node, 'span', 'category_custom_check');
+      new Control(categoryLabel.node, 'p', 'category_item_text', `${key}`);
       const categoryItemCount = new Control(
         categoryItemBlock.node,
         'p',
@@ -63,18 +63,19 @@ export class CategoryCheckbox extends Control {
     }
 
     state.onUpdate.add((type: string) => {
-      // TODO delete any type;
       if (type === 'resetFilters') {
-        this.listOfCheckedEl.forEach((el: any) => {
-          el.checked = false;
+        this.listOfCheckedEl.forEach((el) => {
+          (el as HTMLInputElement).checked = false;
         });
       }
     });
 
     state.onUpdate.add((type: string) => {
       if (type === 'sortCount') {
-        const getCounts: { category: { [key: string]: number }; brand: { [key: string]: number } } =
-          state.getData('sortCount');
+        const getCounts = state.getData('sortCount') as {
+          category: { [key: string]: number };
+          brand: { [key: string]: number };
+        };
         let counter = 0;
         for (const key in productsValue) {
           if (this.currentType === 'category') {
@@ -88,12 +89,12 @@ export class CategoryCheckbox extends Control {
     });
   }
 
-  addGoods(product: string, state: State, type: string) {
+  private addGoods(product: string, state: State, type: string): void {
     state.setData(product, type);
     this.filtration();
   }
 
-  removeGoods(product: string, state: State, type: string) {
+  private removeGoods(product: string, state: State, type: string): void {
     state.deleteData(product, type);
     this.filtration();
   }

@@ -1,11 +1,10 @@
 import Control from '../../common/control';
 import logo from '../../../assets/svg/logo.svg';
-import cartMenu from '../../../assets/images/cart.png';
 import { CartDataItem, State } from '../../common/state';
 
 export class Header extends Control {
-  onMainPage!: () => void;
-  onCartPage!: () => void;
+  public onMainPage!: () => void;
+  public onCartPage!: () => void;
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'header', 'header', '');
 
@@ -13,25 +12,34 @@ export class Header extends Control {
     const headerLogo: { node: HTMLImageElement } = new Control(headerInner.node, 'img', 'header_logo', '');
     headerLogo.node.src = logo;
     headerLogo.node.alt = 'image logo';
-    headerLogo.node.onclick = () => this.onMainPage();
+    headerLogo.node.onclick = (): void => this.onMainPage();
 
     const headerSumBlock = new Control(headerInner.node, 'div', 'header_inner_sum', '');
-    const headerSumText = new Control(headerSumBlock.node, 'span', 'header_sum_text', 'Cart total');
+    new Control(headerSumBlock.node, 'span', 'header_sum_text', 'Cart total');
 
     const cartData = state.getData('cartData') as CartDataItem[];
-    const headerSumNumber: number = cartData.reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
+    const headerSumNumber: number = cartData.reduce(
+      (accum: number, current: CartDataItem) => accum + current.price * current.amount,
+      0
+    );
     const headerSum = new Control(headerSumBlock.node, 'span', 'header_sum', `€${headerSumNumber}.00`);
 
-    let headerCartItemsNumber: number = cartData.reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
+    const headerCartItemsNumber: number = cartData.reduce(
+      (accum: number, current: CartDataItem) => accum + current.amount,
+      0
+    );
     const headerCart = new Control(headerInner.node, 'div', 'header_cart', '');
     const headerCartItems = new Control(headerCart.node, 'p', 'header_cart-items', headerCartItemsNumber.toString());
-    headerCart.node.onclick = () => this.onCartPage();
+    headerCart.node.onclick = (): void => this.onCartPage();
 
     state.onUpdate.add((type) => {
       if (type === 'cartData') {
         const cartData = state.getData('cartData') as CartDataItem[];
-        let newPrice = cartData.reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
-        let newAmount = cartData.reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
+        const newPrice = cartData.reduce(
+          (accum: number, current: CartDataItem) => accum + current.price * current.amount,
+          0
+        );
+        const newAmount = cartData.reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
         headerSum.node.textContent = `€${newPrice}.00`;
         headerCartItems.node.textContent = newAmount.toString();
       }

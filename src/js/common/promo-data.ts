@@ -9,7 +9,7 @@ export class PromoData {
     });
   }
 
-  static load(): string[] | void {
+  public static load(): string[] | void {
     const loaded: string | null = localStorage.getItem('savedPromoState');
     if (loaded) return new PromoData(JSON.parse(loaded).value).value;
   }
@@ -18,7 +18,7 @@ export class PromoData {
     localStorage.setItem('savedPromoState', JSON.stringify(this));
   }
 
-  static getData(): string[] {
+  public static getData(): string[] {
     const defaultData: string[] = [];
     let cartData: string[];
     try {

@@ -13,7 +13,7 @@ export class CartData {
     });
   }
 
-  static load(): CartDataItem[] | void {
+  public static load(): CartDataItem[] | void {
     const loaded: string | null = localStorage.getItem('savedCartState');
     if (loaded) return new CartData(JSON.parse(loaded).value).value;
   }
@@ -22,7 +22,7 @@ export class CartData {
     localStorage.setItem('savedCartState', JSON.stringify(this));
   }
 
-  static getData(): CartDataItem[] {
+  public static getData(): CartDataItem[] {
     const defaultData: CartDataItem[] = [];
     let cartData: CartDataItem[];
     try {

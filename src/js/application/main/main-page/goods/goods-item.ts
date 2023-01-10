@@ -1,10 +1,10 @@
-import { CartDataItem, State } from '../../../../common/state';
+import { State } from '../../../../common/state';
 import Control from '../../../../common/control';
 import { Product } from '../../../../data/data';
 import { CartButton } from './cart-button';
 
 export class GoodsItem extends Control {
-  onProductPage!: (id: number) => void;
+  public onProductPage!: (id: number) => void;
 
   constructor(parendNode: HTMLElement, product: Product, state: State) {
     super(parendNode, 'li', 'goods_product', '');
@@ -24,6 +24,6 @@ export class GoodsItem extends Control {
       'goods_product_button',
       'Details'
     );
-    detailsButton.node.onclick = () => this.onProductPage(product.id);
+    detailsButton.node.onclick = (): void => this.onProductPage(product.id);
   }
 }

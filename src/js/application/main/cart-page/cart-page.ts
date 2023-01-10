@@ -11,8 +11,8 @@ export class CartPage extends Control {
     const productsInCart = new Control(this.node, 'div', 'cart_products');
     const productsInCartWrapper = new Control(productsInCart.node, 'div', 'cart_products-wrapper');
     new Control(productsInCartWrapper.node, 'div', 'cart_products-title', 'Products In Cart');
-    const productsList = new CartProductList(productsInCart.node, state);
+    new CartProductList(productsInCart.node, state);
     const summary = new CartSummary(this.node, state);
-    summary.closeCart = () => this.closeCart();
+    summary.closeCart = (): void => this.closeCart();
   }
 }

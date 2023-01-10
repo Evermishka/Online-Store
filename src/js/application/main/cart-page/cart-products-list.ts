@@ -25,7 +25,7 @@ export class CartProductList extends Control {
         const productInfo = new Control(product.node, 'div', 'products-list_info');
         new Control(productInfo.node, 'p', 'products-list_stock', `Stock: ${productData.stock}`);
         const cartProductListControls = new CartProductListControls(productInfo.node, state, productData);
-        cartProductListControls.deleteCartItem = () => product.destroy();
+        cartProductListControls.deleteCartItem = (): void => product.destroy();
         new Control(productInfo.node, 'p', 'products-list_price', `€${productData.price}.00`);
       }
     });
