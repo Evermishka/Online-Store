@@ -20,6 +20,7 @@ export type FilterData = {
     sortValue: null | string;
   };
   sortSearch: string;
+  isEmpty: boolean;
 };
 
 export interface StateData {
@@ -94,6 +95,10 @@ export class State {
         };
         this.onUpdate.emit('resetFilters');
         break;
+      case 'isEmpty':
+        this._data.filters[key] = value;
+        this.onUpdate.emit('isEmpty');
+        break;
       default:
         break;
     }
@@ -145,6 +150,8 @@ export class State {
       case 'sortOptions':
         return this._data.filters[key];
       case 'sortSearch':
+        return this._data.filters[key];
+      case 'isEmpty':
         return this._data.filters[key];
       default:
         break;

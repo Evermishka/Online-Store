@@ -19,8 +19,9 @@ const state = new State({
       sortValue: null,
     },
     sortSearch: '',
+    isEmpty: false,
   },
-  promoData: PromoData.getData()
+  promoData: PromoData.getData(),
 });
 const app = new App(document.body, state);
 

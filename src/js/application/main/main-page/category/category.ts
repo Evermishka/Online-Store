@@ -80,6 +80,11 @@ export class Category extends Control {
       }
     }
 
+    if (finishProductList.length === 0) {
+      state.setData(true, 'isEmpty');
+    } else {
+      state.setData(false, 'isEmpty');
+    }
     state.setData(finishProductList, 'sortGoods');
     state.setData(filterCounts, 'sortCount');
   }
