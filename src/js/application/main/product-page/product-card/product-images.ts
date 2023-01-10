@@ -19,7 +19,7 @@ export class ProductImages extends Control {
       productImageControl.node.src = el;
       productImageControl.node.width = CONTROL_WIDTH;
       productImageControl.node.tabIndex = 0;
-      productImageControl.node.onclick = () => {
+      productImageControl.node.onclick = (): void => {
         productImage.node.src = el;
       };
     });

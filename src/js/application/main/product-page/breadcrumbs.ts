@@ -8,7 +8,7 @@ export class Breadcrumbs extends Control {
     const mainPageItem = new Control(this.node, 'li', 'breadcrumbs_item');
     const mainPageLink: { node: HTMLLinkElement } = new Control(mainPageItem.node, 'a', 'breadcrumbs_link', 'STORE');
     mainPageLink.node.href = '#';
-    mainPageLink.node.onclick = () => this.onMainPage();
+    mainPageLink.node.onclick = (): void => this.onMainPage();
     new Control(this.node, 'li', 'breadcrumbs_item', product.category.toUpperCase());
     new Control(this.node, 'li', 'breadcrumbs_item', product.brand.toUpperCase());
     new Control(this.node, 'li', 'breadcrumbs_item', product.title.toUpperCase());

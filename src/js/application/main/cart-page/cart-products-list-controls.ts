@@ -16,7 +16,7 @@ export class CartProductListControls extends Control {
         'products-list_decrease-button',
         '-'
       );
-      decreaseAmountButton.node.onclick = () => {
+      decreaseAmountButton.node.onclick = (): void => {
         this.decrease(productData, state, increaseAmountButton.node, productAmount.node);
       };
       const productAmountNumber: number = productElement.amount;
@@ -30,13 +30,13 @@ export class CartProductListControls extends Control {
       if (productAmountNumber === productData.stock) {
         increaseAmountButton.node.disabled = true;
       }
-      increaseAmountButton.node.onclick = () => {
+      increaseAmountButton.node.onclick = (): void => {
         this.increase(productData, state, increaseAmountButton.node, productAmount.node);
       };
     }
   }
 
-  private decrease(productData: Product, state: State, button: HTMLButtonElement, productAmount: HTMLElement) {
+  private decrease(productData: Product, state: State, button: HTMLButtonElement, productAmount: HTMLElement): void {
     const cartData = state.getData('cartData') as CartDataItem[];
     const product = cartData.find((el) => el.id === productData.id);
     if (button.disabled) button.disabled = false;
@@ -52,7 +52,7 @@ export class CartProductListControls extends Control {
     }
   }
 
-  private increase(productData: Product, state: State, button: HTMLButtonElement, productAmount: HTMLElement) {
+  private increase(productData: Product, state: State, button: HTMLButtonElement, productAmount: HTMLElement): void {
     const cartData = state.getData('cartData') as CartDataItem[];
     const product = cartData.find((el) => el.id === productData.id);
     if (product && product.amount < productData.stock) {

@@ -5,16 +5,16 @@ class Signal<ListenerType> {
     this.listeners = [];
   }
 
-  add(listener: (params: ListenerType) => void) {
+  public add(listener: (params: ListenerType) => void): void {
     this.listeners.push(listener);
     console.log(this.listeners);
   }
 
-  remove(listener: (params: ListenerType) => void) {
+  public remove(listener: (params: ListenerType) => void): void {
     this.listeners = this.listeners.filter((elem) => elem !== listener);
   }
 
-  emit(params: ListenerType) {
+  public emit(params: ListenerType): void {
     this.listeners.forEach((listener) => listener(params));
   }
 }

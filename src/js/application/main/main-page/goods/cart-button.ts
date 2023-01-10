@@ -13,7 +13,7 @@ export class CartButton extends Control<HTMLButtonElement> {
       parendNode,
       'button',
       'goods_product_button',
-      state.getData('cartData').find((el: CartDataItem) => el.id === product.id)
+      (state.getData('cartData') as Array<CartDataItem>).find((el: CartDataItem) => el.id === product.id)
         ? CartButtonText.remove
         : CartButtonText.add
     );

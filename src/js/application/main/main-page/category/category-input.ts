@@ -3,8 +3,8 @@ import { State } from '../../../../common/state';
 import { Product, products } from '../../../../data/data';
 
 export class CategoryInput extends Control {
-  filtration!: () => void;
-  type!: string;
+  public filtration!: () => void;
+  private type!: string;
   constructor(parentNode: HTMLElement, type: string, state: State) {
     super(parentNode, 'div', 'category_range_inner');
     this.type = type;
@@ -60,13 +60,13 @@ export class CategoryInput extends Control {
     inputFirst.node.min = minValue.toString();
     inputFirst.node.max = maxValue.toString();
     inputFirst.node.value = minValue.toString();
-    inputFirst.node.oninput = () => inputOne();
+    inputFirst.node.oninput = (): void => inputOne();
     const inputSecond = new Control<HTMLInputElement>(inputInner.node, 'input', 'category_input');
     inputSecond.node.type = 'range';
     inputSecond.node.min = minValue.toString();
     inputSecond.node.max = maxValue.toString();
     inputSecond.node.value = maxValue.toString();
-    inputSecond.node.oninput = () => inputTwo();
+    inputSecond.node.oninput = (): void => inputTwo();
 
     state.onUpdate.add((type: string) => {
       if (type === 'resetFilters') {
@@ -85,7 +85,7 @@ export class CategoryInput extends Control {
     });
 
     const minGap = 0;
-    const inputOne = () => {
+    const inputOne = (): void => {
       if (parseInt(inputSecond.node.value) - parseInt(inputFirst.node.value) <= minGap) {
         inputFirst.node.value = String(parseInt(inputSecond.node.value) - minGap);
       }
@@ -113,7 +113,7 @@ export class CategoryInput extends Control {
 
       fillColor();
     };
-    const inputTwo = () => {
+    const inputTwo = (): void => {
       if (parseInt(inputSecond.node.value) - parseInt(inputFirst.node.value) <= minGap) {
         inputSecond.node.value = String(parseInt(inputFirst.node.value) + minGap);
       }
@@ -140,7 +140,7 @@ export class CategoryInput extends Control {
       }
       fillColor();
     };
-    function fillColor() {
+    function fillColor(): void {
       const percent1 = (+inputFirst.node.value / +inputFirst.node.max) * 100;
       const percent2 = (+inputSecond.node.value / +inputSecond.node.max) * 100;
 
@@ -148,7 +148,7 @@ export class CategoryInput extends Control {
     }
   }
 
-  private setValue(value: { min: number; max: number }, state: State, type: string) {
+  private setValue(value: { min: number; max: number }, state: State, type: string): void {
     state.setData(
       {
         min: value.min,

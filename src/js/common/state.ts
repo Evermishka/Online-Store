@@ -36,66 +36,77 @@ export class State {
   }
 
   public setData(value: CartDataItem | string | FilterData[keyof FilterData] | null, key: string): void {
+    let currentValue;
     switch (key) {
       case 'cartData':
-        if (value && typeof value === 'object' && 'id' in value) {
-          this._data[key].push(value);
-          this.onUpdate.emit(key);
-        }
+        currentValue = value as CartDataItem;
+        this._data[key].push(currentValue);
+        this.onUpdate.emit(key);
+
         break;
       case 'promoData':
-        if (typeof value === 'string') {
-          this._data[key].push(value);
-          this.onUpdate.emit(key);
-        }
+        currentValue = value as string;
+        this._data[key].push(currentValue);
+        this.onUpdate.emit(key);
+
         break;
       case 'category':
-        if (typeof value === 'string') {
-          this._data.filters[key].push(value.toLowerCase());
-        }
+        currentValue = value as string;
+        this._data.filters[key].push(currentValue.toLowerCase());
+
         break;
       case 'brand':
-        if (typeof value === 'string') {
-          this._data.filters[key].push(value.toLowerCase());
-        }
+        currentValue = value as string;
+        this._data.filters[key].push(currentValue.toLowerCase());
+
         break;
       case 'price':
-        if (value && typeof value === 'object' && 'min' in value) {
-          this._data.filters.price.min = value.min;
-          this._data.filters.price.max = value.max;
-          this.onUpdate.emit('sortGoods');
-        }
+        currentValue = {
+          min: (value as { min: number }).min,
+          max: (value as { max: number }).max as number,
+        };
+
+        this._data.filters.price.min = currentValue.min;
+        this._data.filters.price.max = currentValue.max;
+        this.onUpdate.emit('sortGoods');
+
         break;
       case 'stock':
-        if (value && typeof value === 'object' && 'min' in value) {
-          this._data.filters.stock.min = value.min;
-          this._data.filters.stock.max = value.max;
-          this.onUpdate.emit('sortGoods');
-        }
+        currentValue = {
+          min: (value as { min: number }).min,
+          max: (value as { max: number }).max as number,
+        };
+
+        this._data.filters.stock.min = currentValue.min;
+        this._data.filters.stock.max = currentValue.max;
+        this.onUpdate.emit('sortGoods');
+
         break;
       case 'sortGoods':
-        if (Array.isArray(value) && typeof value === 'string') {
-          this._data.filters[key] = value;
-          this.onUpdate.emit('sortGoods');
-        }
+        currentValue = value as Array<Product>;
+        this._data.filters[key] = currentValue;
+        this.onUpdate.emit('sortGoods');
         break;
       case 'sortCount':
-        if (value && typeof value === 'object' && 'brand' in value) {
-          this._data.filters[key] = value;
-          this.onUpdate.emit('sortCount');
-        }
+        currentValue = value as { category: { [key: string]: number }; brand: { [key: string]: number } };
+        this._data.filters[key] = currentValue;
+        this.onUpdate.emit('sortCount');
+
         break;
       case 'sortOptions':
-        if (value && typeof value === 'object' && 'isSort' in value) {
-          this._data.filters[key] = value;
-          this.onUpdate.emit('sortOptions');
-        }
+        currentValue = value as {
+          isSort: boolean;
+          sortType: null | string;
+          sortValue: null | string;
+        };
+        this._data.filters[key] = currentValue;
+        this.onUpdate.emit('sortOptions');
+
         break;
       case 'sortSearch':
-        if (typeof value === 'string') {
-          this._data.filters[key] = value.toLowerCase();
-          this.onUpdate.emit('sortSearch');
-        }
+        currentValue = value as string;
+        this._data.filters[key] = currentValue.toLowerCase();
+        this.onUpdate.emit('sortSearch');
         break;
       case 'resetFilters':
         this._data.filters = {
@@ -152,8 +163,9 @@ export class State {
     }
   }
 
-  
-  public getData(key: string): CartDataItem[] | string[] | FilterData[keyof FilterData] | void{
+  public getData(
+    key: string
+  ): CartDataItem[] | string[] | FilterData[keyof FilterData] | void | { min: number; max: number } | boolean {
     switch (key) {
       case 'cartData':
         return this._data[key];

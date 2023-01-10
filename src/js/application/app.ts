@@ -9,26 +9,26 @@ export class App extends Control {
     super(parendNode, 'div', 'wrapper');
     const header = new Header(this.node, state);
     const main = new Control(this.node, 'main', 'main');
-    const footer = new Footer(this.node);
+    new Footer(this.node);
 
     this.createApp(header, main, 'main-page', state);
   }
 
-  createApp(header: Header, main: { node: HTMLElement }, screen: string, state: State, id?: number) {
+  private createApp(header: Header, main: { node: HTMLElement }, screen: string, state: State, id?: number): void {
     const mainInner = new Main(main.node, screen, state, id);
-    mainInner.onProductPage = (id: number) => {
+    mainInner.onProductPage = (id: number): void => {
       mainInner.destroy();
       this.createApp(header, main, 'product-page', state, id);
     };
-    mainInner.onCartPage = () => {
+    mainInner.onCartPage = (): void => {
       mainInner.destroy();
       this.createApp(header, main, 'cart-page', state);
     };
-    mainInner.onMainPage = () => {
+    mainInner.onMainPage = (): void => {
       mainInner.destroy();
       this.createApp(header, main, 'main-page', state);
     };
-    mainInner.closeCart = () => {
+    mainInner.closeCart = (): void => {
       state.resetData();
       let seconds = 3;
       const cartCloseText = new Control(
@@ -47,12 +47,12 @@ export class App extends Control {
         this.createApp(header, main, 'main-page', state);
       }, 3000);
     };
-    header.onMainPage = () => {
+    header.onMainPage = (): void => {
       mainInner.destroy();
       this.createApp(header, main, 'main-page', state);
       state.setData(null, 'resetFilters');
     };
-    header.onCartPage = () => {
+    header.onCartPage = (): void => {
       mainInner.destroy();
       this.createApp(header, main, 'cart-page', state);
     };

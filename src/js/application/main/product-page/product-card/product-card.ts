@@ -16,6 +16,6 @@ export class ProductCard extends Control {
     new ProductImages(productCardWrapper.node, product.images);
     new ProductDetails(productCardWrapper.node, product);
     const productPurchase = new ProductPurchase(productWrapper.node, product, state);
-    productPurchase.onCartPage = () => this.onCartPage();
+    productPurchase.onCartPage = (): void => this.onCartPage();
   }
 }

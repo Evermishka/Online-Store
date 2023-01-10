@@ -16,12 +16,12 @@ export class PromoCodes extends Control {
     this.renderAppliedCodes(state);
     this.promoCodeInput = new Control(this.node, 'input', 'promo-codes_input');
     this.promoCodeInput.node.type = 'text';
-    this.promoCodeInput.node.oninput = () => this.addPromo(this.promoCodeInput.node.value, state);
+    this.promoCodeInput.node.oninput = (): void => this.addPromo(this.promoCodeInput.node.value, state);
     this.promoCodeInput.node.placeholder = 'Enter promo code';
     new Control(this.node, 'p', 'promo-codes_input-text', `Promo for test: 'RS', 'EPM'`);
   }
 
-  private renderAppliedCodes(state: State) {
+  private renderAppliedCodes(state: State): void {
     const appliedCodesData = state.getData('promoData') as string[];
     if (appliedCodesData.length > 0) {
       if (this.appliedCodesList) {
@@ -42,7 +42,7 @@ export class PromoCodes extends Control {
           const appliedCodesItem = new Control(this.appliedCodesList.node, 'li', 'promo-codes_inner-wrapper');
           new Control(appliedCodesItem.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}%`);
           const removeCodeButton = new Control(appliedCodesItem.node, 'button', 'promo-codes_button', 'DROP');
-          removeCodeButton.node.onclick = () => this.deletePromo(el, state);
+          removeCodeButton.node.onclick = (): void => this.deletePromo(el, state);
         }
       });
     } else {
@@ -62,7 +62,7 @@ export class PromoCodes extends Control {
       const promoCodeWrapper = new Control(this.promoCodesWrapper.node, 'div', 'promo-codes_inner-wrapper');
       new Control(promoCodeWrapper.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}%`);
       const addCodeButton = new Control(promoCodeWrapper.node, 'button', 'promo-codes_button', 'ADD');
-      addCodeButton.node.onclick = () => {
+      addCodeButton.node.onclick = (): void => {
         state.setData(promoCode.name, 'promoData');
         this.promoCodeInput.node.value = '';
         promoCodeWrapper.destroy();

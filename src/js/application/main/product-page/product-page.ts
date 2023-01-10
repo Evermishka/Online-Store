@@ -13,9 +13,9 @@ export class ProductPage extends Control {
     const product = products.find((el) => el.id === id);
     if (product) {
       const breadcrumbs = new Breadcrumbs(this.node, product);
-      breadcrumbs.onMainPage = () => this.onMainPage();
+      breadcrumbs.onMainPage = (): void => this.onMainPage();
       const productCard = new ProductCard(this.node, product, state);
-      productCard.onCartPage = () => this.onCartPage();
+      productCard.onCartPage = (): void => this.onCartPage();
     }
   }
 }
