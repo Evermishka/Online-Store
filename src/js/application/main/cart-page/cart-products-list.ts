@@ -3,12 +3,13 @@ import { CartDataItem, State } from '../../../common/state';
 import { products } from '../../../data/data';
 import { CartProductListControls } from './cart-products-list-controls';
 
-const PRODUCT_IMAGE_WIDTH: number = 100;
+const PRODUCT_IMAGE_WIDTH = 100;
 
 export class CartProductList extends Control {
   constructor(parentNode: HTMLElement, state: State) {
     super(parentNode, 'ul', 'products-list');
-    state.getData('cartData').forEach((el: CartDataItem, index: number) => {
+    const cartData = state.getData('cartData') as CartDataItem[];
+    cartData.forEach((el: CartDataItem, index: number) => {
       const productData = products.find((elem) => elem.id === el.id);
       if (productData) {
         const product = new Control(this.node, 'li', 'products-list_item', '');

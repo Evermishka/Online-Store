@@ -1,7 +1,7 @@
 import Control from '../../../../common/control';
 
-const IMAGE_WIDTH: number = 400;
-const CONTROL_WIDTH: number = 50;
+const IMAGE_WIDTH = 400;
+const CONTROL_WIDTH = 50;
 
 export class ProductImages extends Control {
   constructor(parendNode: HTMLElement, images: Array<string>) {

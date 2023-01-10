@@ -26,7 +26,7 @@ export class CartButton extends Control<HTMLButtonElement> {
         this.removeFromCart({ id: product.id, price: product.price, amount: 1 }, state);
       }
     };
-  }  
+  }
 
   public addToCart(productInfo: CartDataItem, state: State): void {
     state.setData(productInfo, 'cartData');

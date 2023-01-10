@@ -5,8 +5,8 @@ const cardClasses: string[] = [
   'purchase_card-input__default',
   'purchase_card-input__amex',
   'purchase_card-input__visa',
-  'purchase_card-input__mastercard'
-]
+  'purchase_card-input__mastercard',
+];
 
 export class FormCardNumberLine extends FormLine {
   constructor(parentNode: HTMLElement, formData: PurchaseData) {

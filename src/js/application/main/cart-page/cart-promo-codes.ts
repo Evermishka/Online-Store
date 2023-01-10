@@ -22,7 +22,7 @@ export class PromoCodes extends Control {
   }
 
   private renderAppliedCodes(state: State) {
-    const appliedCodesData: Array<string> = state.getData('promoData');
+    const appliedCodesData = state.getData('promoData') as string[];
     if (appliedCodesData.length > 0) {
       if (this.appliedCodesList) {
         this.appliedCodesList.destroy();
@@ -56,7 +56,7 @@ export class PromoCodes extends Control {
 
   private addPromo(value: string, state: State): void {
     const promoCode = promoCodes.find((el) => el.name === value);
-    const appliedPromoCodes: string[] = state.getData('promoData');
+    const appliedPromoCodes = state.getData('promoData') as string[];
     if (promoCode && !appliedPromoCodes.find((elem) => elem === promoCode.name)) {
       this.promoCodesWrapper = new Control(this.node, 'div', 'promo-codes_wrapper');
       const promoCodeWrapper = new Control(this.promoCodesWrapper.node, 'div', 'promo-codes_inner-wrapper');

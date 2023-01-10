@@ -1,13 +1,13 @@
 import { Product } from '../data/data';
 import Signal from './signal';
 
-export type CartDataItem = {
+export interface CartDataItem {
   id: number;
   price: number;
   amount: number;
-};
+}
 
-export type FilterData = {
+export interface FilterData {
   category: Array<string>;
   brand: Array<string>;
   price: { min: number; max: number };
@@ -20,7 +20,7 @@ export type FilterData = {
     sortValue: null | string;
   };
   sortSearch: string;
-};
+}
 
 export interface StateData {
   cartData: CartDataItem[];
@@ -29,53 +29,73 @@ export interface StateData {
 }
 
 export class State {
-  private _data: any;
-  public onUpdate: Signal<any> = new Signal();
+  private _data: StateData;
+  public onUpdate: Signal<string> = new Signal();
   constructor(initialState: StateData) {
     this._data = initialState;
   }
 
-  setData(value: any, key: string) {
+  public setData(value: CartDataItem | string | FilterData[keyof FilterData] | null, key: string): void {
     switch (key) {
       case 'cartData':
-        this._data[key].push(value);
-        this.onUpdate.emit(key);
+        if (value && typeof value === 'object' && 'id' in value) {
+          this._data[key].push(value);
+          this.onUpdate.emit(key);
+        }
         break;
       case 'promoData':
-        this._data[key].push(value);
-        this.onUpdate.emit(key);
+        if (typeof value === 'string') {
+          this._data[key].push(value);
+          this.onUpdate.emit(key);
+        }
         break;
       case 'category':
-        this._data.filters[key].push(value.toLowerCase());
+        if (typeof value === 'string') {
+          this._data.filters[key].push(value.toLowerCase());
+        }
         break;
       case 'brand':
-        this._data.filters[key].push(value.toLowerCase());
+        if (typeof value === 'string') {
+          this._data.filters[key].push(value.toLowerCase());
+        }
         break;
       case 'price':
-        this._data.filters.price.min = value.min;
-        this._data.filters.price.max = value.max;
-        this.onUpdate.emit('sortGoods');
+        if (value && typeof value === 'object' && 'min' in value) {
+          this._data.filters.price.min = value.min;
+          this._data.filters.price.max = value.max;
+          this.onUpdate.emit('sortGoods');
+        }
         break;
       case 'stock':
-        this._data.filters.stock.min = value.min;
-        this._data.filters.stock.max = value.max;
-        this.onUpdate.emit('sortGoods');
+        if (value && typeof value === 'object' && 'min' in value) {
+          this._data.filters.stock.min = value.min;
+          this._data.filters.stock.max = value.max;
+          this.onUpdate.emit('sortGoods');
+        }
         break;
       case 'sortGoods':
-        this._data.filters[key] = value;
-        this.onUpdate.emit('sortGoods');
+        if (Array.isArray(value) && typeof value === 'string') {
+          this._data.filters[key] = value;
+          this.onUpdate.emit('sortGoods');
+        }
         break;
       case 'sortCount':
-        this._data.filters[key] = value;
-        this.onUpdate.emit('sortCount');
+        if (value && typeof value === 'object' && 'brand' in value) {
+          this._data.filters[key] = value;
+          this.onUpdate.emit('sortCount');
+        }
         break;
       case 'sortOptions':
-        this._data.filters[key] = value;
-        this.onUpdate.emit('sortOptions');
+        if (value && typeof value === 'object' && 'isSort' in value) {
+          this._data.filters[key] = value;
+          this.onUpdate.emit('sortOptions');
+        }
         break;
       case 'sortSearch':
-        this._data.filters[key] = value.toLowerCase();
-        this.onUpdate.emit('sortSearch');
+        if (typeof value === 'string') {
+          this._data.filters[key] = value.toLowerCase();
+          this.onUpdate.emit('sortSearch');
+        }
         break;
       case 'resetFilters':
         this._data.filters = {
@@ -99,32 +119,41 @@ export class State {
     }
   }
 
-  deleteData(value: any, key: string) {
+  public deleteData(value: CartDataItem | string, key: string): void {
     switch (key) {
       case 'cartData':
-        const indexCart = this._data[key].findIndex((el: CartDataItem) => el.id === value.id);
-        this._data[key].splice(indexCart, 1);
-        this.onUpdate.emit(key);
+        if (typeof value !== 'string' && 'id' in value) {
+          const indexCart = this._data[key].findIndex((el: CartDataItem) => el.id === value.id);
+          this._data[key].splice(indexCart, 1);
+          this.onUpdate.emit(key);
+        }
         break;
       case 'promoData':
-        const indexPromo = this._data[key].findIndex((el: string) => el === value);
-        this._data[key].splice(indexPromo, 1);
-        this.onUpdate.emit(key);
+        if (typeof value === 'string') {
+          const indexPromo = this._data[key].findIndex((el: string) => el === value);
+          this._data[key].splice(indexPromo, 1);
+          this.onUpdate.emit(key);
+        }
         break;
       case 'category':
-        const indexCategory = this._data.filters[key].findIndex((el: string) => el === value);
-        this._data.filters[key].splice(indexCategory, 1);
+        if (typeof value === 'string') {
+          const indexCategory = this._data.filters[key].findIndex((el: string) => el === value);
+          this._data.filters[key].splice(indexCategory, 1);
+        }
         break;
       case 'brand':
-        const indexBrand = this._data.filters[key].findIndex((el: string) => el === value);
-        this._data.filters[key].splice(indexBrand, 1);
+        if (typeof value === 'string') {
+          const indexBrand = this._data.filters[key].findIndex((el: string) => el === value);
+          this._data.filters[key].splice(indexBrand, 1);
+        }
         break;
       default:
         break;
     }
   }
 
-  getData(key: string) {
+  
+  public getData(key: string): CartDataItem[] | string[] | FilterData[keyof FilterData] | void{
     switch (key) {
       case 'cartData':
         return this._data[key];
@@ -151,7 +180,7 @@ export class State {
     }
   }
 
-  resetData() {
+  public resetData(): void {
     this._data.cartData = [];
     this._data.promoData = [];
     this.onUpdate.emit('cartData');

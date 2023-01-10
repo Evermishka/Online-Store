@@ -20,7 +20,7 @@ const state = new State({
     },
     sortSearch: '',
   },
-  promoData: PromoData.getData()
+  promoData: PromoData.getData(),
 });
 const app = new App(document.body, state);
 

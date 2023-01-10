@@ -141,8 +141,8 @@ export class CategoryInput extends Control {
       fillColor();
     };
     function fillColor() {
-      let percent1 = (+inputFirst.node.value / +inputFirst.node.max) * 100;
-      let percent2 = (+inputSecond.node.value / +inputSecond.node.max) * 100;
+      const percent1 = (+inputFirst.node.value / +inputFirst.node.max) * 100;
+      const percent2 = (+inputSecond.node.value / +inputSecond.node.max) * 100;
 
       inputTrack.node.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #0077c0 ${percent1}% , #0077c0 ${percent2}%, #dadae5 ${percent2}%)`;
     }

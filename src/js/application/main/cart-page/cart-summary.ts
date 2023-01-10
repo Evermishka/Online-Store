@@ -47,12 +47,12 @@ export class CartSummary extends Control {
   }
 
   private calculateAmount(state: State): number {
-    return state.getData('cartData').reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
+    const cartData = state.getData('cartData') as CartDataItem[];
+    return cartData.reduce((accum: number, current: CartDataItem) => accum + current.amount, 0);
   }
   private calculatePrice(state: State): number {
-    return state
-      .getData('cartData')
-      .reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
+    const cartData = state.getData('cartData') as CartDataItem[];
+    return cartData.reduce((accum: number, current: CartDataItem) => accum + current.price * current.amount, 0);
   }
   private calculateDiscountPrice(data: string[], price: number): number {
     const totalDiscount = data.reduce((acum, el) => {
@@ -71,7 +71,7 @@ export class CartSummary extends Control {
     this.renderDiscountSum(state, this.calculatePrice(state));
   }
   private renderDiscountSum(state: State, price: number): void {
-    const appliedCodesData: Array<string> = state.getData('promoData');
+    const appliedCodesData = state.getData('promoData') as string[];
     if (appliedCodesData.length > 0) {
       const totalPriceNew = this.calculateDiscountPrice(appliedCodesData, price);
       this.summaryTotalPrice.node.style.textDecoration = 'line-through';

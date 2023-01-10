@@ -29,9 +29,14 @@ export class App extends Control {
       this.createApp(header, main, 'main-page', state);
     };
     mainInner.closeCart = () => {
-      state.resetData();     
-      let seconds: number = 3;      
-      const cartCloseText = new Control(mainInner.node, 'p', 'cart_close-text', `Thank you for your order. You will be redirected to the main page in ${seconds.toString()} seconds`);
+      state.resetData();
+      let seconds = 3;
+      const cartCloseText = new Control(
+        mainInner.node,
+        'p',
+        'cart_close-text',
+        `Thank you for your order. You will be redirected to the main page in ${seconds.toString()} seconds`
+      );
       const intervalId = setInterval(() => {
         seconds--;
         cartCloseText.node.innerHTML = `Thank you for your order. You will be redirected to the main page in ${seconds.toString()} seconds`;

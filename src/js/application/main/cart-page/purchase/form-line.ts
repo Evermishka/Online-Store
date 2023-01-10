@@ -5,10 +5,10 @@ export class FormLine extends Control {
   public value: string;
   public name: string;
   protected input: Control<HTMLInputElement>;
-  
+
   constructor(parentNode: HTMLElement, formData: PurchaseData) {
     super(parentNode, 'div', 'purchase_line-wrapper');
-    
+
     this.name = formData.name;
     this.value = '';
     const label: { node: HTMLLabelElement } = new Control(this.node, 'label', 'purchase_label', formData.label);

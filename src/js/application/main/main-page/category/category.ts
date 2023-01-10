@@ -56,7 +56,7 @@ export class Category extends Control {
       }
     }
 
-    let filterPriceAndStock: Array<Product> = this.filterPrice(this.filterStock(sortArr, state), state);
+    const filterPriceAndStock: Array<Product> = this.filterPrice(this.filterStock(sortArr, state), state);
     let finishProductList: Array<Product> = filterPriceAndStock;
 
     if (state.getData('sortSearch')) {
@@ -86,10 +86,10 @@ export class Category extends Control {
 
   private sortBySearch(products: Array<Product>, state: State) {
     return products.filter((el: any) => {
-      let searchValue = state.getData('sortSearch');
-      for (let key in el) {
+      const searchValue = state.getData('sortSearch');
+      for (const key in el) {
         if (key !== 'id' && key !== 'thumbnail' && key !== 'images') {
-          let currentValue = el[key].toString().toLowerCase();
+          const currentValue = el[key].toString().toLowerCase();
           if (currentValue.includes(searchValue.toLowerCase())) {
             return el;
           }

@@ -36,7 +36,7 @@ export class CategoryCheckbox extends Control {
       }
     });
 
-    for (let key in productsValue) {
+    for (const key in productsValue) {
       const categoryItem = new Control(categoryCheckboxList.node, 'li', 'category_item', ``);
       const categoryItemBlock = new Control(categoryItem.node, 'div', 'category_item_block', '');
       const categoryLabel = new Control(categoryItemBlock.node, 'label', 'category_item_label', '');
@@ -76,7 +76,7 @@ export class CategoryCheckbox extends Control {
         const getCounts: { category: { [key: string]: number }; brand: { [key: string]: number } } =
           state.getData('sortCount');
         let counter = 0;
-        for (let key in productsValue) {
+        for (const key in productsValue) {
           if (this.currentType === 'category') {
             this.listOfCounterEl[counter].textContent = `${getCounts.category[key]}/${productsValue[key]}`;
           } else if (this.currentType === 'brand') {

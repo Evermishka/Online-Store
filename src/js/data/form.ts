@@ -9,7 +9,7 @@ export interface PurchaseData {
 }
 
 interface formData {
-  [key: string]: PurchaseData
+  [key: string]: PurchaseData;
 }
 
 export const formData: formData = {
@@ -76,4 +76,4 @@ export const formData: formData = {
     error: 'CVV must contain 3 digits',
     validation: /^[0-9]{3}$/i,
   },
-}
+};

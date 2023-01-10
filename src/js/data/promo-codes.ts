@@ -6,10 +6,10 @@ export interface PromoCode {
 export const promoCodes: Array<PromoCode> = [
   {
     name: 'RS',
-    discount: 10
+    discount: 10,
   },
   {
     name: 'EPM',
-    discount: 5
-  }
-]
+    discount: 5,
+  },
+];

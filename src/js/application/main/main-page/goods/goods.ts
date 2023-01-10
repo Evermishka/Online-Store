@@ -30,7 +30,7 @@ export class Goods extends Control {
     });
   }
 
-  createGoods(parentNode: HTMLElement, data: Array<Product>, state: State, size: number = 1) {
+  createGoods(parentNode: HTMLElement, data: Array<Product>, state: State, size = 1) {
     this.goodsList = new Control(parentNode, 'ul', 'goods_list');
     if (size === 1) {
       this.goodsList.node.style.gridTemplateColumns = 'repeat(3, 1fr)';
