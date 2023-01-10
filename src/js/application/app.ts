@@ -29,9 +29,14 @@ export class App extends Control {
       this.createApp(header, main, 'main-page', state);
     };
     mainInner.closeCart = () => {
-      state.resetData();     
-      let seconds: number = 3;      
-      const cartCloseText = new Control(mainInner.node, 'p', 'cart_close-text', `Thank you for your order. You will be redirected to the main page in ${seconds.toString()} seconds`);
+      state.resetData();
+      let seconds: number = 3;
+      const cartCloseText = new Control(
+        mainInner.node,
+        'p',
+        'cart_close-text',
+        `Thank you for your order. You will be redirected to the main page in ${seconds.toString()} seconds`
+      );
       const intervalId = setInterval(() => {
         seconds--;
         cartCloseText.node.innerHTML = `Thank you for your order. You will be redirected to the main page in ${seconds.toString()} seconds`;
@@ -43,6 +48,12 @@ export class App extends Control {
       }, 3000);
     };
     header.onMainPage = () => {
+      const stateListeners = state.getData('stateListeners');
+      stateListeners.forEach((el: () => void, index: number) => {
+        if (index > 0) {
+          state.onUpdate.remove(el);
+        }
+      });
       mainInner.destroy();
       this.createApp(header, main, 'main-page', state);
       state.setData(null, 'resetFilters');
@@ -50,6 +61,12 @@ export class App extends Control {
     header.onCartPage = () => {
       mainInner.destroy();
       this.createApp(header, main, 'cart-page', state);
+      const stateListeners = state.getData('stateListeners');
+      stateListeners.forEach((el: () => void, index: number) => {
+        if (index === stateListeners.length - 1) {
+          state.onUpdate.remove(el);
+        }
+      });
     };
   }
 }

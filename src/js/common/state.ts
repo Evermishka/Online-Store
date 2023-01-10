@@ -153,6 +153,8 @@ export class State {
         return this._data.filters[key];
       case 'isEmpty':
         return this._data.filters[key];
+      case 'stateListeners':
+        return this.onUpdate.listeners;
       default:
         break;
     }

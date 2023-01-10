@@ -62,16 +62,7 @@ export class CategoryCheckbox extends Control {
       this.listOfCounterEl.push(categoryItemCount.node);
     }
 
-    state.onUpdate.add((type: string) => {
-      // TODO delete any type;
-      if (type === 'resetFilters') {
-        this.listOfCheckedEl.forEach((el: any) => {
-          el.checked = false;
-        });
-      }
-    });
-
-    state.onUpdate.add((type: string) => {
+    const categoryCheckUpdate = (type: string) => {
       if (type === 'sortCount') {
         const getCounts: { category: { [key: string]: number }; brand: { [key: string]: number } } =
           state.getData('sortCount');
@@ -85,7 +76,14 @@ export class CategoryCheckbox extends Control {
           counter++;
         }
       }
-    });
+      if (type === 'resetFilters') {
+        this.listOfCheckedEl.forEach((el: any) => {
+          el.checked = false;
+        });
+      }
+    };
+
+    state.onUpdate.add(categoryCheckUpdate);
   }
 
   addGoods(product: string, state: State, type: string) {

@@ -23,7 +23,7 @@ export class Goods extends Control {
 
     this.createGoods(this.node, products, state);
 
-    state.onUpdate.add((type) => {
+    const goodsUpdate = (type: string) => {
       if (type === 'sortGoods') {
         this.goodsList.destroy();
         this.createGoods(this.node, state.getData('sortGoods'), state);
@@ -41,7 +41,9 @@ export class Goods extends Control {
           }
         }
       }
-    });
+    };
+
+    state.onUpdate.add(goodsUpdate);
   }
 
   createGoods(parentNode: HTMLElement, data: Array<Product>, state: State, size: number = 1) {

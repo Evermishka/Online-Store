@@ -26,14 +26,16 @@ export class Category extends Control {
     const categoryInputStock = new CategoryInput(categoryBlock.node, 'stock', state);
     categoryInputStock.filtration = () => this.filtration(state, products);
 
-    state.onUpdate.add((type: string) => {
+    const categoryUpdate = (type: string) => {
       if (type === 'sortOptions' || type === 'sortSearch') {
         this.filtration(state, products);
       }
       if (type === 'resetFilters') {
         this.filtration(state, products);
       }
-    });
+    };
+
+    state.onUpdate.add(categoryUpdate);
   }
 
   private resetFiltres(state: State) {

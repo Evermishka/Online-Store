@@ -68,7 +68,7 @@ export class CategoryInput extends Control {
     inputSecond.node.value = maxValue.toString();
     inputSecond.node.oninput = () => inputTwo();
 
-    state.onUpdate.add((type: string) => {
+    const categoryInputUpdate = (type: string) => {
       if (type === 'resetFilters') {
         inputFirst.node.value = minValue.toString();
         inputSecond.node.value = maxValue.toString();
@@ -82,7 +82,9 @@ export class CategoryInput extends Control {
           maxInputValue.node.textContent = `${maxValue}`;
         }
       }
-    });
+    };
+
+    state.onUpdate.add(categoryInputUpdate);
 
     const minGap = 0;
     const inputOne = () => {
