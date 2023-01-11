@@ -1,4 +1,4 @@
-import { State } from '../common/state';
+import { listeners, State } from '../common/state';
 import Control from '../common/control';
 import { Footer } from './footer/footer';
 import { Header } from './header/header';
@@ -48,11 +48,23 @@ export class App extends Control {
       }, 3000);
     };
     header.onMainPage = (): void => {
+      const stateListeners = state.getData('stateListeners') as Array<listeners>;
+      stateListeners.forEach((el: () => void, index: number) => {
+        if (index > 0) {
+          state.onUpdate.remove(el);
+        }
+      });
       mainInner.destroy();
       this.createApp(header, main, 'main-page', state);
       state.setData(null, 'resetFilters');
     };
     header.onCartPage = (): void => {
+      const stateListeners = state.getData('stateListeners') as Array<listeners>;
+      stateListeners.forEach((el: () => void, index: number) => {
+        if (index === stateListeners.length - 1) {
+          state.onUpdate.remove(el);
+        }
+      });
       mainInner.destroy();
       this.createApp(header, main, 'cart-page', state);
     };

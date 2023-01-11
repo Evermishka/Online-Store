@@ -20,6 +20,7 @@ export interface FilterData {
     sortValue: null | string;
   };
   sortSearch: string;
+  isEmpty: boolean;
 }
 
 export interface StateData {
@@ -28,59 +29,52 @@ export interface StateData {
   promoData: string[];
 }
 
+export type listeners = () => void;
+
 export class State {
   private _data: StateData;
   public onUpdate: Signal<string> = new Signal();
   constructor(initialState: StateData) {
     this._data = initialState;
   }
-
-  public setData(value: CartDataItem | string | FilterData[keyof FilterData] | null, key: string): void {
+  public setData(value: CartDataItem | string | FilterData[keyof FilterData] | null | boolean, key: string): void {
     let currentValue;
     switch (key) {
       case 'cartData':
         currentValue = value as CartDataItem;
         this._data[key].push(currentValue);
         this.onUpdate.emit(key);
-
         break;
       case 'promoData':
         currentValue = value as string;
         this._data[key].push(currentValue);
         this.onUpdate.emit(key);
-
         break;
       case 'category':
         currentValue = value as string;
         this._data.filters[key].push(currentValue.toLowerCase());
-
         break;
       case 'brand':
         currentValue = value as string;
         this._data.filters[key].push(currentValue.toLowerCase());
-
         break;
       case 'price':
         currentValue = {
           min: (value as { min: number }).min,
           max: (value as { max: number }).max as number,
         };
-
         this._data.filters.price.min = currentValue.min;
         this._data.filters.price.max = currentValue.max;
         this.onUpdate.emit('sortGoods');
-
         break;
       case 'stock':
         currentValue = {
           min: (value as { min: number }).min,
           max: (value as { max: number }).max as number,
         };
-
         this._data.filters.stock.min = currentValue.min;
         this._data.filters.stock.max = currentValue.max;
         this.onUpdate.emit('sortGoods');
-
         break;
       case 'sortGoods':
         currentValue = value as Array<Product>;
@@ -91,7 +85,6 @@ export class State {
         currentValue = value as { category: { [key: string]: number }; brand: { [key: string]: number } };
         this._data.filters[key] = currentValue;
         this.onUpdate.emit('sortCount');
-
         break;
       case 'sortOptions':
         currentValue = value as {
@@ -101,7 +94,6 @@ export class State {
         };
         this._data.filters[key] = currentValue;
         this.onUpdate.emit('sortOptions');
-
         break;
       case 'sortSearch':
         currentValue = value as string;
@@ -122,11 +114,17 @@ export class State {
             sortValue: null,
           },
           sortSearch: '',
+          isEmpty: false,
         };
         this.onUpdate.emit('resetFilters');
         break;
-      default:
+      case 'isEmpty':
+        currentValue = value as boolean;
+        this._data.filters[key] = currentValue;
+        this.onUpdate.emit('isEmpty');
         break;
+      default:
+        return;
     }
   }
 
@@ -165,7 +163,14 @@ export class State {
 
   public getData(
     key: string
-  ): CartDataItem[] | string[] | FilterData[keyof FilterData] | void | { min: number; max: number } | boolean {
+  ):
+    | CartDataItem[]
+    | string[]
+    | FilterData[keyof FilterData]
+    | void
+    | { min: number; max: number }
+    | boolean
+    | ((params: string) => void)[] {
     switch (key) {
       case 'cartData':
         return this._data[key];
@@ -187,8 +192,12 @@ export class State {
         return this._data.filters[key];
       case 'sortSearch':
         return this._data.filters[key];
+      case 'isEmpty':
+        return this._data.filters[key];
+      case 'stateListeners':
+        return this.onUpdate.listeners;
       default:
-        break;
+        return;
     }
   }
 

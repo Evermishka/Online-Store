@@ -19,6 +19,7 @@ const state = new State({
       sortValue: null,
     },
     sortSearch: '',
+    isEmpty: false,
   },
   promoData: PromoData.getData(),
 });

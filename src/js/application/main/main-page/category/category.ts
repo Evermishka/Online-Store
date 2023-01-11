@@ -25,14 +25,16 @@ export class Category extends Control {
     const categoryInputStock = new CategoryInput(categoryBlock.node, 'stock', state);
     categoryInputStock.filtration = (): void => this.filtration(state, products);
 
-    state.onUpdate.add((type: string): void => {
+    const categoryUpdate = (type: string): void => {
       if (type === 'sortOptions' || type === 'sortSearch') {
         this.filtration(state, products);
       }
       if (type === 'resetFilters') {
         this.filtration(state, products);
       }
-    });
+    };
+
+    state.onUpdate.add(categoryUpdate);
   }
 
   private resetFiltres(state: State): void {
@@ -81,6 +83,12 @@ export class Category extends Control {
       } else if (getSortOptions.sortType === 'DESC') {
         finishProductList = this.sortByDESC(currentSortArr, getSortOptions.sortValue);
       }
+    }
+
+    if (finishProductList.length === 0) {
+      state.setData(true, 'isEmpty');
+    } else {
+      state.setData(false, 'isEmpty');
     }
 
     state.setData(finishProductList, 'sortGoods');

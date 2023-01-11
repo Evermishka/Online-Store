@@ -7,6 +7,7 @@ import { GoodsFilters } from './goods-filters';
 export class Goods extends Control {
   public onProductPage!: (id: number) => void;
   private goodsList!: Control<HTMLElement>;
+  private isEmptyGoods!: Control<HTMLElement>;
   constructor(parentNode: HTMLElement, products: Array<Product>, state: State) {
     super(parentNode, 'div', 'goods');
     const goodFilters = new GoodsFilters(this.node, state, products);
@@ -24,12 +25,27 @@ export class Goods extends Control {
 
     this.createGoods(this.node, products, state);
 
-    state.onUpdate.add((type) => {
+    const goodsUpdate = (type: string): void => {
       if (type === 'sortGoods') {
         this.goodsList.destroy();
         this.createGoods(this.node, state.getData('sortGoods') as Array<Product>, state);
       }
-    });
+      if (type === 'isEmpty') {
+        const isGoods = state.getData('isEmpty') as boolean;
+        if (isGoods) {
+          if (this.isEmptyGoods) {
+            this.isEmptyGoods.destroy();
+          }
+          this.isEmptyGoods = new Control(this.node, 'p', 'goods_empty_text', 'No products found');
+        } else {
+          if (this.isEmptyGoods) {
+            this.isEmptyGoods.destroy();
+          }
+        }
+      }
+    };
+
+    state.onUpdate.add(goodsUpdate);
   }
 
   private createGoods(parentNode: HTMLElement, data: Array<Product>, state: State, size = 1): void {

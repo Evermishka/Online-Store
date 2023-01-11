@@ -30,7 +30,8 @@ export class CartSummary extends Control {
       cartModal.closeModal = (): void => cartModal.destroy();
       cartModal.closeCart = (): void => this.closeCart();
     };
-    state.onUpdate.add((type) => {
+
+    const cartSummaryUpdate = (type: string): void => {
       if (type === 'cartData' || type === 'promoData') {
         const newAmount = this.calculateAmount(state);
         const newPrice = this.calculatePrice(state);
@@ -43,7 +44,8 @@ export class CartSummary extends Control {
           this.summaryTotalPriceNew.node.textContent = '';
         }
       }
-    });
+    };
+    state.onUpdate.add(cartSummaryUpdate);
   }
 
   private calculateAmount(state: State): number {
