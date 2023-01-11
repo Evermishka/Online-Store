@@ -62,15 +62,12 @@ export class CategoryCheckbox extends Control {
       this.listOfCounterEl.push(categoryItemCount.node);
     }
 
-    state.onUpdate.add((type: string) => {
+    const categoryCheckUpdate = (type: string): void => {
       if (type === 'resetFilters') {
         this.listOfCheckedEl.forEach((el) => {
           (el as HTMLInputElement).checked = false;
         });
       }
-    });
-
-    state.onUpdate.add((type: string) => {
       if (type === 'sortCount') {
         const getCounts = state.getData('sortCount') as {
           category: { [key: string]: number };
@@ -86,7 +83,9 @@ export class CategoryCheckbox extends Control {
           counter++;
         }
       }
-    });
+    };
+
+    state.onUpdate.add(categoryCheckUpdate);
   }
 
   private addGoods(product: string, state: State, type: string): void {

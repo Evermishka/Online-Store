@@ -1,5 +1,5 @@
 class Signal<ListenerType> {
-  private listeners: Array<(params: ListenerType) => void>;
+  public listeners: Array<(params: ListenerType) => void>;
 
   constructor() {
     this.listeners = [];
@@ -7,7 +7,6 @@ class Signal<ListenerType> {
 
   public add(listener: (params: ListenerType) => void): void {
     this.listeners.push(listener);
-    console.log(this.listeners);
   }
 
   public remove(listener: (params: ListenerType) => void): void {
