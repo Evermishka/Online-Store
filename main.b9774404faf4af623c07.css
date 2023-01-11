@@ -662,7 +662,8 @@ template {
 .goods {
   width: 100%;
   border-radius: 1rem;
-  border: 1px solid #0063b1; }
+  border: 1px solid #0063b1;
+  position: relative; }
   .goods_filter {
     display: flex;
     justify-content: space-between;
@@ -765,6 +766,15 @@ template {
       margin-bottom: 1rem; }
     .goods_product_button:hover {
       background: #71addc; }
+  .goods_empty_text {
+    font-size: 4rem;
+    line-height: 7rem;
+    font-weight: 700;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 25%;
+    color: #000; }
 
 @media (max-width: 1100px) {
   .goods_list {
@@ -1104,11 +1114,14 @@ template {
   align-items: center;
   gap: 10px;
   padding-bottom: 10px; }
+  .promo-codes_applied {
+    width: 100%; }
   .promo-codes_applied-title {
     text-align: center; }
   .promo-codes_applied-list {
     margin: 0;
     padding: 0;
+    width: 100%;
     list-style: none; }
   .promo-codes_wrapper {
     width: 100%; }

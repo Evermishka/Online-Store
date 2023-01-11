@@ -37,7 +37,7 @@ class App extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         super(parendNode, 'div', 'wrapper');
         const header = new _header_header__WEBPACK_IMPORTED_MODULE_2__.Header(this.node, state);
         const main = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'main', 'main');
-        const footer = new _footer_footer__WEBPACK_IMPORTED_MODULE_1__.Footer(this.node);
+        new _footer_footer__WEBPACK_IMPORTED_MODULE_1__.Footer(this.node);
         this.createApp(header, main, 'main-page', state);
     }
     createApp(header, main, screen, state, id) {
@@ -69,11 +69,23 @@ class App extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
             }, 3000);
         };
         header.onMainPage = () => {
+            const stateListeners = state.getData('stateListeners');
+            stateListeners.forEach((el, index) => {
+                if (index > 0) {
+                    state.onUpdate.remove(el);
+                }
+            });
             mainInner.destroy();
             this.createApp(header, main, 'main-page', state);
             state.setData(null, 'resetFilters');
         };
         header.onCartPage = () => {
+            const stateListeners = state.getData('stateListeners');
+            stateListeners.forEach((el, index) => {
+                if (index === stateListeners.length - 1) {
+                    state.onUpdate.remove(el);
+                }
+            });
             mainInner.destroy();
             this.createApp(header, main, 'cart-page', state);
         };
@@ -161,29 +173,24 @@ class Header extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         headerLogo.node.alt = 'image logo';
         headerLogo.node.onclick = () => this.onMainPage();
         const headerSumBlock = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](headerInner.node, 'div', 'header_inner_sum', '');
-        const headerSumText = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](headerSumBlock.node, 'span', 'header_sum_text', 'Cart total');
-        let headerSumNumber = state
-            .getData('cartData')
-            .reduce((accum, current) => accum + current.price * current.amount, 0);
+        new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](headerSumBlock.node, 'span', 'header_sum_text', 'Cart total');
+        const cartData = state.getData('cartData');
+        const headerSumNumber = cartData.reduce((accum, current) => accum + current.price * current.amount, 0);
         const headerSum = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](headerSumBlock.node, 'span', 'header_sum', `€${headerSumNumber}.00`);
-        let headerCartItemsNumber = state
-            .getData('cartData')
-            .reduce((accum, current) => accum + current.amount, 0);
+        const headerCartItemsNumber = cartData.reduce((accum, current) => accum + current.amount, 0);
         const headerCart = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](headerInner.node, 'div', 'header_cart', '');
         const headerCartItems = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](headerCart.node, 'p', 'header_cart-items', headerCartItemsNumber.toString());
         headerCart.node.onclick = () => this.onCartPage();
-        state.onUpdate.add((type) => {
+        const headerUpdate = (type) => {
             if (type === 'cartData') {
-                let newPrice = state
-                    .getData('cartData')
-                    .reduce((accum, current) => accum + current.price * current.amount, 0);
-                let newAmount = state
-                    .getData('cartData')
-                    .reduce((accum, current) => accum + current.amount, 0);
+                const cartData = state.getData('cartData');
+                const newPrice = cartData.reduce((accum, current) => accum + current.price * current.amount, 0);
+                const newAmount = cartData.reduce((accum, current) => accum + current.amount, 0);
                 headerSum.node.textContent = `€${newPrice}.00`;
                 headerCartItems.node.textContent = newAmount.toString();
             }
-        });
+        };
+        state.onUpdate.add(headerUpdate);
     }
 }
 
@@ -212,9 +219,7 @@ class CartPage extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         const productsInCart = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'div', 'cart_products');
         const productsInCartWrapper = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](productsInCart.node, 'div', 'cart_products-wrapper');
         new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](productsInCartWrapper.node, 'div', 'cart_products-title', 'Products In Cart');
-        const pagination = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](productsInCartWrapper.node, 'div', 'cart_pagination', 'Pagination');
-        //TODO Add pagination component
-        const productsList = new _cart_products_list__WEBPACK_IMPORTED_MODULE_1__.CartProductList(productsInCart.node, state);
+        new _cart_products_list__WEBPACK_IMPORTED_MODULE_1__.CartProductList(productsInCart.node, state);
         const summary = new _cart_summary__WEBPACK_IMPORTED_MODULE_2__.CartSummary(this.node, state);
         summary.closeCart = () => this.closeCart();
     }
@@ -238,44 +243,48 @@ __webpack_require__.r(__webpack_exports__);
 class CartProductListControls extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(parentNode, state, productData) {
         super(parentNode, 'div', 'products-list_controls');
-        const decreaseAmountButton = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'button', 'products-list_decrease-button', '-');
-        decreaseAmountButton.node.onclick = () => {
-            this.decrease(productData, state, increaseAmountButton.node, productAmount.node);
-        };
-        const productAmountNumber = state
-            .getData('cartData')
-            .find((el) => el.id === productData.id).amount;
-        const productAmount = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'p', 'products-list_product-amount', productAmountNumber.toString());
-        const increaseAmountButton = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'button', 'products-list_increase-button', '+');
-        if (productAmountNumber === productData.stock) {
-            increaseAmountButton.node.disabled = true;
+        const cartData = state.getData('cartData');
+        const productElement = cartData.find((el) => el.id === productData.id);
+        if (productElement) {
+            const decreaseAmountButton = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'button', 'products-list_decrease-button', '-');
+            decreaseAmountButton.node.onclick = () => {
+                this.decrease(productData, state, increaseAmountButton.node, productAmount.node);
+            };
+            const productAmountNumber = productElement.amount;
+            const productAmount = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'p', 'products-list_product-amount', productAmountNumber.toString());
+            const increaseAmountButton = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'button', 'products-list_increase-button', '+');
+            if (productAmountNumber === productData.stock) {
+                increaseAmountButton.node.disabled = true;
+            }
+            increaseAmountButton.node.onclick = () => {
+                this.increase(productData, state, increaseAmountButton.node, productAmount.node);
+            };
         }
-        increaseAmountButton.node.onclick = () => {
-            this.increase(productData, state, increaseAmountButton.node, productAmount.node);
-        };
     }
     decrease(productData, state, button, productAmount) {
-        const product = state.getData('cartData').find((el) => el.id === productData.id);
+        const cartData = state.getData('cartData');
+        const product = cartData.find((el) => el.id === productData.id);
         if (button.disabled)
             button.disabled = false;
-        if (product.amount > 0) {
+        if (product && product.amount > 0) {
             state.deleteData(product, 'cartData');
             product.amount -= 1;
             if (product.amount === 0) {
                 this.deleteCartItem();
             }
             else {
-                productAmount.textContent = product.amount;
+                productAmount.textContent = product.amount.toString();
                 state.setData(product, 'cartData');
             }
         }
     }
     increase(productData, state, button, productAmount) {
-        const product = state.getData('cartData').find((el) => el.id === productData.id);
-        if (product.amount < productData.stock) {
+        const cartData = state.getData('cartData');
+        const product = cartData.find((el) => el.id === productData.id);
+        if (product && product.amount < productData.stock) {
             state.deleteData(product, 'cartData');
             product.amount += 1;
-            productAmount.textContent = product.amount;
+            productAmount.textContent = product.amount.toString();
             state.setData(product, 'cartData');
             if (product.amount === productData.stock) {
                 button.disabled = true;
@@ -307,7 +316,8 @@ const PRODUCT_IMAGE_WIDTH = 100;
 class CartProductList extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(parentNode, state) {
         super(parentNode, 'ul', 'products-list');
-        state.getData('cartData').forEach((el, index) => {
+        const cartData = state.getData('cartData');
+        cartData.forEach((el, index) => {
             const productData = _data_data__WEBPACK_IMPORTED_MODULE_1__.products.find((elem) => elem.id === el.id);
             if (productData) {
                 const product = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'li', 'products-list_item', '');
@@ -371,8 +381,8 @@ class PromoCodes extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"]
             appliedCodesData.forEach((el) => {
                 const promoCode = _data_promo_codes__WEBPACK_IMPORTED_MODULE_1__.promoCodes.find((elem) => elem.name === el);
                 if (promoCode) {
-                    const appliedCodesItem = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.appliedCodesList.node, 'li', 'promo-codes_wrapper');
-                    new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](appliedCodesItem.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}% - `);
+                    const appliedCodesItem = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.appliedCodesList.node, 'li', 'promo-codes_inner-wrapper');
+                    new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](appliedCodesItem.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}%`);
                     const removeCodeButton = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](appliedCodesItem.node, 'button', 'promo-codes_button', 'DROP');
                     removeCodeButton.node.onclick = () => this.deletePromo(el, state);
                 }
@@ -393,7 +403,7 @@ class PromoCodes extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"]
         if (promoCode && !appliedPromoCodes.find((elem) => elem === promoCode.name)) {
             this.promoCodesWrapper = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'div', 'promo-codes_wrapper');
             const promoCodeWrapper = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.promoCodesWrapper.node, 'div', 'promo-codes_inner-wrapper');
-            new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](promoCodeWrapper.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}% - `);
+            new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](promoCodeWrapper.node, 'p', 'promo-codes_text', `${promoCode.name} - ${promoCode.discount}%`);
             const addCodeButton = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](promoCodeWrapper.node, 'button', 'promo-codes_button', 'ADD');
             addCodeButton.node.onclick = () => {
                 state.setData(promoCode.name, 'promoData');
@@ -452,7 +462,7 @@ class CartSummary extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"
             cartModal.closeModal = () => cartModal.destroy();
             cartModal.closeCart = () => this.closeCart();
         };
-        state.onUpdate.add((type) => {
+        const cartSummaryUpdate = (type) => {
             if (type === 'cartData' || type === 'promoData') {
                 const newAmount = this.calculateAmount(state);
                 const newPrice = this.calculatePrice(state);
@@ -466,15 +476,16 @@ class CartSummary extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"
                     this.summaryTotalPriceNew.node.textContent = '';
                 }
             }
-        });
+        };
+        state.onUpdate.add(cartSummaryUpdate);
     }
     calculateAmount(state) {
-        return state.getData('cartData').reduce((accum, current) => accum + current.amount, 0);
+        const cartData = state.getData('cartData');
+        return cartData.reduce((accum, current) => accum + current.amount, 0);
     }
     calculatePrice(state) {
-        return state
-            .getData('cartData')
-            .reduce((accum, current) => accum + current.price * current.amount, 0);
+        const cartData = state.getData('cartData');
+        return cartData.reduce((accum, current) => accum + current.price * current.amount, 0);
     }
     calculateDiscountPrice(data, price) {
         const totalDiscount = data.reduce((acum, el) => {
@@ -682,7 +693,7 @@ const cardClasses = [
     'purchase_card-input__default',
     'purchase_card-input__amex',
     'purchase_card-input__visa',
-    'purchase_card-input__mastercard'
+    'purchase_card-input__mastercard',
 ];
 class FormCardNumberLine extends _form_line__WEBPACK_IMPORTED_MODULE_0__.FormLine {
     constructor(parentNode, formData) {
@@ -790,7 +801,7 @@ class CategoryCheckbox extends _common_control__WEBPACK_IMPORTED_MODULE_0__["def
         }
         const categoryCheckboxList = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'ul', 'category_checkbox_list', '');
         const productsValue = {};
-        const categories = _data_data__WEBPACK_IMPORTED_MODULE_1__.products.forEach((it) => {
+        _data_data__WEBPACK_IMPORTED_MODULE_1__.products.forEach((it) => {
             if (type === 'category') {
                 if (productsValue[it.category] === undefined) {
                     productsValue[it.category] = 1;
@@ -808,7 +819,7 @@ class CategoryCheckbox extends _common_control__WEBPACK_IMPORTED_MODULE_0__["def
                 }
             }
         });
-        for (let key in productsValue) {
+        for (const key in productsValue) {
             const categoryItem = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryCheckboxList.node, 'li', 'category_item', ``);
             const categoryItemBlock = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryItem.node, 'div', 'category_item_block', '');
             const categoryLabel = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryItemBlock.node, 'label', 'category_item_label', '');
@@ -823,24 +834,21 @@ class CategoryCheckbox extends _common_control__WEBPACK_IMPORTED_MODULE_0__["def
                     this.removeGoods(key, state, type);
                 }
             };
-            const customCheckbox = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryLabel.node, 'span', 'category_custom_check');
-            const categoryItemName = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryLabel.node, 'p', 'category_item_text', `${key}`);
+            new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryLabel.node, 'span', 'category_custom_check');
+            new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryLabel.node, 'p', 'category_item_text', `${key}`);
             const categoryItemCount = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryItemBlock.node, 'p', 'category_item_count', `${productsValue[key]}/${productsValue[key]}`);
             this.listOfCounterEl.push(categoryItemCount.node);
         }
-        state.onUpdate.add((type) => {
-            // TODO delete any type;
+        const categoryCheckUpdate = (type) => {
             if (type === 'resetFilters') {
                 this.listOfCheckedEl.forEach((el) => {
                     el.checked = false;
                 });
             }
-        });
-        state.onUpdate.add((type) => {
             if (type === 'sortCount') {
                 const getCounts = state.getData('sortCount');
                 let counter = 0;
-                for (let key in productsValue) {
+                for (const key in productsValue) {
                     if (this.currentType === 'category') {
                         this.listOfCounterEl[counter].textContent = `${getCounts.category[key]}/${productsValue[key]}`;
                     }
@@ -850,7 +858,8 @@ class CategoryCheckbox extends _common_control__WEBPACK_IMPORTED_MODULE_0__["def
                     counter++;
                 }
             }
-        });
+        };
+        state.onUpdate.add(categoryCheckUpdate);
     }
     addGoods(product, state, type) {
         state.setData(product, type);
@@ -941,7 +950,7 @@ class CategoryInput extends _common_control__WEBPACK_IMPORTED_MODULE_0__["defaul
         inputSecond.node.max = maxValue.toString();
         inputSecond.node.value = maxValue.toString();
         inputSecond.node.oninput = () => inputTwo();
-        state.onUpdate.add((type) => {
+        const categoryInputUpdate = (type) => {
             if (type === 'resetFilters') {
                 inputFirst.node.value = minValue.toString();
                 inputSecond.node.value = maxValue.toString();
@@ -955,7 +964,8 @@ class CategoryInput extends _common_control__WEBPACK_IMPORTED_MODULE_0__["defaul
                     maxInputValue.node.textContent = `${maxValue}`;
                 }
             }
-        });
+        };
+        state.onUpdate.add(categoryInputUpdate);
         const minGap = 0;
         const inputOne = () => {
             if (parseInt(inputSecond.node.value) - parseInt(inputFirst.node.value) <= minGap) {
@@ -998,8 +1008,8 @@ class CategoryInput extends _common_control__WEBPACK_IMPORTED_MODULE_0__["defaul
             fillColor();
         };
         function fillColor() {
-            let percent1 = (+inputFirst.node.value / +inputFirst.node.max) * 100;
-            let percent2 = (+inputSecond.node.value / +inputSecond.node.max) * 100;
+            const percent1 = (+inputFirst.node.value / +inputFirst.node.max) * 100;
+            const percent2 = (+inputSecond.node.value / +inputSecond.node.max) * 100;
             inputTrack.node.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #0077c0 ${percent1}% , #0077c0 ${percent2}%, #dadae5 ${percent2}%)`;
         }
     }
@@ -1039,7 +1049,7 @@ class Category extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         const categoryBlockBtns = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryBlock.node, 'div', 'category_block_btn');
         const btnResetFilters = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryBlockBtns.node, 'button', 'category_btn', 'reset filter');
         btnResetFilters.node.onclick = () => this.resetFiltres(state);
-        const btnCopyFilters = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryBlockBtns.node, 'button', 'category_btn', 'copy filter');
+        new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](categoryBlockBtns.node, 'button', 'category_btn', 'copy filter');
         const categoryCheck = new _category_check__WEBPACK_IMPORTED_MODULE_1__.CategoryCheckbox(categoryBlock.node, 'category', state);
         categoryCheck.filtration = () => this.filtration(state, products);
         const categoryPrice = new _category_check__WEBPACK_IMPORTED_MODULE_1__.CategoryCheckbox(categoryBlock.node, 'brand', state);
@@ -1048,14 +1058,15 @@ class Category extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         categoryInputPrice.filtration = () => this.filtration(state, products);
         const categoryInputStock = new _category_input__WEBPACK_IMPORTED_MODULE_2__.CategoryInput(categoryBlock.node, 'stock', state);
         categoryInputStock.filtration = () => this.filtration(state, products);
-        state.onUpdate.add((type) => {
+        const categoryUpdate = (type) => {
             if (type === 'sortOptions' || type === 'sortSearch') {
                 this.filtration(state, products);
             }
             if (type === 'resetFilters') {
                 this.filtration(state, products);
             }
-        });
+        };
+        state.onUpdate.add(categoryUpdate);
     }
     resetFiltres(state) {
         state.setData(null, 'resetFilters');
@@ -1078,7 +1089,7 @@ class Category extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 sortArr = this.filterBrand(this.filterCategory(products, getCategories), getBrands);
             }
         }
-        let filterPriceAndStock = this.filterPrice(this.filterStock(sortArr, state), state);
+        const filterPriceAndStock = this.filterPrice(this.filterStock(sortArr, state), state);
         let finishProductList = filterPriceAndStock;
         if (state.getData('sortSearch')) {
             finishProductList = this.sortBySearch(filterPriceAndStock, state);
@@ -1097,15 +1108,21 @@ class Category extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
                 finishProductList = this.sortByDESC(currentSortArr, getSortOptions.sortValue);
             }
         }
+        if (finishProductList.length === 0) {
+            state.setData(true, 'isEmpty');
+        }
+        else {
+            state.setData(false, 'isEmpty');
+        }
         state.setData(finishProductList, 'sortGoods');
         state.setData(filterCounts, 'sortCount');
     }
     sortBySearch(products, state) {
         return products.filter((el) => {
-            let searchValue = state.getData('sortSearch');
-            for (let key in el) {
+            const searchValue = state.getData('sortSearch');
+            for (const key in el) {
                 if (key !== 'id' && key !== 'thumbnail' && key !== 'images') {
-                    let currentValue = el[key].toString().toLowerCase();
+                    const currentValue = el[key].toString().toLowerCase();
                     if (currentValue.includes(searchValue.toLowerCase())) {
                         return el;
                     }
@@ -1127,7 +1144,7 @@ class Category extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         productList.forEach((el) => {
             result.category[el.category] = 0;
             result.brand[el.brand] = 0;
-            sortProductList.forEach((it, i) => {
+            sortProductList.forEach((it) => {
                 if (el.category === it.category) {
                     result.category[el.category] += 1;
                 }
@@ -1242,15 +1259,15 @@ class GoodsFilters extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default
         }
         const foundSort = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'p', 'goods_filter_count', 'Found: 100');
         foundSort.node.textContent = `Found: ${state.getData('sortGoods').length || products.length}`;
-        state.onUpdate.add((type) => {
+        const goodsFiltersUpdate = (type) => {
             if (type === 'sortGoods') {
                 foundSort.node.textContent = `Found: ${state.getData('sortGoods').length}`;
             }
             if (type === 'resetFilters') {
                 searchSort.node.value = state.getData('sortSearch');
             }
-        });
-        // TODO delete any type;
+        };
+        state.onUpdate.add(goodsFiltersUpdate);
         const searchSort = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'input', 'goods_filter_search');
         searchSort.node.type = 'search';
         searchSort.node.placeholder = 'Search product';
@@ -1267,8 +1284,8 @@ class GoodsFilters extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default
     }
     sortByParam(event, state) {
         // TODO delete any type;
-        let target = event.target;
-        let targetValue = target.value;
+        const target = event.target;
+        const targetValue = target.value;
         const result = {
             isSort: false,
             sortType: null,
@@ -1381,15 +1398,32 @@ class Goods extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         const goodFilters = new _goods_filters__WEBPACK_IMPORTED_MODULE_2__.GoodsFilters(this.node, state, products);
         goodFilters.changeSize = (size) => {
             this.goodsList.destroy();
-            this.createGoods(this.node, state.getData('sortGoods').length > 0 ? state.getData('sortGoods') : products, state, size);
+            this.createGoods(this.node, state.getData('sortGoods').length > 0
+                ? state.getData('sortGoods')
+                : products, state, size);
         };
         this.createGoods(this.node, products, state);
-        state.onUpdate.add((type) => {
+        const goodsUpdate = (type) => {
             if (type === 'sortGoods') {
                 this.goodsList.destroy();
                 this.createGoods(this.node, state.getData('sortGoods'), state);
             }
-        });
+            if (type === 'isEmpty') {
+                const isGoods = state.getData('isEmpty');
+                if (isGoods) {
+                    if (this.isEmptyGoods) {
+                        this.isEmptyGoods.destroy();
+                    }
+                    this.isEmptyGoods = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'p', 'goods_empty_text', 'No products found');
+                }
+                else {
+                    if (this.isEmptyGoods) {
+                        this.isEmptyGoods.destroy();
+                    }
+                }
+            }
+        };
+        state.onUpdate.add(goodsUpdate);
     }
     createGoods(parentNode, data, state, size = 1) {
         this.goodsList = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](parentNode, 'ul', 'goods_list');
@@ -1434,19 +1468,19 @@ class Main extends _common_control__WEBPACK_IMPORTED_MODULE_0__["default"] {
         super(parendNode, 'div', 'main_inner');
         switch (screen) {
             case 'main-page':
-                const category = new _main_page_category_category__WEBPACK_IMPORTED_MODULE_1__.Category(this.node, state, _data_data__WEBPACK_IMPORTED_MODULE_2__.products);
-                const goods = new _main_page_goods_goods__WEBPACK_IMPORTED_MODULE_3__.Goods(this.node, _data_data__WEBPACK_IMPORTED_MODULE_2__.products, state);
-                goods.onProductPage = (id) => this.onProductPage(id);
+                new _main_page_category_category__WEBPACK_IMPORTED_MODULE_1__.Category(this.node, state, _data_data__WEBPACK_IMPORTED_MODULE_2__.products);
+                this.goods = new _main_page_goods_goods__WEBPACK_IMPORTED_MODULE_3__.Goods(this.node, _data_data__WEBPACK_IMPORTED_MODULE_2__.products, state);
+                this.goods.onProductPage = (id) => this.onProductPage(id);
                 break;
             case 'product-page':
-                const productPage = new _product_page_product_page__WEBPACK_IMPORTED_MODULE_4__.ProductPage(this.node, id, state);
-                productPage.onCartPage = () => this.onCartPage();
-                productPage.onMainPage = () => this.onMainPage();
+                this.productPage = new _product_page_product_page__WEBPACK_IMPORTED_MODULE_4__.ProductPage(this.node, id, state);
+                this.productPage.onCartPage = () => this.onCartPage();
+                this.productPage.onMainPage = () => this.onMainPage();
                 break;
             case 'cart-page':
-                const cartPage = new _cart_page_cart_page__WEBPACK_IMPORTED_MODULE_5__.CartPage(this.node, state);
-                cartPage.closeCart = () => {
-                    cartPage.destroy();
+                this.cartPage = new _cart_page_cart_page__WEBPACK_IMPORTED_MODULE_5__.CartPage(this.node, state);
+                this.cartPage.closeCart = () => {
+                    this.cartPage.destroy();
                     this.closeCart();
                 };
                 break;
@@ -1602,7 +1636,8 @@ class ProductPurchase extends _common_control__WEBPACK_IMPORTED_MODULE_0__["defa
         const cartButton = new _main_page_goods_cart_button__WEBPACK_IMPORTED_MODULE_1__.CartButton(this.node, product, state);
         const buyButton = new _common_control__WEBPACK_IMPORTED_MODULE_0__["default"](this.node, 'button', 'goods_product_button', 'Buy now!');
         buyButton.node.onclick = () => {
-            if (!(state.getData('cartData').find((el) => el.id === product.id))) {
+            const cartData = state.getData('cartData');
+            if (!cartData.find((el) => el.id === product.id)) {
                 cartButton.addToCart({ id: product.id, price: product.price, amount: 1 }, state);
             }
             this.onCartPage();
@@ -1798,7 +1833,6 @@ class Signal {
     }
     add(listener) {
         this.listeners.push(listener);
-        console.log(this.listeners);
     }
     remove(listener) {
         this.listeners = this.listeners.filter((elem) => elem !== listener);
@@ -1830,45 +1864,62 @@ class State {
         this._data = initialState;
     }
     setData(value, key) {
+        let currentValue;
         switch (key) {
             case 'cartData':
-                this._data[key].push(value);
+                currentValue = value;
+                this._data[key].push(currentValue);
                 this.onUpdate.emit(key);
                 break;
             case 'promoData':
-                this._data[key].push(value);
+                currentValue = value;
+                this._data[key].push(currentValue);
                 this.onUpdate.emit(key);
                 break;
             case 'category':
-                this._data.filters[key].push(value.toLowerCase());
+                currentValue = value;
+                this._data.filters[key].push(currentValue.toLowerCase());
                 break;
             case 'brand':
-                this._data.filters[key].push(value.toLowerCase());
+                currentValue = value;
+                this._data.filters[key].push(currentValue.toLowerCase());
                 break;
             case 'price':
-                this._data.filters.price.min = value.min;
-                this._data.filters.price.max = value.max;
+                currentValue = {
+                    min: value.min,
+                    max: value.max,
+                };
+                this._data.filters.price.min = currentValue.min;
+                this._data.filters.price.max = currentValue.max;
                 this.onUpdate.emit('sortGoods');
                 break;
             case 'stock':
-                this._data.filters.stock.min = value.min;
-                this._data.filters.stock.max = value.max;
+                currentValue = {
+                    min: value.min,
+                    max: value.max,
+                };
+                this._data.filters.stock.min = currentValue.min;
+                this._data.filters.stock.max = currentValue.max;
                 this.onUpdate.emit('sortGoods');
                 break;
             case 'sortGoods':
-                this._data.filters[key] = value;
+                currentValue = value;
+                this._data.filters[key] = currentValue;
                 this.onUpdate.emit('sortGoods');
                 break;
             case 'sortCount':
-                this._data.filters[key] = value;
+                currentValue = value;
+                this._data.filters[key] = currentValue;
                 this.onUpdate.emit('sortCount');
                 break;
             case 'sortOptions':
-                this._data.filters[key] = value;
+                currentValue = value;
+                this._data.filters[key] = currentValue;
                 this.onUpdate.emit('sortOptions');
                 break;
             case 'sortSearch':
-                this._data.filters[key] = value.toLowerCase();
+                currentValue = value;
+                this._data.filters[key] = currentValue.toLowerCase();
                 this.onUpdate.emit('sortSearch');
                 break;
             case 'resetFilters':
@@ -1885,32 +1936,46 @@ class State {
                         sortValue: null,
                     },
                     sortSearch: '',
+                    isEmpty: false,
                 };
                 this.onUpdate.emit('resetFilters');
                 break;
-            default:
+            case 'isEmpty':
+                currentValue = value;
+                this._data.filters[key] = currentValue;
+                this.onUpdate.emit('isEmpty');
                 break;
+            default:
+                return;
         }
     }
     deleteData(value, key) {
         switch (key) {
             case 'cartData':
-                const indexCart = this._data[key].findIndex((el) => el.id === value.id);
-                this._data[key].splice(indexCart, 1);
-                this.onUpdate.emit(key);
+                if (typeof value !== 'string' && 'id' in value) {
+                    const indexCart = this._data[key].findIndex((el) => el.id === value.id);
+                    this._data[key].splice(indexCart, 1);
+                    this.onUpdate.emit(key);
+                }
                 break;
             case 'promoData':
-                const indexPromo = this._data[key].findIndex((el) => el === value);
-                this._data[key].splice(indexPromo, 1);
-                this.onUpdate.emit(key);
+                if (typeof value === 'string') {
+                    const indexPromo = this._data[key].findIndex((el) => el === value);
+                    this._data[key].splice(indexPromo, 1);
+                    this.onUpdate.emit(key);
+                }
                 break;
             case 'category':
-                const indexCategory = this._data.filters[key].findIndex((el) => el === value);
-                this._data.filters[key].splice(indexCategory, 1);
+                if (typeof value === 'string') {
+                    const indexCategory = this._data.filters[key].findIndex((el) => el === value);
+                    this._data.filters[key].splice(indexCategory, 1);
+                }
                 break;
             case 'brand':
-                const indexBrand = this._data.filters[key].findIndex((el) => el === value);
-                this._data.filters[key].splice(indexBrand, 1);
+                if (typeof value === 'string') {
+                    const indexBrand = this._data.filters[key].findIndex((el) => el === value);
+                    this._data.filters[key].splice(indexBrand, 1);
+                }
                 break;
             default:
                 break;
@@ -1938,15 +2003,18 @@ class State {
                 return this._data.filters[key];
             case 'sortSearch':
                 return this._data.filters[key];
+            case 'isEmpty':
+                return this._data.filters[key];
+            case 'stateListeners':
+                return this.onUpdate.listeners;
             default:
-                break;
+                return;
         }
     }
     resetData() {
-        const cart = this.getData('cartData');
-        cart.forEach((elem) => this.deleteData(elem, 'cartData'));
-        const promo = this.getData('promoData');
-        promo.forEach((elem) => this.deleteData(elem, 'promoData'));
+        this._data.cartData = [];
+        this._data.promoData = [];
+        this.onUpdate.emit('cartData');
     }
 }
 
@@ -3885,12 +3953,12 @@ __webpack_require__.r(__webpack_exports__);
 const promoCodes = [
     {
         name: 'RS',
-        discount: 10
+        discount: 10,
     },
     {
         name: 'EPM',
-        discount: 5
-    }
+        discount: 5,
+    },
 ];
 
 
@@ -3994,10 +4062,11 @@ const state = new _js_common_state__WEBPACK_IMPORTED_MODULE_2__.State({
             sortValue: null,
         },
         sortSearch: '',
+        isEmpty: false,
     },
-    promoData: _js_common_promo_data__WEBPACK_IMPORTED_MODULE_4__.PromoData.getData()
+    promoData: _js_common_promo_data__WEBPACK_IMPORTED_MODULE_4__.PromoData.getData(),
 });
-const app = new _js_application_app__WEBPACK_IMPORTED_MODULE_1__.App(document.body, state);
+new _js_application_app__WEBPACK_IMPORTED_MODULE_1__.App(document.body, state);
 window.onbeforeunload = () => {
     new _js_common_cart_data__WEBPACK_IMPORTED_MODULE_3__.CartData(state.getData('cartData')).save();
     new _js_common_promo_data__WEBPACK_IMPORTED_MODULE_4__.PromoData(state.getData('promoData')).save();
