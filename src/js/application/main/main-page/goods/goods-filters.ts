@@ -38,16 +38,14 @@ export class GoodsFilters extends Control {
     const foundSort: { node: HTMLElement } = new Control(this.node, 'p', 'goods_filter_count', 'Found: 100');
     foundSort.node.textContent = `Found: ${(state.getData('sortGoods') as Array<Product>).length || products.length}`;
 
-    const goodsFiltersUpdate = (type: string): void => {
+    state.onUpdate.add((type: string): void => {
       if (type === 'sortGoods') {
         foundSort.node.textContent = `Found: ${(state.getData('sortGoods') as Array<Product>).length}`;
       }
       if (type === 'resetFilters') {
         searchSort.node.value = state.getData('sortSearch') as string;
       }
-    };
-
-    state.onUpdate.add(goodsFiltersUpdate);
+    });
 
     const searchSort: { node: HTMLInputElement } = new Control(this.node, 'input', 'goods_filter_search');
     searchSort.node.type = 'search';

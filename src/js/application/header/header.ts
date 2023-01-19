@@ -32,7 +32,7 @@ export class Header extends Control {
     const headerCartItems = new Control(headerCart.node, 'p', 'header_cart-items', headerCartItemsNumber.toString());
     headerCart.node.onclick = (): void => this.onCartPage();
 
-    const headerUpdate = (type: string): void => {
+    state.onUpdate.add((type: string): void => {
       if (type === 'cartData') {
         const cartData = state.getData('cartData') as CartDataItem[];
         const newPrice = cartData.reduce(
@@ -43,8 +43,6 @@ export class Header extends Control {
         headerSum.node.textContent = `€${newPrice}.00`;
         headerCartItems.node.textContent = newAmount.toString();
       }
-    };
-
-    state.onUpdate.add(headerUpdate);
+    });
   }
 }
