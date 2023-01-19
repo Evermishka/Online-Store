@@ -2,7 +2,7 @@ import { listeners, State } from '../common/state';
 import Control from '../common/control';
 import { Footer } from './footer/footer';
 import { Header } from './header/header';
-import { Main } from './main/main';
+import { Main, Screen } from './main/main';
 
 export class App extends Control {
   constructor(parendNode: HTMLElement, state: State) {
@@ -11,22 +11,22 @@ export class App extends Control {
     const main = new Control(this.node, 'main', 'main');
     new Footer(this.node);
 
-    this.createApp(header, main, 'main-page', state);
+    this.createApp(header, main, Screen.mainPage, state);
   }
 
-  private createApp(header: Header, main: { node: HTMLElement }, screen: string, state: State, id?: number): void {
+  private createApp(header: Header, main: { node: HTMLElement }, screen: Screen, state: State, id?: number): void {
     const mainInner = new Main(main.node, screen, state, id);
     mainInner.onProductPage = (id: number): void => {
       mainInner.destroy();
-      this.createApp(header, main, 'product-page', state, id);
+      this.createApp(header, main, Screen.productPage, state, id);
     };
     mainInner.onCartPage = (): void => {
       mainInner.destroy();
-      this.createApp(header, main, 'cart-page', state);
+      this.createApp(header, main, Screen.cartPage, state);
     };
     mainInner.onMainPage = (): void => {
       mainInner.destroy();
-      this.createApp(header, main, 'main-page', state);
+      this.createApp(header, main, Screen.mainPage, state);
     };
     mainInner.closeCart = (): void => {
       state.resetData();
@@ -44,7 +44,7 @@ export class App extends Control {
       setTimeout(() => {
         clearInterval(intervalId);
         mainInner.destroy();
-        this.createApp(header, main, 'main-page', state);
+        this.createApp(header, main, Screen.mainPage, state);
       }, 3000);
     };
     header.onMainPage = (): void => {
@@ -55,7 +55,7 @@ export class App extends Control {
         }
       });
       mainInner.destroy();
-      this.createApp(header, main, 'main-page', state);
+      this.createApp(header, main, Screen.mainPage, state);
       state.setData(null, 'resetFilters');
     };
     header.onCartPage = (): void => {
@@ -66,7 +66,7 @@ export class App extends Control {
         }
       });
       mainInner.destroy();
-      this.createApp(header, main, 'cart-page', state);
+      this.createApp(header, main, Screen.cartPage, state);
     };
   }
 }

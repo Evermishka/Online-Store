@@ -1,5 +1,5 @@
 import Control from '../../../../common/control';
-import { State } from '../../../../common/state';
+import { State, StateOptions } from '../../../../common/state';
 import { products, Product } from '../../../../data/data';
 
 export class CategoryCheckbox extends Control {
@@ -7,7 +7,7 @@ export class CategoryCheckbox extends Control {
   private listOfCounterEl: Array<HTMLElement> = [];
   private currentType!: string;
   private listOfCheckedEl: Array<HTMLElement> = [];
-  constructor(parentNode: HTMLElement, type: string, state: State) {
+  constructor(parentNode: HTMLElement, type: keyof StateOptions, state: State) {
     super(parentNode, 'div', 'category_checkbox', '');
     this.currentType = type;
     const categoryCheckboxTitle = new Control(this.node, 'h3', 'category_checkbox_title', '');
@@ -62,7 +62,7 @@ export class CategoryCheckbox extends Control {
       this.listOfCounterEl.push(categoryItemCount.node);
     }
 
-    state.onUpdate.add((type: string): void => {
+    state.onUpdate.add((type: keyof StateOptions): void => {
       if (type === 'resetFilters') {
         this.listOfCheckedEl.forEach((el) => {
           (el as HTMLInputElement).checked = false;
@@ -86,12 +86,12 @@ export class CategoryCheckbox extends Control {
     });
   }
 
-  private addGoods(product: string, state: State, type: string): void {
+  private addGoods(product: string, state: State, type: keyof StateOptions): void {
     state.setData(product, type);
     this.filtration();
   }
 
-  private removeGoods(product: string, state: State, type: string): void {
+  private removeGoods(product: string, state: State, type: keyof StateOptions): void {
     state.deleteData(product, type);
     this.filtration();
   }

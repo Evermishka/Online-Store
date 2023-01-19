@@ -1,5 +1,5 @@
 import Control from '../../../common/control';
-import { CartDataItem, State } from '../../../common/state';
+import { CartDataItem, State, StateOptions } from '../../../common/state';
 import { promoCodes } from '../../../data/promo-codes';
 import { CartModal } from './purchase/cart-modal';
 import { PromoCodes } from './cart-promo-codes';
@@ -31,7 +31,7 @@ export class CartSummary extends Control {
       cartModal.closeCart = (): void => this.closeCart();
     };
 
-    state.onUpdate.add((type: string): void => {
+    state.onUpdate.add((type: keyof StateOptions): void => {
       if (type === 'cartData' || type === 'promoData') {
         const newAmount = this.calculateAmount(state);
         const newPrice = this.calculatePrice(state);

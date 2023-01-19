@@ -1,11 +1,11 @@
 import Control from '../../../../common/control';
-import { State } from '../../../../common/state';
+import { State, StateOptions } from '../../../../common/state';
 import { Product, products } from '../../../../data/data';
 
 export class CategoryInput extends Control {
   public filtration!: () => void;
-  private type!: string;
-  constructor(parentNode: HTMLElement, type: string, state: State) {
+  private type!: keyof StateOptions;
+  constructor(parentNode: HTMLElement, type: keyof StateOptions, state: State) {
     super(parentNode, 'div', 'category_range_inner');
     this.type = type;
     const inputBlockTitle = new Control(this.node, 'h3', 'category_input_title');
@@ -68,7 +68,7 @@ export class CategoryInput extends Control {
     inputSecond.node.value = maxValue.toString();
     inputSecond.node.oninput = (): void => inputTwo();
 
-    state.onUpdate.add((type: string): void => {
+    state.onUpdate.add((type: keyof StateOptions): void => {
       if (type === 'resetFilters') {
         inputFirst.node.value = minValue.toString();
         inputSecond.node.value = maxValue.toString();
@@ -148,7 +148,7 @@ export class CategoryInput extends Control {
     }
   }
 
-  private setValue(value: { min: number; max: number }, state: State, type: string): void {
+  private setValue(value: { min: number; max: number }, state: State, type: keyof StateOptions): void {
     state.setData(
       {
         min: value.min,
