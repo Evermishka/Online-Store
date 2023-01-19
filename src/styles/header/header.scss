@@ -1,0 +1,54 @@
+.header {
+  width: 100%;
+  background: linear-gradient(to bottom, #0077c0, #0063b1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  &_inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  &_logo {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.5s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  &_cart {
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.5s;
+    background-image: url('../assets/svg/goods.svg');
+    background-size: contain;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  &_cart-items {
+    position: absolute;
+    top: 35%;
+    left: -50%;
+    margin: 0;
+  }
+  &_sum_text {
+    font-size: 2.5rem;
+    line-height: 3rem;
+    margin-right: 1rem;
+  }
+  &_sum {
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
+}

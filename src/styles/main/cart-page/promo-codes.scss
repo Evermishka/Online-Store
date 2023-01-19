@@ -1,0 +1,70 @@
+.promo-codes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  &_applied {
+    width: 100%;
+  }
+  &_applied-title {
+    text-align: center;
+  }
+  &_applied-list {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+  }
+  &_wrapper {
+    width: 100%;
+  }
+  &_inner-wrapper {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+  &_text {
+    font-size: 2rem;
+    line-height: 2.7rem;
+    width: 100%;
+    max-width: 10rem;
+  }
+  &_button {
+    color: white;
+    background: linear-gradient(to bottom, #8ab9ce, #0063b1);
+    width: 100%;
+    border-radius: 1rem;
+    outline: none;
+    border: none;
+    transition: 0.5s;
+    cursor: pointer;
+    margin-right: 1rem;
+    min-height: 4rem;
+    height: 100%;
+    align-self: center;
+    transition: ease 0.5s;
+    &:hover {
+      transition: ease 0.5s;
+      background: #71addc;
+    }
+  }
+  &_input {
+    background: linear-gradient(to bottom, #0077c0, #0063b1);
+    outline: none;
+    border: 1px solid #000;
+    color: white;
+    border-radius: 1rem;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #08fdd8;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    &::placeholder {
+      color: white;
+    }
+  }
+  &_input-text {
+    margin: 0;
+  }
+}

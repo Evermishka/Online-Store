@@ -1,0 +1,40 @@
+@import '../../node_modules/normalize.css/normalize.css';
+@import './variables.scss';
+@import './footer/footer.scss';
+@import './header/header.scss';
+@import './main/main.scss';
+@import './main/main-page/category.scss';
+@import './main/main-page/goods.scss';
+@import './main/product-page/product-page.scss';
+@import './main/product-page/breadcrumbs.scss';
+@import './main/cart-page/cart-page.scss';
+@import './main/cart-page/promo-codes.scss';
+@import './fonts.scss';
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+  scroll-behavior: smooth;
+  background-image: url('../assets/svg/main-bg.svg');
+}
+
+body {
+  font-family: $fs-default;
+  font-weight: $fw-regular;
+  font-style: normal;
+  font-size: 1.8rem;
+  line-height: 2.7rem;
+  color: white;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
