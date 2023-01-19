@@ -22,13 +22,13 @@ export class CategoryCheckbox extends Control {
 
     products.forEach((it: Product) => {
       if (type === 'category') {
-        if (productsValue[it.category] === undefined) {
+        if (productsValue[it.category] == null) {
           productsValue[it.category] = 1;
         } else {
           productsValue[it.category] += 1;
         }
       } else if (type === 'brand') {
-        if (productsValue[it.brand] === undefined) {
+        if (productsValue[it.brand] == null) {
           productsValue[it.brand] = 1;
         } else {
           productsValue[it.brand] += 1;
