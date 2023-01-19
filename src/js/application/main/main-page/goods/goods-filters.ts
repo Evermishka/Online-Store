@@ -1,5 +1,5 @@
 import Control from '../../../../common/control';
-import { State } from '../../../../common/state';
+import { State, StateOptions } from '../../../../common/state';
 import { Product } from '../../../../data/data';
 
 export class GoodsFilters extends Control {
@@ -38,7 +38,7 @@ export class GoodsFilters extends Control {
     const foundSort: { node: HTMLElement } = new Control(this.node, 'p', 'goods_filter_count', 'Found: 100');
     foundSort.node.textContent = `Found: ${(state.getData('sortGoods') as Array<Product>).length || products.length}`;
 
-    state.onUpdate.add((type: string): void => {
+    state.onUpdate.add((type: keyof StateOptions): void => {
       if (type === 'sortGoods') {
         foundSort.node.textContent = `Found: ${(state.getData('sortGoods') as Array<Product>).length}`;
       }
@@ -65,7 +65,6 @@ export class GoodsFilters extends Control {
   }
 
   private sortByParam(event: Event, state: State): void {
-    // TODO delete any type;
     const target = event.target as HTMLOptionElement;
     const targetValue: string = target.value;
     const result: { isSort: boolean; sortType: null | string; sortValue: null | string } = {

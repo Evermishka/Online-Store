@@ -31,13 +31,32 @@ export interface StateData {
 
 export type listeners = () => void;
 
+export type StateOptions = {
+  cartData: 'cartData';
+  promoData: 'promoData';
+  category: 'category';
+  brand: 'brand';
+  price: 'price';
+  stock: 'stock';
+  sortGoods: 'sortGoods';
+  sortCount: 'sortCount';
+  sortOptions: 'sortOptions';
+  sortSearch: 'sortSearch';
+  resetFilters: 'resetFilters';
+  isEmpty: 'isEmpty';
+  stateListeners: 'stateListeners';
+};
+
 export class State {
   private _data: StateData;
-  public onUpdate: Signal<string> = new Signal();
+  public onUpdate: Signal<keyof StateOptions> = new Signal();
   constructor(initialState: StateData) {
     this._data = initialState;
   }
-  public setData(value: CartDataItem | string | FilterData[keyof FilterData] | null | boolean, key: string): void {
+  public setData(
+    value: CartDataItem | string | FilterData[keyof FilterData] | null | boolean,
+    key: keyof StateOptions
+  ): void {
     let currentValue;
     switch (key) {
       case 'cartData':
@@ -128,7 +147,7 @@ export class State {
     }
   }
 
-  public deleteData(value: CartDataItem | string, key: string): void {
+  public deleteData(value: CartDataItem | string, key: keyof StateOptions): void {
     switch (key) {
       case 'cartData':
         if (typeof value !== 'string' && 'id' in value) {
@@ -162,7 +181,7 @@ export class State {
   }
 
   public getData(
-    key: string
+    key: keyof StateOptions
   ):
     | CartDataItem[]
     | string[]
@@ -170,7 +189,7 @@ export class State {
     | void
     | { min: number; max: number }
     | boolean
-    | ((params: string) => void)[] {
+    | ((params: keyof StateOptions) => void)[] {
     switch (key) {
       case 'cartData':
         return this._data[key];

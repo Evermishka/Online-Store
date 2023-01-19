@@ -1,4 +1,4 @@
-import { State } from '../../../../common/state';
+import { State, StateOptions } from '../../../../common/state';
 import Control from '../../../../common/control';
 import { Product } from '../../../../data/data';
 import { GoodsItem } from './goods-item';
@@ -25,7 +25,7 @@ export class Goods extends Control {
 
     this.createGoods(this.node, products, state);
 
-    state.onUpdate.add((type: string): void => {
+    state.onUpdate.add((type: keyof StateOptions): void => {
       if (type === 'sortGoods') {
         this.goodsList.destroy();
         this.createGoods(this.node, state.getData('sortGoods') as Array<Product>, state);

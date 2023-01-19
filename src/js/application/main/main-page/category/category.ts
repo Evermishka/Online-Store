@@ -1,5 +1,5 @@
 import Control from '../../../../common/control';
-import { State } from '../../../../common/state';
+import { State, StateOptions } from '../../../../common/state';
 import { Product } from '../../../../data/data';
 import { CategoryCheckbox } from './category-check';
 import { CategoryInput } from './category-input';
@@ -25,7 +25,7 @@ export class Category extends Control {
     const categoryInputStock = new CategoryInput(categoryBlock.node, 'stock', state);
     categoryInputStock.filtration = (): void => this.filtration(state, products);
 
-    state.onUpdate.add((type: string): void => {
+    state.onUpdate.add((type: keyof StateOptions): void => {
       if (type === 'sortOptions' || type === 'sortSearch') {
         this.filtration(state, products);
       }
