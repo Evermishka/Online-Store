@@ -65,7 +65,6 @@ export class GoodsFilters extends Control {
   }
 
   private sortByParam(event: Event, state: State): void {
-    // TODO delete any type;
     const target = event.target as HTMLOptionElement;
     const targetValue: string = target.value;
     const result: { isSort: boolean; sortType: null | string; sortValue: null | string } = {

@@ -18,7 +18,6 @@ export class ProductPurchase extends Control {
         cartButton.addToCart({ id: product.id, price: product.price, amount: 1 }, state);
       }
       this.onCartPage();
-      // TODO Add opening modal
     };
     new Control(this.node, 'p', 'product_stock', `Stock: ${product.stock}`);
   }
